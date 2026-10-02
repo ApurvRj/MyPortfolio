@@ -36,6 +36,18 @@ window.PORTFOLIO_PROJECT_KARMAVRITI = {
   /* Short tags shown on the homepage card. */
   techTags: ['Next.js', 'TypeScript', 'PostgreSQL + Prisma', 'Supabase pgvector', 'RAG', 'Tesseract OCR'],
 
+  /* "Bucket list" shown under the homepage card: future improvements with
+   * details plus the system design image for those improvements. Items are
+   * read from future.roadmap so the two never drift apart. */
+  bucketList: {
+    intro: 'The next set of improvements for KarmaVriti, drawn from the roadmap. Nothing in this list is implemented today.',
+    diagram: {
+      src: 'assets/diagrams/karmavriti-future-improvements.svg',
+      alt: 'KarmaVriti future improvements system design: ingestion, AI processing pipeline, human review, media generation and distribution, each stage marked built, partial or planned'
+    },
+    caption: 'Future improvements system design — planned work, not implemented today.'
+  },
+
   techStack: [
     {
       group: 'Frontend',

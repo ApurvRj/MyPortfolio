@@ -34,6 +34,18 @@ window.PORTFOLIO_PROJECT_SUTRA = {
 
   techTags: ['Next.js 15', 'React 19', 'TypeScript', 'Tailwind CSS 4', 'Supabase', 'PostgreSQL + RLS', 'Razorpay'],
 
+  /* "Bucket list" shown under the homepage card: future improvements with
+   * details plus the system design image for those improvements. Items are
+   * read from future.roadmap so the two never drift apart. */
+  bucketList: {
+    intro: 'The next set of improvements for Sūtra Atelier, drawn from the roadmap. Nothing in this list is implemented today.',
+    diagram: {
+      src: 'assets/diagrams/sutra-atelier-product-recommendation-ai-system-design.svg',
+      alt: 'Product recommendation AI system design: behaviour event tracking, storage, candidate generation, ranking, and recommendations across homepage, product page, cart and search'
+    },
+    caption: 'Future improvements system design — planned work, not implemented today.'
+  },
+
   techStack: [
     {
       group: 'Frontend',

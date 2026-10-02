@@ -83,6 +83,45 @@
     }).join('') + '</div>';
   }
 
+  /* ---------------------------------------------------------- bucket list -- */
+  /* The "Bucket list" container rendered under a featured project card. Items
+   * are read from future.roadmap so the card and the case study never drift
+   * apart; the future-improvements image comes from bucketList.diagram. */
+  function bucketList(project) {
+    var b = project.bucketList;
+    var items = (project.future && project.future.roadmap) || [];
+    if (!b || (!items.length && !(b.diagram && b.diagram.src))) return '';
+
+    var body = '<div class="bucket-body">';
+    if (b.intro) body += '<p class="bucket-intro">' + esc(b.intro) + '</p>';
+    if (items.length) {
+      body += '<ul class="bucket-items">' + items.map(function (it) {
+        return '<li>' +
+          '<span class="bucket-phase">' + esc(it.phase) + '</span>' +
+          '<strong>' + esc(it.title) + '</strong>' +
+          '<span class="bucket-detail">' + esc(it.detail) + '</span></li>';
+      }).join('') + '</ul>';
+    }
+    if (b.diagram && b.diagram.src) {
+      body += '<div class="bucket-diagram">' +
+        '<a class="bucket-open" href="' + esc(b.diagram.src) + '" target="_blank" rel="noopener noreferrer">' +
+          ico('external-link', 14) + '<span>Open system design</span></a>' +
+        '<div class="bucket-frame"><img src="' + esc(b.diagram.src) + '" alt="' +
+          esc(b.diagram.alt || (project.name + ' — future improvements system design')) +
+          '" loading="lazy" decoding="async"></div>' +
+        (b.caption ? '<p class="bucket-caption">' + esc(b.caption) + '</p>' : '') +
+        '</div>';
+    }
+    body += '</div>';
+
+    return '<details class="bucket-list">' +
+      '<summary>' + ico('sparkles', 15) +
+        '<span class="bucket-title">Bucket list</span>' +
+        (items.length ? '<span class="bucket-count">' + items.length + ' planned</span>' : '') +
+        '<span class="bucket-chevron">' + ico('chevron-down', 16) + '</span>' +
+      '</summary>' + body + '</details>';
+  }
+
   /* -------------------------------------------------------- project card -- */
   function projectCard(project) {
     return '<article class="project" data-category="' + esc((project.categories || []).join(' ')) + '">' +
@@ -105,6 +144,7 @@
           '<a class="button button-secondary" href="project.html?slug=' + encodeURIComponent(project.slug) + '">' +
             ico('file-text', 16) + '<span>Case study</span></a>' +
         '</div>' +
+        bucketList(project) +
       '</div></article>';
   }
 

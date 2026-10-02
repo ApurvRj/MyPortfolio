@@ -287,6 +287,18 @@ need(Array.isArray(PROJECTS) && PROJECTS.length === 2,
       });
     });
   }
+
+  /* homepage card bucket list (future improvements + system design image) */
+  if (project.bucketList) {
+    const b = project.bucketList;
+    needStr(b.intro, at('bucketList.intro'));
+    if (b.diagram) {
+      needStr(b.diagram.src, at('bucketList.diagram.src'));
+      needStr(b.diagram.alt, at('bucketList.diagram.alt'));
+      needFile(b.diagram.src, at('bucketList.diagram file'));
+    } else warn(at('bucketList.diagram absent — bucket list shows items only'));
+    needArr((project.future || {}).roadmap, at('bucketList items <- future.roadmap[]'));
+  } else warn(at('bucketList absent — homepage card renders without a bucket list'));
 });
 
 /* ----------------------------------------------------------------- done --- */
