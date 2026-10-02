@@ -40,6 +40,11 @@
         Array.prototype.forEach.call(projects, function (project) {
           var show = selection === 'all' || (project.getAttribute('data-category') || '').indexOf(selection) !== -1;
           project.classList.toggle('is-hidden', !show);
+          /* Projects are wrapped in a .project-col grid cell; hide that too so
+           * a filtered-out project leaves no empty column behind. */
+          var column = project.parentElement && project.parentElement.classList.contains('project-col')
+            ? project.parentElement : project;
+          column.classList.toggle('is-hidden', !show);
           if (show) visible += 1;
         });
         if (count) {

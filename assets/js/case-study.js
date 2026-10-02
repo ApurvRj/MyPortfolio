@@ -79,12 +79,14 @@
     var features = project.features || [];
     if (!features.length) return '';
     var body = '<p style="margin-bottom:16px">Expand an item to read the implementation detail and the relevant route or pipeline.</p>';
-    body += '<div class="grid two">' + features.map(function (f, i) {
-      return '<details class="feature-card"' + (i === 0 ? ' open' : '') + '>' +
+    body += '<div class="grid two feature-grid">' + features.map(function (f, i) {
+      return '<div class="feature-col">' +
+        '<details class="feature-card"' + (i === 0 ? ' open' : '') + '>' +
         '<summary><span class="f-index">' + String(i + 1).padStart(2, '0') + '</span>' +
         '<span class="f-title">' + esc(f.title) + '</span>' + ico('chevron-down', 17) + '</summary>' +
         '<div class="f-body"><p>' + esc(f.detail) + '</p>' +
-        UI.codeBlock(f.codeLabel, f.code, 'is-primary') + '</div></details>';
+        UI.codeBlock(f.codeLabel, f.code, 'is-primary') + '</div></details>' +
+      '</div>';
     }).join('') + '</div>';
     body += '<div class="callout" style="margin-top:16px"><strong>On screenshots</strong>' +
       '<p>Feature screenshots for this deployment have not been captured for the portfolio yet, so the ' +

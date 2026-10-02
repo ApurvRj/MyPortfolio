@@ -113,6 +113,10 @@
 .callout.is-good { border-left-color: var(--secondary); }
 
 /* Feature list ------------------------------------------------------------ */
+/* Each feature card sits in its own .feature-col wrapper, and the grid uses
+ * align-items: start, so expanding one feature never stretches another. */
+.feature-grid { align-items: start; }
+.feature-col { align-self: start; min-width: 0; }
 .feature-card { padding: 0; overflow: hidden; align-self: start; background: var(--surface-container); border: 1px solid var(--line); border-radius: var(--r-md); }
 .feature-card summary {
   display: flex; align-items: center; gap: 12px;

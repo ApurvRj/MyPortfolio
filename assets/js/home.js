@@ -67,7 +67,11 @@
   ]));
 
   /* ----------------------------------------------------------- projects -- */
-  set('projects-grid', PROJECTS.map(UI.projectCard).join(''));
+  /* Each project sits in its own column wrapper so expanding one bucket list
+   * cannot stretch the other column. */
+  set('projects-grid', PROJECTS.map(function (p) {
+    return '<div class="project-col">' + UI.projectCard(p) + '</div>';
+  }).join(''));
 
   var filters = document.getElementById('project-filters');
   if (filters) {
