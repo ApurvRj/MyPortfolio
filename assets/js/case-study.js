@@ -45,14 +45,13 @@
       (title ? '<h3>' + esc(title) + '</h3>' : '') + body + '</div>';
   }
 
-  function diagramBlock(diagram, title) {
+  function diagramBlock(diagram) {
     if (!diagram) return '';
     return '<div class="diagram-actions">' +
         '<a class="button button-secondary" href="' + esc(diagram.src) + '" target="_blank" rel="noopener noreferrer">' +
           ico('external-link', 16) + '<span>Open diagram full size</span></a>' +
       '</div>' +
       '<div class="diagram-frame"><img src="' + esc(diagram.src) + '" alt="' + esc(diagram.alt) + '" loading="lazy" decoding="async"></div>' +
-      (title ? '<p class="diagram-caption">' + esc(title) + '</p>' : '') +
       (diagram.caption ? '<p class="diagram-caption">' + esc(diagram.caption) + '</p>' : '');
   }
 
@@ -110,7 +109,7 @@
   function renderArchitecture(entry) {
     var a = project.architecture || {};
     var body = a.summary ? '<div class="arch-summary"><p class="lede">' + esc(a.summary) + '</p></div>' : '';
-    body += diagramBlock(a.diagram, a.diagram && a.diagram.caption);
+    body += diagramBlock(a.diagram);
     body += '<div class="grid two" style="margin-top:16px">' + (a.layers || []).map(function (layer) {
       return '<div class="arch-item"><header><h3>' + esc(layer.title) + '</h3>' +
         '<span class="node-tag" style="margin:0">' + esc(layer.node) + '</span></header>' +
@@ -304,7 +303,7 @@
       return '<div class="sub-card"><span class="node-tag">' + esc(s.n) + '</span>' +
         '<h3>' + esc(s.title) + '</h3><p>' + esc(s.detail) + '</p></div>';
     }).join('') + '</div>';
-    body += '<div style="margin-top:16px">' + diagramBlock(p.diagram, p.diagram && p.diagram.caption) + '</div>';
+    body += '<div style="margin-top:16px">' + diagramBlock(p.diagram) + '</div>';
     if (p.openQuestions && p.openQuestions.length) {
       body += '<div class="callout" style="margin-top:16px"><strong>Open questions and risks</strong>' +
         UI.bulletList(p.openQuestions) + '</div>';

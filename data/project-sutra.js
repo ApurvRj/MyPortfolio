@@ -157,8 +157,7 @@ window.PORTFOLIO_PROJECT_SUTRA = {
     ],
     diagram: {
       src: 'assets/diagrams/sutra-atelier-system-design.svg',
-      alt: 'Sūtra Atelier system design: client layer, Next.js application layer on Vercel, Supabase, Razorpay and third-party APIs',
-      caption: 'Uploaded Sūtra Atelier system design (specification v2.0.0).'
+      alt: 'Sūtra Atelier system design: client layer, Next.js application layer on Vercel, Supabase, Razorpay and third-party APIs'
     }
   },
 

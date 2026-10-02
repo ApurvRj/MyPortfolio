@@ -186,8 +186,7 @@ window.PORTFOLIO_PROJECT_KARMAVRITI = {
     ],
     diagram: {
       src: 'assets/diagrams/karmavriti-system-design.svg',
-      alt: 'KarmaVriti system design: visitors and admins, Next.js 16 App Router on Vercel, PostgreSQL, pgvector, AI services',
-      caption: 'Uploaded KarmaVriti system design, cross-checked against the repository README.'
+      alt: 'KarmaVriti system design: visitors and admins, Next.js 16 App Router on Vercel, PostgreSQL, pgvector, AI services'
     }
   },
 
