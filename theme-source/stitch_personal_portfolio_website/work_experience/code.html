@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-secondary": "#003824", "on-tertiary-container": "#002d40", "primary-container": "#8083ff", "primary-fixed-dim": "#c0c1ff", "surface-container-high": "#282a2e", "on-background": "#e2e2e8", "surface-bright": "#37393e", "tertiary": "#7bd0ff", "primary": "#c0c1ff", "on-secondary-fixed-variant": "#005236", "inverse-primary": "#494bd6", "surface-container-low": "#1a1c20", "surface-variant": "#333539", "on-surface-variant": "#c7c4d7", "on-primary-container": "#0d0096", "on-secondary-container": "#00311f", "surface-container": "#1e2024", "on-primary-fixed": "#07006c", "on-tertiary-fixed-variant": "#004c69", "background": "#111318", "on-tertiary-fixed": "#001e2c", "tertiary-container": "#009bd1", "error": "#ffb4ab", "primary-fixed": "#e1e0ff", "surface-dim": "#111318", "inverse-on-surface": "#2f3035", "on-surface": "#e2e2e8", "on-primary-fixed-variant": "#2f2ebe", "surface-tint": "#c0c1ff", "outline-variant": "#464554", "inverse-surface": "#e2e2e8", "surface-container-lowest": "#0c0e12", "surface-container-highest": "#333539", "secondary-fixed-dim": "#4edea3", "surface": "#111318", "on-error-container": "#ffdad6", "secondary-container": "#00a572", "secondary": "#4edea3", "outline": "#908fa0", "tertiary-fixed": "#c4e7ff", "error-container": "#93000a", "tertiary-fixed-dim": "#7bd0ff", "on-error": "#690005", "on-tertiary": "#00354a", "on-primary": "#1000a9", "on-secondary-fixed": "#002113", "secondary-fixed": "#6ffbbe" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-md": "1rem", "gutter": "1.5rem", "space-lg": "1.5rem", "gutter-mobile": "1rem", "space-xs": "0.25rem", "margin": "2rem", "margin-mobile": "1.25rem", "space-sm": "0.5rem", "space-xl": "2.5rem" }, fontFamily: { "label-micro": ["JetBrains Mono"], "label-tag": ["JetBrains Mono"], "display-hero-mobile": ["Inter"], "display-hero": ["Inter"], "label-metric": ["JetBrains Mono"], "headline-lg": ["Inter"], "code-inline": ["JetBrains Mono"], "headline-md": ["Inter"], "headline-sm": ["Inter"], "code-block": ["JetBrains Mono"], "body-sm": ["Inter"], "body-lg": ["Inter"], "headline-lg-mobile": ["Inter"], "body-md": ["Inter"] }, fontSize: { "label-micro": ["10px", { "lineHeight": "12px", "letterSpacing": "0.06em", "fontWeight": "600" }], "label-tag": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "500" }], "display-hero-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "display-hero": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.03em", "fontWeight": "700" }], "label-metric": ["24px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "code-inline": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "headline-md": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-sm": ["18px", { "lineHeight": "26px", "fontWeight": "600" }], "code-block": ["13px", { "lineHeight": "20px", "fontWeight": "400" }], "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }] } } } };</script></head><body class="bg-background font-body-md text-on-surface antialiased flex flex-col min-h-screen selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.3)]"><div class="h-16 px-gutter-mobile flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0 flex-1"><img alt="Dev Terminal Logo" class="h-8 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1XwcSDErwag-n5yLToIHVz7UM5M_v3ABMyGhBWH4wq-cuSVTpxL9Lzsp-d_z7DpgXsVVQCZQkgS9U9vfK_hNVDb4tEHq-h-KCW2G8PYox3CvZDhYlIZUWk9AHw6cbDEUoYBh3KLJAG-AJBs46lWLYXYe_vMKL3cuU613V2ph9eum_vDNWBE2ZCSnyZXLAC3VFDz0WXWKFw2Qg8tw0JlYhBQwIW4YwH0zeX1oZoqHuOuoz-3y36oz0osDkzb"/><div class="flex flex-col min-w-0"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">Alex Rivera</span><span class="text-outline text-body-sm hidden sm:inline">/</span><span class="font-label-tag text-label-tag text-outline uppercase tracking-wider hidden sm:inline">Experience</span></div><div class="flex items-center gap-1.5"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span></span><span class="font-label-micro text-label-micro text-secondary font-medium tracking-wide uppercase truncate">Available for hire / Q2</span></div></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><a aria-label="Download Resume" class="w-11 h-11 flex items-center justify-center rounded-lg bg-surface-container-high/60 text-on-surface-variant hover:text-primary transition-colors" download="" href="#"><span class="material-symbols-outlined text-[20px]">description</span></a><div class="w-11 h-11 flex items-center justify-center"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-outline/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxxQinA6ML_bt2XHuVEJ0qccuS6DJj4MTrdosaY9HAOrNb0GNgqniLDJ9xSGU5wxBDqvt2cGJEc0Cj0qolrac-UZhhrKd59ZOnCsq1jqwZRK3txitNYnSlJ761IsgUwACBmFXRYpr5c0-NSEt6M8s_TuToH90B40NMLm_0EaEcKtAQLgj-5nRW9lvtndzvXC5fwuFRiBdtPVFZFkbmHSgUHufxa89rov07jZihHc4nOBfMkxNdRT_ymQ"/></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-background min-h-screen"><div class="flex flex-col w-full px-gutter-mobile py-space-md gap-space-lg">
+<!-- Telemetry Overview / Impact Metrics Strip -->
+<div class="grid grid-cols-3 gap-space-xs bg-surface-container-low p-space-sm rounded-xl shadow-sm">
+<div class="flex flex-col items-center justify-center p-space-xs text-center bg-surface-container rounded-lg">
+<span class="font-label-micro text-label-micro text-outline uppercase tracking-wider">Years Exp</span>
+<span class="font-label-metric text-label-metric text-primary mt-0.5">7+</span>
+<span class="font-label-micro text-label-micro text-secondary font-medium">Production</span>
+</div>
+<div class="flex flex-col items-center justify-center p-space-xs text-center bg-surface-container rounded-lg">
+<span class="font-label-micro text-label-micro text-outline uppercase tracking-wider">Scale Peak</span>
+<span class="font-label-metric text-label-metric text-secondary mt-0.5">450M</span>
+<span class="font-label-micro text-label-micro text-on-surface-variant">Events / Day</span>
+</div>
+<div class="flex flex-col items-center justify-center p-space-xs text-center bg-surface-container rounded-lg">
+<span class="font-label-micro text-label-micro text-outline uppercase tracking-wider">Cost Delta</span>
+<span class="font-label-metric text-label-metric text-tertiary mt-0.5">-38%</span>
+<span class="font-label-micro text-label-micro text-on-surface-variant">Infra spend</span>
+</div>
+</div>
+<!-- Section: Career Timeline -->
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-1.5 h-4 rounded-full bg-primary"></span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">Track Record</h2>
+</div>
+<div class="flex items-center gap-1.5 bg-surface-container-high px-space-sm py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px] text-secondary">commit</span>
+<span class="font-label-micro text-label-micro text-on-surface-variant font-medium uppercase">3 Milestones</span>
+</div>
+</div>
+<!-- Timeline Wrapper -->
+<div class="relative flex flex-col gap-space-md pl-4">
+<!-- Continuous Timeline Node Trace Line -->
+<div class="absolute left-[7px] top-4 bottom-4 w-[2px] bg-surface-container-highest rounded-full"></div>
+<!-- Role 1: ScaleFlow (Staff Full-Stack) -->
+<div class="relative flex flex-col group">
+<!-- Node indicator -->
+<span class="absolute -left-4 top-4.5 w-3.5 h-3.5 rounded-full bg-surface-container-lowest flex items-center justify-center">
+<span class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_rgba(78,222,163,0.8)]"></span>
+</span>
+<!-- Card Container -->
+<div class="bg-surface-container rounded-xl shadow-md overflow-hidden transition-all duration-200" id="card-scaleflow">
+<!-- Card Header / Always Visible -->
+<div class="p-space-md flex flex-col gap-space-xs cursor-pointer select-none" onclick="toggleDetails('scaleflow')">
+<div class="flex items-center justify-between gap-space-xs">
+<span class="font-label-micro text-label-micro text-secondary font-semibold uppercase tracking-wider px-2 py-0.5 bg-on-secondary-container rounded-md">2022 — Present</span>
+<span class="font-label-micro text-label-micro text-outline uppercase font-medium flex items-center gap-1">
+                SF, CA · Hybrid
+                <span class="material-symbols-outlined text-[18px] text-on-surface-variant transition-transform duration-200" id="chevron-scaleflow">expand_more</span>
+</span>
+</div>
+<div class="flex flex-col mt-0.5">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Staff Full-Stack Engineer</h3>
+<p class="font-body-md text-body-md text-primary font-medium">ScaleFlow Systems Inc.</p>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Led company-wide migration to modular micro-frontends and edge compute nodes. Optimized high-throughput ingress, reducing AWS cloud infrastructure spend by 38% while servicing 2M+ active accounts.
+            </p>
+</div>
+<!-- Collapsible Micro-Metrics & Architecture Details -->
+<div class="hidden flex-col gap-space-sm px-space-md pb-space-md bg-surface-container-low pt-space-sm" id="details-scaleflow">
+<!-- Inline SVG Sparkline / Architecture Telemetry -->
+<div class="bg-surface-container-lowest p-space-sm rounded-lg flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="font-label-micro text-label-micro text-outline uppercase">AWS Infra Unit Cost / MAU</span>
+<span class="font-label-micro text-label-micro text-secondary font-semibold">-38.2% YoY</span>
+</div>
+<svg class="w-full h-10 text-secondary" fill="none" viewbox="0 0 280 40">
+<path d="M0 8 Q 40 10, 70 14 T 140 22 T 210 32 T 280 36" stroke="currentColor" stroke-linecap="round" stroke-width="2.5"></path>
+<path d="M0 8 Q 40 10, 70 14 T 140 22 T 210 32 T 280 36 L 280 40 L 0 40 Z" fill="currentColor" fill-opacity="0.08"></path>
+</svg>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-micro text-label-micro text-outline uppercase">Key Deliverables</span>
+<ul class="flex flex-col gap-1 text-on-surface-variant font-body-sm text-body-sm">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary shrink-0 mt-0.5">check_circle</span>
+<span>Spearheaded Next.js SSR edge migration across 14 decoupled subdomains.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary shrink-0 mt-0.5">check_circle</span>
+<span>Implemented Rust-based WASM edge filters reducing TTFB from 240ms to 42ms.</span>
+</li>
+</ul>
+</div>
+<!-- Tags -->
+<div class="flex flex-wrap gap-1.5 pt-1">
+<span class="font-label-tag text-label-tag text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded">TypeScript</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded">Next.js</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded">Rust / Edge</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded">AWS CDK</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded">GraphQL</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Role 2: DataPrism (Senior Backend) -->
+<div class="relative flex flex-col group">
+<!-- Node indicator -->
+<span class="absolute -left-4 top-4.5 w-3.5 h-3.5 rounded-full bg-surface-container-lowest flex items-center justify-center">
+<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(192,193,255,0.6)]"></span>
+</span>
+<!-- Card Container -->
+<div class="bg-surface-container rounded-xl shadow-md overflow-hidden transition-all duration-200" id="card-dataprism">
+<!-- Card Header / Always Visible -->
+<div class="p-space-md flex flex-col gap-space-xs cursor-pointer select-none" onclick="toggleDetails('dataprism')">
+<div class="flex items-center justify-between gap-space-xs">
+<span class="font-label-micro text-label-micro text-primary-fixed bg-surface-container-high px-2 py-0.5 rounded-md font-semibold uppercase tracking-wider">2020 — 2022</span>
+<span class="font-label-micro text-label-micro text-outline uppercase font-medium flex items-center gap-1">
+                Remote
+                <span class="material-symbols-outlined text-[18px] text-on-surface-variant transition-transform duration-200" id="chevron-dataprism">expand_more</span>
+</span>
+</div>
+<div class="flex flex-col mt-0.5">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Senior Backend Engineer</h3>
+<p class="font-body-md text-body-md text-primary font-medium">DataPrism Analytics</p>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Architected fault-tolerant streaming ingestion pipelines processing 450M events daily utilizing Apache Kafka cluster topologies and concurrent Go workers with zero consumer lag.
+            </p>
+</div>
+<!-- Collapsible Micro-Metrics & Architecture Details -->
+<div class="hidden flex-col gap-space-sm px-space-md pb-space-md bg-surface-container-low pt-space-sm" id="details-dataprism">
+<div class="bg-surface-container-lowest p-space-sm rounded-lg flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="font-label-micro text-label-micro text-outline uppercase">Daily Event Processing Throughput</span>
+<span class="font-label-micro text-label-micro text-primary font-semibold">450M Msgs/Day</span>
+</div>
+<svg class="w-full h-10 text-primary" fill="none" viewbox="0 0 280 40">
+<path d="M0 32 Q 40 28, 80 20 T 160 14 T 240 8 L 280 6" stroke="currentColor" stroke-linecap="round" stroke-width="2.5"></path>
+<path d="M0 32 Q 40 28, 80 20 T 160 14 T 240 8 L 280 6 L 280 40 L 0 40 Z" fill="currentColor" fill-opacity="0.12"></path>
+</svg>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-micro text-label-micro text-outline uppercase">Key Deliverables</span>
+<ul class="flex flex-col gap-1 text-on-surface-variant font-body-sm text-body-sm">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary shrink-0 mt-0.5">check_circle</span>
+<span>Built Go ingestion engine with deterministic partitioning to guarantee ordering.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary shrink-0 mt-0.5">check_circle</span>
+<span>Implemented ClickHouse cold-storage tiered archival pipeline saving 50TB EBS.</span>
+</li>
+</ul>
+</div>
+<!-- Tags -->
+<div class="flex flex-wrap gap-1.5 pt-1">
+<span class="font-label-tag text-label-tag text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded">Go (Golang)</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded">Apache Kafka</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded">ClickHouse</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded">Kubernetes</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded">gRPC</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Role 3: CloudSphere (Full-Stack) -->
+<div class="relative flex flex-col group">
+<!-- Node indicator -->
+<span class="absolute -left-4 top-4.5 w-3.5 h-3.5 rounded-full bg-surface-container-lowest flex items-center justify-center">
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+</span>
+<!-- Card Container -->
+<div class="bg-surface-container rounded-xl shadow-md overflow-hidden transition-all duration-200" id="card-cloudsphere">
+<!-- Card Header / Always Visible -->
+<div class="p-space-md flex flex-col gap-space-xs cursor-pointer select-none" onclick="toggleDetails('cloudsphere')">
+<div class="flex items-center justify-between gap-space-xs">
+<span class="font-label-micro text-label-micro text-outline bg-surface-container-high px-2 py-0.5 rounded-md font-semibold uppercase tracking-wider">2018 — 2020</span>
+<span class="font-label-micro text-label-micro text-outline uppercase font-medium flex items-center gap-1">
+                Austin, TX
+                <span class="material-symbols-outlined text-[18px] text-on-surface-variant transition-transform duration-200" id="chevron-cloudsphere">expand_more</span>
+</span>
+</div>
+<div class="flex flex-col mt-0.5">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Full-Stack Engineer</h3>
+<p class="font-body-md text-body-md text-primary font-medium">CloudSphere Inc.</p>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Engineered client telemetry dashboard and mission-critical automated billing microservice handling Stripe webhook events with idempotent transaction logging.
+            </p>
+</div>
+<!-- Collapsible Micro-Metrics & Architecture Details -->
+<div class="hidden flex-col gap-space-sm px-space-md pb-space-md bg-surface-container-low pt-space-sm" id="details-cloudsphere">
+<div class="flex flex-col gap-1">
+<span class="font-label-micro text-label-micro text-outline uppercase">Key Deliverables</span>
+<ul class="flex flex-col gap-1 text-on-surface-variant font-body-sm text-body-sm">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary shrink-0 mt-0.5">check_circle</span>
+<span>Rolled out idempotent webhook handler ensuring zero double-billing anomalies.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary shrink-0 mt-0.5">check_circle</span>
+<span>Unified 4 legacy portals into responsive React dashboard with 99.9% uptime.</span>
+</li>
+</ul>
+</div>
+<!-- Tags -->
+<div class="flex flex-wrap gap-1.5 pt-1">
+<span class="font-label-tag text-label-tag text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded">Node.js</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded">React</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded">PostgreSQL</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded">Stripe API</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded">Redis</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section: Education & Certifications -->
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="w-1.5 h-4 rounded-full bg-secondary"></span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">Credentials &amp; Academic</h2>
+</div>
+<div class="grid grid-cols-1 gap-space-sm">
+<!-- Certification Card -->
+<div class="bg-surface-container p-space-md rounded-xl flex items-start gap-space-sm shadow-sm">
+<div class="w-11 h-11 rounded-lg bg-surface-container-highest flex items-center justify-center shrink-0 text-primary">
+<span class="material-symbols-outlined text-[24px]">verified</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<div class="flex items-center justify-between gap-space-xs">
+<span class="font-label-micro text-label-micro text-secondary font-medium uppercase">Active Credential</span>
+<span class="font-label-micro text-label-micro text-outline">Valid thru 2026</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate mt-0.5">AWS Certified Solutions Architect</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Associate Level · Validation ID: SAA-C03-884920</p>
+</div>
+</div>
+<!-- Degree Card -->
+<div class="bg-surface-container p-space-md rounded-xl flex items-start gap-space-sm shadow-sm">
+<div class="w-11 h-11 rounded-lg bg-surface-container-highest flex items-center justify-center shrink-0 text-tertiary">
+<span class="material-symbols-outlined text-[24px]">school</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<div class="flex items-center justify-between gap-space-xs">
+<span class="font-label-micro text-label-micro text-tertiary font-medium uppercase">Graduated</span>
+<span class="font-label-micro text-label-micro text-outline">2014 — 2018</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate mt-0.5">B.S. in Computer Science</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">University of Texas at Austin · GPA 3.84 / 4.0</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Action: Download Full PDF Resume -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-sm shadow-md mt-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">picture_as_pdf</span>
+<span class="font-label-micro text-label-micro text-on-surface font-semibold uppercase tracking-wider">Curriculum Vitae</span>
+</div>
+<span class="font-label-micro text-label-micro text-outline bg-surface-container px-2 py-0.5 rounded">PDF · 142 KB</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+      Complete unredacted resume including patented architecture references, full bibliography, and manager references.
+    </p>
+<a class="w-full flex items-center justify-center gap-space-xs py-3 px-space-md rounded-lg bg-primary text-on-primary font-headline-sm text-headline-sm font-semibold shadow-lg active:scale-[0.99] transition-all" download="Alex_Rivera_Staff_Engineer_Resume.pdf" href="#">
+<span class="material-symbols-outlined text-[20px]">download</span>
+<span>Download Full PDF Resume</span>
+</a>
+</div>
+</div>
+<script>
+  function toggleDetails(roleKey) {
+    const details = document.getElementById('details-' + roleKey);
+    const chevron = document.getElementById('chevron-' + roleKey);
+    if (!details || !chevron) return;
+    
+    const isHidden = details.classList.contains('hidden');
+    if (isHidden) {
+      details.classList.remove('hidden');
+      details.classList.add('flex');
+      chevron.style.transform = 'rotate(180deg)';
+    } else {
+      details.classList.add('hidden');
+      details.classList.remove('flex');
+      chevron.style.transform = 'rotate(0deg)';
+    }
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface-container-lowest/85 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.4)]" data-active-classes="text-primary font-semibold"><div class="flex items-center justify-around h-16 px-gutter-mobile"><a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="projects" href="#"><span class="material-symbols-outlined text-[22px]">terminal</span><span class="font-label-tag text-label-tag mt-0.5">Projects</span></a><a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="tech-stack" href="#"><span class="material-symbols-outlined text-[22px]">memory</span><span class="font-label-tag text-label-tag mt-0.5">Tech Stack</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] py-1 transition-colors text-primary font-semibold" data-path="experience" href="#"><span class="material-symbols-outlined text-[22px]">history_edu</span><span class="font-label-tag text-label-tag mt-0.5">Experience</span></a><a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="contact" href="#"><span class="material-symbols-outlined text-[22px]">alternate_email</span><span class="font-label-tag text-label-tag mt-0.5">Contact</span></a></div></nav></body></html>

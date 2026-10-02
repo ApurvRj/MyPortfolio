@@ -1,0 +1,189 @@
+<!doctype html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#111318" />
+  <meta name="description" content="Apurv Raj — Software Developer and GenAI Enthusiast building scalable software products." />
+  <title>Apurv Raj | Software Developer &amp; GenAI Enthusiast</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/obsidian.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="#home" aria-label="Apurv Raj — home">
+        <span class="brand-mark" id="brand-mark"></span>
+        <span>
+          <span class="brand-name" id="brand-name">Apurv Raj</span>
+          <span class="brand-meta" id="brand-meta"></span>
+        </span>
+      </a>
+      <nav class="primary-nav" id="primary-nav" aria-label="Main navigation"></nav>
+      <div class="header-actions" id="header-actions"></div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero ------------------------------------------------------------- -->
+    <section class="hero" id="home">
+      <span class="hero-glow a" aria-hidden="true"></span>
+      <span class="hero-glow b" aria-hidden="true"></span>
+      <div class="shell hero-inner">
+        <div class="hero-copy">
+          <div id="hero-eyebrow" class="reveal"></div>
+          <p class="hero-title" id="hero-name"></p>
+          <h1 id="hero-headline"></h1>
+          <p class="hero-lede" id="hero-lede"></p>
+          <div class="focus-row" id="hero-focus"></div>
+          <div class="action-row" id="hero-actions"></div>
+          <div class="hero-meta" id="hero-meta"></div>
+        </div>
+        <div class="portrait-wrap" id="portrait"></div>
+      </div>
+      <div class="shell" style="margin-top:56px">
+        <div id="metrics"></div>
+      </div>
+    </section>
+
+    <!-- Projects ---------------------------------------------------------- -->
+    <section class="section" id="work">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow"><span class="pulse"></span>01 / Featured projects</p>
+            <h2 class="section-title">Products I designed, built and shipped.</h2>
+          </div>
+          <p class="section-note">Two live applications: one GenAI product and one full-stack e-commerce platform. Each has a full engineering case study.</p>
+        </div>
+        <div class="project-tools">
+          <div class="filters" id="project-filters" aria-label="Filter projects"></div>
+          <span class="project-count" id="project-count">02 FEATURED PROJECTS</span>
+        </div>
+        <div class="projects" id="projects-grid"></div>
+      </div>
+    </section>
+
+    <!-- About ------------------------------------------------------------- -->
+    <section class="section" id="about">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow"><span class="pulse"></span>02 / About</p>
+            <h2 class="section-title">Software, Generative AI and product thinking.</h2>
+          </div>
+        </div>
+        <div class="about-grid">
+          <div class="about-copy" id="about-copy"></div>
+          <ul class="info-list" id="about-list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills ------------------------------------------------------------ -->
+    <section class="section" id="stack">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow"><span class="pulse"></span>03 / Technical skills</p>
+            <h2 class="section-title">What I work with, and where I use it.</h2>
+          </div>
+          <p class="section-note">Every skill is labelled by context — professional work, personal projects, or currently exploring — so experience is never overstated.</p>
+        </div>
+        <div class="skills-grid" id="skills-grid"></div>
+        <div id="skills-legend"></div>
+      </div>
+    </section>
+
+    <!-- Experience -------------------------------------------------------- -->
+    <section class="section" id="experience">
+      <div class="shell experience">
+        <div class="experience-copy">
+          <p class="eyebrow"><span class="pulse"></span>04 / Experience</p>
+          <h2 class="section-title" style="margin-bottom:16px">Enterprise delivery, hands-on.</h2>
+          <div id="experience-copy"></div>
+        </div>
+        <div class="timeline" id="timeline"></div>
+      </div>
+    </section>
+
+    <!-- Education --------------------------------------------------------- -->
+    <section class="section" id="education">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow"><span class="pulse"></span>05 / Education</p>
+            <h2 class="section-title">Academic background.</h2>
+          </div>
+          <p class="section-note">Verified records only. Missing details are shown as pending rather than filled in speculatively.</p>
+        </div>
+        <div class="edu-grid" id="education-grid"></div>
+        <div style="margin-top:26px">
+          <p class="micro-label" style="margin-bottom:12px">Certifications</p>
+          <div id="certifications"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact ----------------------------------------------------------- -->
+    <section class="contact" id="contact">
+      <div class="shell contact-inner">
+        <div>
+          <p class="eyebrow"><span class="pulse"></span>06 / Contact</p>
+          <div id="contact-left"></div>
+          <div class="action-row" id="contact-actions"></div>
+        </div>
+        <div class="contact-card" id="contact-card"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner" id="footer"></div>
+  </footer>
+
+  <button class="command-launcher" id="command-launcher" aria-haspopup="dialog">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></svg>
+    <span>Open console</span><kbd>~</kbd>
+  </button>
+
+  <dialog id="console">
+    <div class="console-head">
+      <span>apurv@portfolio:~</span>
+      <button class="icon-button" id="close-console" aria-label="Close console">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+    <div class="console-output" id="console-output">
+      <span class="prompt">$</span> Portfolio console ready.<br />Choose a route below or press Escape to close.
+    </div>
+    <div class="console-options" id="console-options"></div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Copied.</div>
+
+  <noscript>
+    <div class="shell" style="padding:24px 0">
+      <p class="callout"><strong>JavaScript is required</strong>
+      This portfolio renders its content from a centralized data layer. Please enable JavaScript, or reach
+      Apurv directly at <a href="mailto:apurvraj101699@gmail.com">apurvraj101699@gmail.com</a>,
+      on <a href="https://github.com/ApurvRj/">GitHub</a> or on
+      <a href="https://www.linkedin.com/in/apurv-raj-319960179/">LinkedIn</a>.</p>
+    </div>
+  </noscript>
+
+  <script src="assets/js/icons.js"></script>
+  <script src="data/profile.js"></script>
+  <script src="data/career.js"></script>
+  <script src="data/project-karmavriti.js"></script>
+  <script src="data/project-sutra.js"></script>
+  <script src="data/projects.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/home.js"></script>
+  <script src="assets/js/site.js"></script>
+</body>
+</html>

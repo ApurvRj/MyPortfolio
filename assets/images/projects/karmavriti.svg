@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-label="KarmaVriti project thumbnail">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#161a24"/><stop offset="0.55" stop-color="#111318"/><stop offset="1" stop-color="#0c0e12"/>
+    </linearGradient>
+    <linearGradient id="bar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ff9933"/><stop offset="0.5" stop-color="#c0c1ff"/><stop offset="1" stop-color="#4edea3"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.76" cy="0.22" r="0.62">
+      <stop offset="0" stop-color="#8083ff" stop-opacity="0.42"/><stop offset="1" stop-color="#8083ff" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .ttl { font-family:'Inter','Segoe UI',sans-serif; font-weight:700; fill:#e2e2e8; }
+      .sub { font-family:'Inter','Segoe UI',sans-serif; fill:#c7c4d7; }
+      .mono{ font-family:'JetBrains Mono','Consolas',monospace; fill:#7bd0ff; }
+      .mono2{ font-family:'JetBrains Mono','Consolas',monospace; fill:#4edea3; }
+      .card{ fill:rgba(26,28,32,0.9); stroke:rgba(255,255,255,0.10); }
+    </style>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <rect width="1200" height="675" fill="url(#glow)"/>
+  <rect x="0" y="0" width="1200" height="6" fill="url(#bar)"/>
+
+  <g transform="translate(64,54)">
+    <rect x="0" y="0" width="30" height="30" rx="8" fill="#1e2024" stroke="rgba(255,255,255,0.12)"/>
+    <path d="M8 10 L4 15 L8 20" stroke="#c0c1ff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M22 10 L26 15 L22 20" stroke="#4edea3" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="17" y1="8" x2="13" y2="22" stroke="#908fa0" stroke-width="2" stroke-linecap="round"/>
+    <text class="mono" x="44" y="20" font-size="14" letter-spacing="1.4">KARMAVRITI</text>
+  </g>
+
+  <text class="ttl" x="64" y="205" font-size="52">Government jobs,</text>
+  <text class="ttl" x="64" y="266" font-size="52">explained by AI.</text>
+
+  <text class="sub" x="64" y="318" font-size="19">A recruitment portal where an assistant answers from the official notice,</text>
+  <text class="sub" x="64" y="346" font-size="19">not from guesswork.</text>
+
+  <g transform="translate(64,392)">
+    <rect class="card" x="0" y="0" width="196" height="46" rx="10"/>
+    <text class="mono" x="16" y="29" font-size="13">RAG ASSISTANT</text>
+    <rect class="card" x="208" y="0" width="168" height="46" rx="10"/>
+    <text class="mono" x="224" y="29" font-size="13">pgvector · 384</text>
+    <rect class="card" x="388" y="0" width="176" height="46" rx="10"/>
+    <text class="mono2" x="404" y="29" font-size="13">OCR EN + हिं</text>
+    <rect class="card" x="576" y="0" width="200" height="46" rx="10"/>
+    <text class="mono2" x="592" y="29" font-size="13">HUMAN REVIEW</text>
+  </g>
+
+  <g transform="translate(672,132)">
+    <rect x="0" y="0" width="466" height="392" rx="16" fill="#0c0e12" stroke="rgba(255,255,255,0.12)"/>
+    <rect x="0" y="0" width="466" height="40" rx="16" fill="#1a1c20"/>
+    <circle cx="22" cy="20" r="5" fill="#ffb4ab"/><circle cx="42" cy="20" r="5" fill="#7bd0ff"/><circle cx="62" cy="20" r="5" fill="#4edea3"/>
+    <text class="mono" x="86" y="25" font-size="12">POST /api/ai/query</text>
+
+    <text class="mono" x="24" y="86" font-size="12">$ ask "railway group d age limit"</text>
+    <rect x="24" y="102" width="418" height="1" fill="rgba(255,255,255,0.08)"/>
+
+    <circle cx="34" cy="133" r="5" fill="#8083ff"/>
+    <text class="sub" x="50" y="138" font-size="13">embed question · all-MiniLM-L6-v2</text>
+    <circle cx="34" cy="169" r="5" fill="#8083ff"/>
+    <text class="sub" x="50" y="174" font-size="13">match_documents · top 5 chunks</text>
+    <circle cx="34" cy="205" r="5" fill="#4edea3"/>
+    <text class="sub" x="50" y="210" font-size="13">PostgreSQL lookup · live vacancies</text>
+    <circle cx="34" cy="241" r="5" fill="#7bd0ff"/>
+    <text class="sub" x="50" y="246" font-size="13">Qwen2.5-7B-Instruct · grounded answer</text>
+
+    <rect x="24" y="272" width="418" height="96" rx="10" fill="#13161c" stroke="rgba(78,222,163,0.30)"/>
+    <text class="mono2" x="40" y="300" font-size="12">SOURCE: notice.pdf · p.3</text>
+    <text class="sub" x="40" y="326" font-size="13">Answer is grounded in the uploaded notice</text>
+    <text class="sub" x="40" y="348" font-size="13">and cites the recruitment document.</text>
+  </g>
+
+  <text class="mono" x="64" y="632" font-size="12">NEXT.JS 16 · TYPESCRIPT · POSTGRESQL + PRISMA · SUPABASE PGVECTOR · TESSERACT OCR · VERCEL</text>
+</svg>

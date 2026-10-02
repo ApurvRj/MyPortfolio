@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}
+/* Retro CRT & Matrix FX Styles */
+@keyframes crt-power-on {
+  0% { transform: scale(1, 0.003); filter: brightness(4) saturate(0.2); opacity: 0.2; }
+  40% { transform: scale(1, 0.02); filter: brightness(2.5); opacity: 0.9; }
+  70% { transform: scale(1, 1.02); filter: brightness(1.3); }
+  85% { transform: scale(0.998, 1); filter: brightness(1.1); }
+  100% { transform: scale(1, 1); filter: brightness(1); opacity: 1; }
+}
+@keyframes scanline-roll {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(1000%); }
+}
+@keyframes crt-flicker {
+  0% { opacity: 0.985; }
+  50% { opacity: 0.96; }
+  52% { opacity: 0.99; }
+  75% { opacity: 0.975; }
+  100% { opacity: 0.99; }
+}
+@keyframes text-bloom-pulse {
+  0%, 100% { text-shadow: 0 0 4px rgba(78,222,163,0.7), 0 0 10px rgba(78,222,163,0.4); }
+  50% { text-shadow: 0 0 6px rgba(78,222,163,0.9), 0 0 16px rgba(78,222,163,0.6); }
+}
+@keyframes amber-bloom-pulse {
+  0%, 100% { text-shadow: 0 0 4px rgba(251,191,36,0.7), 0 0 10px rgba(251,191,36,0.4); }
+  50% { text-shadow: 0 0 6px rgba(251,191,36,0.9), 0 0 16px rgba(251,191,36,0.6); }
+}
+
+/* Data Packet Pulsing & Blinking Keyframes */
+@keyframes packet-blink {
+  0%, 100% { opacity: 0.15; filter: brightness(0.6); }
+  50% { opacity: 1; filter: brightness(1.6); text-shadow: 0 0 8px currentColor, 0 0 14px currentColor; }
+}
+@keyframes packet-flow-fast {
+  0% { opacity: 0.1; filter: drop-shadow(0 0 1px currentColor); }
+  30% { opacity: 1; filter: drop-shadow(0 0 6px currentColor) brightness(1.5); }
+  70% { opacity: 0.8; }
+  100% { opacity: 0.1; }
+}
+@keyframes packet-beacon {
+  0%, 100% { transform: scale(0.9); opacity: 0.4; }
+  50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 7px currentColor); }
+}
+@keyframes phosphor-pulse {
+  0%, 100% { text-shadow: 0 0 3px rgba(78,222,163,0.5); }
+  50% { text-shadow: 0 0 9px rgba(78,222,163,1), 0 0 16px rgba(0,255,102,0.8); }
+}
+
+.pkt-1 { animation: packet-blink 1.2s infinite ease-in-out; }
+.pkt-2 { animation: packet-blink 1.2s infinite ease-in-out 0.3s; }
+.pkt-3 { animation: packet-blink 1.2s infinite ease-in-out 0.6s; }
+.pkt-4 { animation: packet-blink 1.2s infinite ease-in-out 0.9s; }
+.pkt-fast-1 { animation: packet-flow-fast 0.8s infinite linear; }
+.pkt-fast-2 { animation: packet-flow-fast 0.8s infinite linear 0.2s; }
+.pkt-fast-3 { animation: packet-flow-fast 0.8s infinite linear 0.4s; }
+.pkt-fast-4 { animation: packet-flow-fast 0.8s infinite linear 0.6s; }
+.pkt-beacon { animation: packet-beacon 1.5s infinite ease-in-out; }
+
+.crt-active-layer {
+  animation: crt-flicker 0.12s infinite;
+}
+.crt-boot-anim {
+  animation: crt-power-on 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+}
+
+/* Moving scanline texture */
+.crt-scanlines {
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.35) 0px,
+    rgba(0, 0, 0, 0.35) 1.5px,
+    transparent 1.5px,
+    transparent 3px
+  );
+  background-size: 100% 3px;
+}
+.crt-beam {
+  height: 25%;
+  background: linear-gradient(180deg, transparent 0%, rgba(78, 222, 163, 0.08) 50%, rgba(255, 255, 255, 0.04) 52%, transparent 100%);
+  animation: scanline-roll 8s linear infinite;
+}
+.crt-beam.amber {
+  background: linear-gradient(180deg, transparent 0%, rgba(251, 191, 36, 0.09) 50%, rgba(255, 255, 255, 0.04) 52%, transparent 100%);
+}
+.crt-vignette {
+  background: radial-gradient(circle at center, transparent 55%, rgba(0, 0, 0, 0.75) 94%, rgba(0, 0, 0, 0.95) 100%);
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.85);
+}
+.matrix-glow-green {
+  text-shadow: 0 0 6px rgba(78, 222, 163, 0.75), 0 0 12px rgba(0, 255, 102, 0.35);
+  box-shadow: 0 0 20px -3px rgba(78, 222, 163, 0.25);
+}
+.matrix-glow-amber {
+  text-shadow: 0 0 6px rgba(251, 191, 36, 0.8), 0 0 12px rgba(245, 158, 11, 0.4);
+  box-shadow: 0 0 20px -3px rgba(251, 191, 36, 0.25);
+}
+
+/* ASCII schematic styling */
+.ascii-schematic-pre {
+  text-shadow: 0 0 4px rgba(78, 222, 163, 0.45);
+}
+.ascii-glow-amber .ascii-schematic-pre {
+  text-shadow: 0 0 4px rgba(251, 191, 36, 0.45);
+}
+.ascii-node:hover {
+  filter: brightness(1.3);
+  text-shadow: 0 0 8px currentColor;
+}
+</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-secondary": "#003824", "on-tertiary-container": "#002d40", "primary-container": "#8083ff", "primary-fixed-dim": "#c0c1ff", "surface-container-high": "#282a2e", "on-background": "#e2e2e8", "surface-bright": "#37393e", "tertiary": "#7bd0ff", "primary": "#c0c1ff", "on-secondary-fixed-variant": "#005236", "inverse-primary": "#494bd6", "surface-container-low": "#1a1c20", "surface-variant": "#333539", "on-surface-variant": "#c7c4d7", "on-primary-container": "#0d0096", "on-secondary-container": "#00311f", "surface-container": "#1e2024", "on-primary-fixed": "#07006c", "on-tertiary-fixed-variant": "#004c69", "background": "#111318", "on-tertiary-fixed": "#001e2c", "tertiary-container": "#009bd1", "error": "#ffb4ab", "primary-fixed": "#e1e0ff", "surface-dim": "#111318", "inverse-on-surface": "#2f3035", "on-surface": "#e2e2e8", "on-primary-fixed-variant": "#2f2ebe", "surface-tint": "#c0c1ff", "outline-variant": "#464554", "inverse-surface": "#e2e2e8", "surface-container-lowest": "#0c0e12", "surface-container-highest": "#333539", "secondary-fixed-dim": "#4edea3", "surface": "#111318", "on-error-container": "#ffdad6", "secondary-container": "#00a572", "secondary": "#4edea3", "outline": "#908fa0", "tertiary-fixed": "#c4e7ff", "error-container": "#93000a", "tertiary-fixed-dim": "#7bd0ff", "on-error": "#690005", "on-tertiary": "#00354a", "on-primary": "#1000a9", "on-secondary-fixed": "#002113", "secondary-fixed": "#6ffbbe" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-md": "1rem", "gutter": "1.5rem", "space-lg": "1.5rem", "gutter-mobile": "1rem", "space-xs": "0.25rem", "margin": "2rem", "margin-mobile": "1.25rem", "space-sm": "0.5rem", "space-xl": "2.5rem" }, fontFamily: { "label-micro": ["JetBrains Mono"], "label-tag": ["JetBrains Mono"], "display-hero-mobile": ["Inter"], "display-hero": ["Inter"], "label-metric": ["JetBrains Mono"], "headline-lg": ["Inter"], "code-inline": ["JetBrains Mono"], "headline-md": ["Inter"], "headline-sm": ["Inter"], "code-block": ["JetBrains Mono"], "body-sm": ["Inter"], "body-lg": ["Inter"], "headline-lg-mobile": ["Inter"], "body-md": ["Inter"] }, fontSize: { "label-micro": ["10px", { "lineHeight": "12px", "letterSpacing": "0.06em", "fontWeight": "600" }], "label-tag": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "500" }], "display-hero-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "display-hero": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.03em", "fontWeight": "700" }], "label-metric": ["24px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "code-inline": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "headline-md": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-sm": ["18px", { "lineHeight": "26px", "fontWeight": "600" }], "code-block": ["13px", { "lineHeight": "20px", "fontWeight": "400" }], "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }] } } } };</script></head><body class="bg-background font-body-md text-on-surface antialiased flex flex-col min-h-screen selection:bg-primary-container selection:text-on-primary-container relative"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.3)]"><div class="h-16 px-gutter-mobile flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0 flex-1"><img alt="Dev Terminal Logo" class="h-8 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1XwcSDErwag-n5yLToIHVz7UM5M_v3ABMyGhBWH4wq-cuSVTpxL9Lzsp-d_z7DpgXsVVQCZQkgS9U9vfK_hNVDb4tEHq-h-KCW2G8PYox3CvZDhYlIZUWk9AHw6cbDEUoYBh3KLJAG-AJBs46lWLYXYe_vMKL3cuU613V2ph9eum_vDNWBE2ZCSnyZXLAC3VFDz0WXWKFw2Qg8tw0JlYhBQwIW4YwH0zeX1oZoqHuOuoz-3y36oz0osDkzb"/><div class="flex flex-col min-w-0"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">Alex Rivera</span><span class="text-outline text-body-sm hidden sm:inline">/</span><span class="font-label-tag text-label-tag text-outline uppercase tracking-wider hidden sm:inline">Projects</span></div><div class="flex items-center gap-1.5"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span></span><span class="font-label-micro text-label-micro text-secondary font-medium tracking-wide uppercase truncate">Available for hire / Q2</span></div></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><button aria-label="Toggle Global ASCII Architecture Schematics" class="px-2.5 h-11 flex items-center gap-1.5 rounded-lg bg-surface-container-high/60 text-tertiary hover:text-primary border border-outline-variant hover:border-tertiary transition-all active:scale-[0.99]" id="global-ascii-toggle-btn" title="Toggle ASCII Art Architecture Mode across all projects"><span class="material-symbols-outlined text-[18px]">developer_board</span><span class="font-label-micro text-label-micro uppercase font-bold tracking-wider hidden sm:inline">ASCII</span><span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse shadow-[0_0_8px_#7bd0ff]" id="global-ascii-indicator"></span></button><button aria-label="Toggle CLI Terminal Mode" class="px-2.5 h-11 flex items-center gap-1.5 rounded-lg bg-surface-container-high/60 text-secondary hover:text-primary border border-outline-variant hover:border-secondary transition-all active:scale-[0.99]" id="cli-mode-toggle-btn" title="Toggle CLI / CRT Mode"><span class="material-symbols-outlined text-[18px]">terminal</span><span class="font-label-micro text-label-micro uppercase font-bold tracking-wider">CLI</span><span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse shadow-[0_0_8px_#4edea3]" id="cli-btn-indicator"></span></button><a aria-label="Download Resume" class="w-11 h-11 flex items-center justify-center rounded-lg bg-surface-container-high/60 text-on-surface-variant hover:text-primary transition-colors" download="" href="#"><span class="material-symbols-outlined text-[20px]">description</span></a><div class="w-11 h-11 flex items-center justify-center"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-outline/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxxQinA6ML_bt2XHuVEJ0qccuS6DJj4MTrdosaY9HAOrNb0GNgqniLDJ9xSGU5wxBDqvt2cGJEc0Cj0qolrac-UZhhrKd59ZOnCsq1jqwZRK3txitNYnSlJ761IsgUwACBmFXRYpr5c0-NSEt6M8s_TuToH90B40NMLm_0EaEcKtAQLgj-5nRW9lvtndzvXC5fwuFRiBdtPVFZFkbmHSgUHufxa89rov07jZihHc4nOBfMkxNdRT_ymQ"/></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-background min-h-screen"><div class="flex flex-col w-full px-gutter-mobile space-y-space-lg">
+<!-- Intro & Profile Summary -->
+<section class="flex flex-col space-y-space-sm pt-2">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-micro text-label-micro text-primary uppercase tracking-widest bg-surface-container-high px-2 py-0.5 rounded">Core Portfolio</span>
+<span class="font-label-micro text-label-micro text-outline">•</span>
+<span class="font-label-micro text-label-micro text-secondary font-medium uppercase">v4.19 Production</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-on-surface tracking-tight">
+      Senior Full-Stack &amp; Systems Architect
+    </h1>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+      Crafting resilient distributed systems, sub-millisecond real-time layers, and fluid AI-augmented production interfaces.
+    </p>
+</section>
+<!-- Live Telemetry / Quick Stats Strip -->
+<section class="grid grid-cols-2 gap-space-sm sm:grid-cols-4">
+<div class="bg-surface-container-low p-space-sm rounded-xl flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between text-outline text-body-sm">
+<span class="font-label-micro text-label-micro uppercase">Experience</span>
+<span class="material-symbols-outlined text-[16px] text-primary">schedule</span>
+</div>
+<div class="mt-2 flex items-baseline gap-1">
+<span class="font-label-metric text-label-metric text-on-surface font-semibold">7+</span>
+<span class="font-label-tag text-label-tag text-outline">Years</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-xl flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between text-outline text-body-sm">
+<span class="font-label-micro text-label-micro uppercase">Open Source</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">source</span>
+</div>
+<div class="mt-2 flex items-baseline gap-1">
+<span class="font-label-metric text-label-metric text-on-surface font-semibold">42</span>
+<span class="font-label-tag text-label-tag text-outline">Repos</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-xl flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between text-outline text-body-sm">
+<span class="font-label-micro text-label-micro uppercase">Impact</span>
+<span class="material-symbols-outlined text-[16px] text-tertiary">groups</span>
+</div>
+<div class="mt-2 flex items-baseline gap-1">
+<span class="font-label-metric text-label-metric text-on-surface font-semibold">1.2M+</span>
+<span class="font-label-tag text-label-tag text-outline">MAU</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-xl flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between text-outline text-body-sm">
+<span class="font-label-micro text-label-micro uppercase">Reliability</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">verified_user</span>
+</div>
+<div class="mt-2 flex items-baseline gap-1">
+<span class="font-label-metric text-label-metric text-secondary font-semibold">99.99%</span>
+<span class="font-label-tag text-label-tag text-outline">SLA</span>
+</div>
+</div>
+</section>
+<!-- Interactive Filter Chips -->
+<section class="flex items-center gap-space-xs overflow-x-auto no-scrollbar py-1" id="filter-container">
+<button class="filter-chip px-3 py-1.5 rounded-full bg-primary text-on-primary font-label-tag text-label-tag font-semibold transition-all" data-filter="all">
+      All (3)
+    </button>
+<button class="filter-chip px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag hover:text-on-surface transition-all" data-filter="fullstack">
+      Full-Stack
+    </button>
+<button class="filter-chip px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag hover:text-on-surface transition-all" data-filter="ai">
+      AI / ML
+    </button>
+<button class="filter-chip px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag hover:text-on-surface transition-all" data-filter="distributed">
+      Distributed
+    </button>
+<button class="filter-chip px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag hover:text-on-surface transition-all" data-filter="devops">
+      Cloud/DevOps
+    </button>
+</section>
+<!-- Projects Showcase -->
+<section class="flex flex-col space-y-space-lg" id="projects-feed">
+<!-- Project 1: Nexus Engine -->
+<article class="project-card bg-surface-container-low rounded-xl overflow-hidden shadow-lg transition-all duration-300 flex flex-col" data-category="fullstack distributed" id="project-nexus">
+<!-- Terminal Window Bar with Diagram Switcher -->
+<div class="bg-surface-container px-3 sm:px-4 py-2 flex items-center justify-between gap-2 border-b border-outline-variant/30">
+<div class="flex items-center space-x-1.5 min-w-0">
+<span class="w-2.5 h-2.5 rounded-full bg-[#ef4444]/80 inline-block flex-shrink-0"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-[#eab308]/80 inline-block flex-shrink-0"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-[#10b981]/80 inline-block flex-shrink-0"></span>
+<span class="font-label-micro text-label-micro text-outline ml-1 sm:ml-2 truncate">nexus-core :: canvas-sync.ts</span>
+</div>
+<div class="flex items-center gap-1.5 flex-shrink-0">
+<!-- Diagram Mode Toggle (GUI vs ASCII Art) -->
+<div class="inline-flex items-center rounded-lg bg-surface-container-lowest p-0.5 border border-outline-variant/60">
+<button class="diagram-mode-btn active px-2 py-0.5 rounded text-[11px] font-label-micro font-medium transition-all text-primary bg-surface-container-high" data-card="nexus" data-mode="gui">
+  [#] GUI
+</button>
+<button class="diagram-mode-btn px-2 py-0.5 rounded text-[11px] font-label-micro font-medium transition-all text-on-surface-variant hover:text-secondary" data-card="nexus" data-mode="ascii">
+  [::] ASCII
+</button>
+</div>
+<span class="font-label-micro text-label-micro bg-secondary-container/20 text-secondary px-2 py-0.5 rounded-full hidden sm:flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span> v2.4 Active
+</span>
+</div>
+</div>
+<!-- Dual Visual Container: GUI Image / Monospace ASCII Schematic -->
+<div class="relative w-full overflow-hidden bg-surface-container-lowest">
+<!-- Visual Image GUI View -->
+<div class="diagram-gui-view relative w-full h-44 sm:h-52 bg-surface-container-high overflow-hidden transition-all duration-300" id="nexus-gui-view">
+<img class="w-full h-full object-cover opacity-90 transition-transform duration-500 hover:scale-105" data-alt="Dark modern interface preview of a real-time multiplayer diagramming workspace, showcasing luminescent neon node graphs, live pointer indicators, deep obsidian surface, electric indigo telemetry lines, and minimalist code terminal widgets" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2OPOEGq4tbV_h8VHK6ccaYHfF8z4EzZ2JP4rZCqtzmNSXhjble-2MGlDcb1tqZsf5jfhz6Yb5eypsYm52CI8qX1AOiny4XX5-5Xo8xo-zhcggB-HoWnd9CBNXluUwNgUjqhY3gV8fGi8zV1gELIgFFYq-dAgk5AGvbG1CbmtCcrgE5zBDRcSMVMJ4sB-suJS7lKmVo7iJMpr1mVs2Mjt1oAiBnt5wrjEBdhBrv0Hf4f_d0E4PNlwc6w"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low via-surface-container-low/30 to-transparent"></div>
+<div class="absolute bottom-3 left-4 flex items-center gap-2 bg-surface-container-lowest/80 backdrop-blur-md px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-[16px] text-secondary">speed</span>
+<span class="font-label-micro text-label-micro text-secondary font-semibold">&lt;15ms latency @ 5k concurrents</span>
+</div>
+</div>
+<!-- ASCII Schematic View (Hidden by default, activated via button) -->
+<div class="diagram-ascii-view hidden relative w-full min-h-[220px] bg-[#0c0e12] border-b border-secondary/30 p-3 sm:p-4 flex flex-col justify-between" id="nexus-ascii-view">
+<!-- ASCII Header with Live Packet Telemetry Badge -->
+<div class="flex items-center justify-between pb-2 mb-2 border-b border-outline-variant/40">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-[16px] text-secondary animate-pulse">developer_board</span>
+<span class="font-label-micro text-label-micro text-secondary font-bold uppercase tracking-wider truncate">WASM-CRDT LIVE PIPELINE</span>
+</div>
+<div class="flex items-center gap-2 flex-shrink-0">
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container border border-secondary/30">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-secondary animate-ping"></span>
+<span class="font-mono text-[10px] text-secondary font-semibold tracking-tight">PACKETS: 142k/s <span class="text-tertiary">●</span> IN-FLIGHT</span>
+</div>
+<button class="copy-ascii-btn flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container text-[11px] font-label-micro text-outline hover:text-secondary transition-all" data-target="nexus-ascii-code">
+<span class="material-symbols-outlined text-[13px]">content_copy</span>
+<span class="hidden sm:inline">Copy</span>
+</button>
+</div>
+</div>
+<!-- Animated Stream ASCII Schematic Diagram -->
+<div class="overflow-x-auto no-scrollbar font-mono text-[10px] sm:text-[11px] leading-[15px] text-secondary whitespace-pre ascii-schematic-pre select-all" id="nexus-ascii-code">┌───────────────────┐     TLS WebSockets <span class="text-secondary font-bold inline-block pkt-fast-1">●</span><span class="text-secondary font-bold inline-block pkt-fast-2">»</span><span class="text-secondary font-bold inline-block pkt-fast-3">●</span><span class="text-secondary font-bold inline-block pkt-fast-4">»</span>     ┌────────────────────────┐
+│  <span class="text-primary font-bold">Local WASM Node</span>  │ ════════════════════════════▶ │  <span class="text-tertiary font-bold">Cloudflare Workers</span>    │
+│  <span class="text-on-surface-variant">Client (YATA CRDT)</span>│ ◀════════════════════════════ │  <span class="text-secondary font-bold">Edge PoP (&lt;14ms)</span>     │
+└─────────┬─────────┘     <span class="text-tertiary font-bold inline-block pkt-fast-4">«</span><span class="text-tertiary font-bold inline-block pkt-fast-3">●</span><span class="text-tertiary font-bold inline-block pkt-fast-2">«</span><span class="text-tertiary font-bold inline-block pkt-fast-1">●</span> Binary Bin-Diffs   └───────────┬────────────┘
+          │ <span class="text-primary inline-block pkt-1">▼</span>                                                   │ <span class="text-tertiary inline-block pkt-2">▼</span>
+          │ <span class="text-primary inline-block pkt-3">●</span> Local Snapshot                                    │ <span class="text-tertiary inline-block pkt-4">◆</span> Tokio Atomic Pub/Sub
+┌─────────▼─────────┐                               ┌───────────▼────────────┐
+│  <span class="text-primary font-bold">IndexedDB Cache</span>  │ <span class="text-secondary inline-block pkt-beacon">●</span>                             │    <span class="text-tertiary font-bold">Rust State Broker</span>   │ <span class="text-tertiary inline-block pkt-beacon">●</span>
+│  <span class="text-outline">(Offline-First)</span>  │                               │  <span class="text-secondary font-bold">(Tokio RingBuffer)</span>    │
+└───────────────────┘                               └────────────────────────┘</div>
+<div class="mt-2.5 pt-2 border-t border-outline-variant/30 flex items-center justify-between text-outline text-[10px] font-mono">
+<span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-secondary inline-block pkt-fast-1"></span> 0% Drop • RingBuffer Stream Active</span>
+<span class="text-secondary font-semibold">Protobuf bin-diff: 142 B/frame</span>
+</div>
+</div>
+</div>
+<div class="p-4 flex flex-col space-y-space-md">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">Nexus Engine</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+            Real-time collaborative canvas &amp; state synchronization engine. Employs Conflict-free Replicated Data Types (CRDTs) with binary WebSockets serialization for zero perceptible network jitter.
+          </p>
+</div>
+<!-- Tech Badges -->
+<div class="flex flex-wrap gap-1.5">
+<span class="font-label-tag text-label-tag bg-surface-container-high text-on-surface-variant px-2.5 py-1 rounded">TypeScript</span>
+<span class="font-label-tag text-label-tag bg-surface-container-high text-on-surface-variant px-2.5 py-1 rounded">WebSockets</span>
+<span class="font-label-tag text-label-tag bg-surface-container-high text-on-surface-variant px-2.5 py-1 rounded">Redis PubSub</span>
+<span class="font-label-tag text-label-tag bg-surface-container-high text-on-surface-variant px-2.5 py-1 rounded">WebAssembly</span>
+<span class="font-label-tag text-label-tag bg-surface-container-high text-on-surface-variant px-2.5 py-1 rounded">React</span>
+</div>
+<!-- Expandable Architecture Details -->
+<div class="bg-surface-container rounded-lg p-3">
+<button aria-expanded="false" class="architecture-toggle w-full flex items-center justify-between text-left focus:outline-none">
+<span class="font-label-tag text-label-tag text-primary flex items-center gap-1.5 font-semibold">
+<span class="material-symbols-outlined text-[16px]">account_tree</span>
+              System Architecture &amp; Optimizations
+            </span>
+<span class="material-symbols-outlined text-outline transition-transform duration-200 chevron-icon text-[18px]">expand_more</span>
+</button>
+<div class="architecture-content hidden pt-3 mt-2 border-t-0 space-y-2">
+<div class="flex items-start gap-2">
+<span class="font-label-micro text-label-micro text-secondary mt-0.5">❯</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Custom delta-compression algorithm reducing ingress packet payloads by 64% over standard JSON RPC.</p>
+</div>
+<div class="flex items-start gap-2">
+<span class="font-label-micro text-label-micro text-secondary mt-0.5">❯</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Decoupled state mutation threads executed via Rust-compiled WebAssembly on client canvas threads.</p>
+</div>
+<div class="flex items-start gap-2">
+<span class="font-label-micro text-label-micro text-secondary mt-0.5">❯</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Multi-region Redis cluster with deterministic conflict resolution across distributed geolocations.</p>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="grid grid-cols-3 gap-2 pt-1">
+<a class="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-primary text-on-primary font-headline-sm text-body-sm font-semibold hover:bg-inverse-primary transition-colors text-center" href="#">
+<span class="material-symbols-outlined text-[16px]">rocket_launch</span>
+<span class="">Demo</span>
+</a>
+<a class="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors text-center font-headline-sm text-body-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[16px]">code</span>
+<span class="">GitHub</span>
+</a>
+<button class="copy-spec-btn flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-surface-container-high text-on-surface-variant hover:text-primary transition-colors text-center font-headline-sm text-body-sm font-medium" data-spec="nexus-v2-crtd-webrtc">
+<span class="material-symbols-outlined text-[16px] spec-icon">file_download</span>
+<span class="spec-text">Specs</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Project 2: Synapse Copilot -->
+<article class="project-card bg-surface-container-low rounded-xl overflow-hidden shadow-lg transition-all duration-300 flex flex-col" data-category="fullstack ai" id="project-synapse">
+<!-- Terminal Window Bar with Diagram Switcher -->
+<div class="bg-surface-container px-3 sm:px-4 py-2 flex items-center justify-between gap-2 border-b border-outline-variant/30">
+<div class="flex items-center space-x-1.5 min-w-0">
+<span class="w-2.5 h-2.5 rounded-full bg-[#ef4444]/80 inline-block flex-shrink-0"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-[#eab308]/80 inline-block flex-shrink-0"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-[#10b981]/80 inline-block flex-shrink-0"></span>
+<span class="font-label-micro text-label-micro text-outline ml-1 sm:ml-2 truncate">synapse :: agent-router.py</span>
+</div>
+<div class="flex items-center gap-1.5 flex-shrink-0">
+<!-- Diagram Mode Toggle (GUI vs ASCII Art) -->
+<div class="inline-flex items-center rounded-lg bg-surface-container-lowest p-0.5 border border-outline-variant/60">
+<button class="diagram-mode-btn active px-2 py-0.5 rounded text-[11px] font-label-micro font-medium transition-all text-primary bg-surface-container-high" data-card="synapse" data-mode="gui">
+  [#] GUI
+</button>
+<button class="diagram-mode-btn px-2 py-0.5 rounded text-[11px] font-label-micro font-medium transition-all text-on-surface-variant hover:text-secondary" data-card="synapse" data-mode="ascii">
+  [::] ASCII
+</button>
+</div>
+<span class="font-label-micro text-label-micro bg-tertiary-container/30 text-tertiary px-2 py-0.5 rounded-full hidden sm:flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">auto_awesome</span> LLM Pipeline
+</span>
+</div>
+</div>
+<!-- Dual Visual Container -->
+<div class="relative w-full overflow-hidden bg-surface-container-lowest">
+<!-- Visual Image GUI View -->
+<div class="diagram-gui-view relative w-full h-44 sm:h-52 bg-surface-container-high overflow-hidden transition-all duration-300" id="synapse-gui-view">
+<img class="w-full h-full object-cover opacity-90 transition-transform duration-500 hover:scale-105" data-alt="Sleek dark mode developer dashboard showing vector similarity retrieval nodes, AI tool execution sequence visualizer, glowing cyan and violet data pipelines, obsidian background with technical metrics and precision latency meters" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA21T1yw_0hezdB_h0blDTJkztC6kX_nGILA8YYcu3GBBdej2Po4mi9972FUG36Y2GcznET37oUPf9Xr8mUH3icAc3HaKvkkYP117CYCM1vaz7ALC84K4eDcBhcYoa2tPxuDXzVupA_vR9zcPcOmwkQf3xAGuFE9Ksi6cjDA9VcbIqSv7wOE6gJvQ0ZQJQSG2_UwZo7wMDphpGRmB9RgupbPPfN2ilU67gHREJtagnyBxu1J1p3_d6zDA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low via-surface-container-low/30 to-transparent"></div>
+<div class="absolute bottom-3 left-4 flex items-center gap-2 bg-surface-container-lowest/80 backdrop-blur-md px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-[16px] text-tertiary">trending_up</span>
+<span class="font-label-micro text-label-micro text-tertiary font-semibold">4.8x developer throughput increase</span>
+</div>
+</div>
+<!-- ASCII Schematic View -->
+<div class="diagram-ascii-view hidden relative w-full min-h-[220px] bg-[#0c0e12] border-b border-tertiary/30 p-3 sm:p-4 flex flex-col justify-between" id="synapse-ascii-view">
+<!-- ASCII Header with Live Ingestion Telemetry Badge -->
+<div class="flex items-center justify-between pb-2 mb-2 border-b border-outline-variant/40">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-[16px] text-tertiary animate-pulse">schema</span>
+<span class="font-label-micro text-label-micro text-tertiary font-bold uppercase tracking-wider truncate">RAG STREAMING ORCHESTRATION</span>
+</div>
+<div class="flex items-center gap-2 flex-shrink-0">
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container border border-tertiary/30">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-tertiary animate-ping"></span>
+<span class="font-mono text-[10px] text-tertiary font-semibold tracking-tight">STREAM: 84 tok/s <span class="text-secondary">●</span> ACTIVE</span>
+</div>
+<button class="copy-ascii-btn flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container text-[11px] font-label-micro text-outline hover:text-tertiary transition-all" data-target="synapse-ascii-code">
+<span class="material-symbols-outlined text-[13px]">content_copy</span>
+<span class="hidden sm:inline">Copy</span>
+</button>
+</div>
+</div>
+<!-- Animated Stream ASCII Schematic Diagram -->
+<div class="overflow-x-auto no-scrollbar font-mono text-[10px] sm:text-[11px] leading-[15px] text-tertiary whitespace-pre ascii-schematic-pre select-all" id="synapse-ascii-code">┌──────────────┐   <span class="text-secondary font-bold inline-block pkt-fast-1">●</span><span class="text-secondary inline-block pkt-fast-2">»</span><span class="text-secondary font-bold inline-block pkt-fast-3">●</span>   ┌──────────────────────┐   <span class="text-tertiary font-bold inline-block pkt-fast-2">◆</span><span class="text-tertiary inline-block pkt-fast-3">»</span><span class="text-tertiary font-bold inline-block pkt-fast-4">◆</span>   ┌─────────────────────┐
+│  <span class="text-primary font-bold">User Query</span>  │ ═════════▶ │ <span class="text-secondary font-bold">Embedding Gen (384d)</span> │ ═════════▶ │  <span class="text-tertiary font-bold">HNSW Vector ANN</span>    │
+│  <span class="text-outline">REST / gRPC</span> │            │ <span class="text-outline">BGE-M3 (TensorRT-LLM)</span>│            │  <span class="text-secondary font-bold">(pgvector 0.7.0)</span>   │
+└──────────────┘            └──────────────────────┘            └──────────┬──────────┘
+       ▲                                                                   │ <span class="text-tertiary inline-block pkt-fast-1">▼</span>
+       │ <span class="text-secondary font-bold inline-block pkt-fast-3">▲</span> Stream Tokens <span class="text-secondary font-bold inline-block pkt-fast-2">●</span>                                                │ <span class="text-tertiary inline-block pkt-fast-2">●</span> Top-8 TopK
+       │ <span class="text-secondary font-bold inline-block pkt-fast-1">▲</span>                                                                 │ <span class="text-tertiary inline-block pkt-fast-3">▼</span>
+┌──────┴───────┐   <span class="text-secondary font-bold inline-block pkt-fast-4">«</span><span class="text-secondary inline-block pkt-fast-3">●</span><span class="text-secondary font-bold inline-block pkt-fast-2">«</span>   ┌──────────────────────┐   <span class="text-tertiary font-bold inline-block pkt-fast-3">«</span><span class="text-tertiary inline-block pkt-fast-2">◆</span><span class="text-tertiary font-bold inline-block pkt-fast-1">«</span>   ┌─────────────────────┐
+│  <span class="text-secondary font-bold">SSE Stream</span>  │ ◀═════════ │ <span class="text-primary font-bold">FastAPI Agent Router</span> │ ◀═════════ │ <span class="text-tertiary font-bold">Quantized RAG Ctx</span>   │
+│  <span class="text-outline">&lt;35ms TTFT</span>  │            │ <span class="text-outline">LangChain v0.2 + Cython</span>│            │ <span class="text-outline">Cross-Encoder ReRank</span>│
+└──────────────┘            └──────────────────────┘            └─────────────────────┘</div>
+<div class="mt-2.5 pt-2 border-t border-outline-variant/30 flex items-center justify-between text-outline text-[10px] font-mono">
+<span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-tertiary inline-block pkt-fast-1"></span> TTFT: 34ms @ P95 • Real-time Cross-Encoder</span>
+<span class="text-tertiary font-semibold">Similarity: 0.89 cosine</span>
+</div>
+</div>
+</div>
+<div class="p-4 flex flex-col space-y-space-md">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">Synapse Copilot</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+            Distributed AI orchestration engine for semantic codebase ingestion, context-aware query clustering, and deterministic agent workflows with real-time token streaming.
+          </p>
+</div>
+<!-- Tech Badges -->
+<div class="flex flex-wrap gap-1.5">
+<span class="font-label-tag text-label-tag bg-surface-container-high text-on-surface-variant px-2.5 py-1 rounded">Python</span>
+<span class="font-label-tag text-label-tag bg-surface-container-high text-on-surface-variant px-2.5 py-1 rounded">FastAPI</span>
+<span class="font-label-tag text-label-tag bg-surface-container-high text-on-surface-variant px-2.5 py-1 rounded">Next.js 14</span>
+<span class="font-label-tag text-label-tag bg-surface-container-high text-on-surface-variant px-2.5 py-1 rounded">pgvector</span>
+<span class="font-label-tag text-label-tag bg-surface-container-high text-on-surface-variant px-2.5 py-1 rounded">LangChain</span>
+</div>
+<!-- Benchmark Visual Comparison -->
+<div class="bg-surface-container p-3 rounded-lg space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-label-micro text-label-micro uppercase text-outline">Semantic Search &amp; RAG Latency</span>
+<span class="font-label-micro text-label-micro text-secondary font-semibold">-72% vs Standard Vector Index</span>
+</div>
+<div class="space-y-1.5">
+<div>
+<div class="flex justify-between text-body-sm font-label-micro text-outline mb-0.5">
+<span class="">Synapse (HNSW + Quantized)</span>
+<span class="text-tertiary font-semibold">41ms</span>
+</div>
+<div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-tertiary rounded-full" style="width: 28%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-body-sm font-label-micro text-outline mb-0.5">
+<span class="">Standard Inverted Index</span>
+<span class="text-outline">146ms</span>
+</div>
+<div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-outline-variant rounded-full" style="width: 85%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Live Code Inspector Toggle -->
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden">
+<div class="flex items-center justify-between px-3 py-2 bg-surface-container-high">
+<span class="font-label-micro text-label-micro text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-tertiary">data_object</span>
+              pipeline_runner.py
+            </span>
+<button class="code-toggle font-label-micro text-label-micro text-primary hover:underline">Toggle Snippet</button>
+</div>
+<pre class="code-snippet-body p-3 font-code-block text-code-block text-on-surface overflow-x-auto text-[12px] leading-relaxed"><code><span class="text-secondary">async def</span> <span class="text-primary">dispatch_context</span>(query: str, tenant_id: UUID):
+    embedding = <span class="text-secondary">await</span> model.embed(query)
+    ctx = <span class="text-secondary">await</span> vector_store.similarity_search(
+        vector=embedding, k=8, filter={<span class="text-tertiary">"tenant"</span>: tenant_id}
+    )
+    <span class="text-outline">// Stream parsed tokens via SSE</span>
+    <span class="text-secondary">return</span> EventSourceResponse(agent.stream(ctx))</code></pre>
+</div>
+<!-- Actions -->
+<div class="grid grid-cols-2 gap-2 pt-1">
+<a class="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-surface-container-high text-on-surface font-headline-sm text-body-sm font-medium hover:bg-surface-bright transition-colors" href="#">
+<span class="material-symbols-outlined text-[16px] text-tertiary">open_in_new</span>
+<span class="">View Architecture</span>
+</a>
+<a class="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-surface-container-high text-on-surface font-headline-sm text-body-sm font-medium hover:bg-surface-bright transition-colors" href="#">
+<span class="material-symbols-outlined text-[16px]">folder_zip</span>
+<span class="">Repository</span>
+</a>
+</div>
+</div>
+</article>
+<!-- Project 3: HyperScale Cache -->
+<article class="project-card bg-surface-container-low rounded-xl overflow-hidden shadow-lg transition-all duration-300 flex flex-col" data-category="distributed devops" id="project-hyperscale">
+<!-- Terminal Window Bar with Diagram Switcher -->
+<div class="bg-surface-container px-3 sm:px-4 py-2 flex items-center justify-between gap-2 border-b border-outline-variant/30">
+<div class="flex items-center space-x-1.5 min-w-0">
+<span class="w-2.5 h-2.5 rounded-full bg-[#ef4444]/80 inline-block flex-shrink-0"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-[#eab308]/80 inline-block flex-shrink-0"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-[#10b981]/80 inline-block flex-shrink-0"></span>
+<span class="font-label-micro text-label-micro text-outline ml-1 sm:ml-2 truncate">hyperscale :: engine.rs</span>
+</div>
+<div class="flex items-center gap-1.5 flex-shrink-0">
+<!-- Diagram Mode Toggle (GUI vs ASCII Art) -->
+<div class="inline-flex items-center rounded-lg bg-surface-container-lowest p-0.5 border border-outline-variant/60">
+<button class="diagram-mode-btn active px-2 py-0.5 rounded text-[11px] font-label-micro font-medium transition-all text-primary bg-surface-container-high" data-card="hyperscale" data-mode="gui">
+  [#] GUI
+</button>
+<button class="diagram-mode-btn px-2 py-0.5 rounded text-[11px] font-label-micro font-medium transition-all text-on-surface-variant hover:text-secondary" data-card="hyperscale" data-mode="ascii">
+  [::] ASCII
+</button>
+</div>
+<span class="font-label-micro text-label-micro bg-secondary-container/20 text-secondary px-2 py-0.5 rounded-full hidden sm:flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">memory</span> Zero-Allocation
+</span>
+</div>
+</div>
+<!-- Dual Visual Container -->
+<div class="relative w-full overflow-hidden bg-surface-container-lowest">
+<!-- Visual Image GUI View -->
+<div class="diagram-gui-view relative w-full h-44 sm:h-52 bg-surface-container-high overflow-hidden transition-all duration-300" id="hyperscale-gui-view">
+<img class="w-full h-full object-cover opacity-90 transition-transform duration-500 hover:scale-105" data-alt="Technical system diagram of distributed rust cluster showing partitioned ring hash nodes, high-throughput memory buffers, deep slate grey aesthetics with glowing green memory telemetry graphs and microsecond metric counters" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiwvJA-PlufhrUBtY04cZnilYi7bfjeiFwZM9TWMNY1FhVAwSqsCNwZJcZ5VzPMRjoQmxTI11I9IIeCRCQKQXMlQr59i0hc7SANP0IriXPQlvAW5RsnZdix8rjnFH6BcYFonXISGH56srmNkiyY0yLkmD-GG1EsbH9m_71w5Mvx_INebxv4pAr5ENxfHtN8Awmh_kJIe4HXOhgXERsF9BB0rKJFtoizR_zFLZQmS34spCVskG0Q0uNkA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low via-surface-container-low/30 to-transparent"></div>
+<div class="absolute bottom-3 left-4 flex items-center gap-2 bg-surface-container-lowest/80 backdrop-blur-md px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-[16px] text-secondary">flash_on</span>
+<span class="font-label-micro text-label-micro text-secondary font-semibold">1.4M Ops/sec single node</span>
+</div>
+</div>
+<!-- ASCII Schematic View -->
+<div class="diagram-ascii-view hidden relative w-full min-h-[220px] bg-[#0c0e12] border-b border-secondary/30 p-3 sm:p-4 flex flex-col justify-between" id="hyperscale-ascii-view">
+<!-- ASCII Header with Live Ring Hash Telemetry Badge -->
+<div class="flex items-center justify-between pb-2 mb-2 border-b border-outline-variant/40">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-[16px] text-secondary animate-pulse">cyclone</span>
+<span class="font-label-micro text-label-micro text-secondary font-bold uppercase tracking-wider truncate">PARTITIONED CONSISTENT HASH RING</span>
+</div>
+<div class="flex items-center gap-2 flex-shrink-0">
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container border border-secondary/30">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-secondary animate-ping"></span>
+<span class="font-mono text-[10px] text-secondary font-semibold tracking-tight">TRAFFIC: 1.4M ops/s <span class="text-tertiary">●</span> SYNCHRONIZED</span>
+</div>
+<button class="copy-ascii-btn flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container text-[11px] font-label-micro text-outline hover:text-secondary transition-all" data-target="hyperscale-ascii-code">
+<span class="material-symbols-outlined text-[13px]">content_copy</span>
+<span class="hidden sm:inline">Copy</span>
+</button>
+</div>
+</div>
+<!-- Animated Stream ASCII Schematic Diagram -->
+<div class="overflow-x-auto no-scrollbar font-mono text-[10px] sm:text-[11px] leading-[15px] text-secondary whitespace-pre ascii-schematic-pre select-all" id="hyperscale-ascii-code">┌─────────────────── HASH RING TOPOLOGY (SIMD-xxHash) ───────────────────┐
+│                                                                        │
+│       ┌───────────────┐   <span class="text-secondary font-bold inline-block pkt-fast-1">●</span><span class="text-secondary inline-block pkt-fast-2">»</span><span class="text-secondary font-bold inline-block pkt-fast-3">●</span><span class="text-secondary inline-block pkt-fast-4">»</span>   ┌───────────────┐             │
+│       │  <span class="text-primary font-bold">Node_01 (0x00)</span>│ ════════════════▶ │  <span class="text-tertiary font-bold">Node_02 (0x3F)</span>│             │
+│       │  <span class="text-outline">Tokio Worker</span> │                  │  <span class="text-outline">Tokio Worker</span> │             │
+│       └───────┬───────┘                  └───────┬───────┘             │
+│          <span class="text-secondary font-bold inline-block pkt-fast-4">▲</span>    ▲                                  │    <span class="text-tertiary font-bold inline-block pkt-fast-1">▼</span>                │
+│   Zero-  <span class="text-secondary font-bold inline-block pkt-fast-3">●</span>    │       <span class="text-secondary font-bold">Lock-Free Ring Buffer</span>      │ <span class="text-tertiary font-bold inline-block pkt-fast-2">●</span>  CAS Head/Tail    │
+│   Copy   <span class="text-secondary font-bold inline-block pkt-fast-2">▲</span>    │       <span class="text-outline">[CAS Head/Tail Ptr]</span>        │ <span class="text-tertiary font-bold inline-block pkt-fast-3">▼</span>  Sync Replicate   │
+│   gRPC   <span class="text-secondary font-bold inline-block pkt-fast-1">●</span>    │                                  ▼                     │
+│       ┌───────┴───────┐   <span class="text-tertiary font-bold inline-block pkt-fast-4">«</span><span class="text-tertiary inline-block pkt-fast-3">●</span><span class="text-tertiary font-bold inline-block pkt-fast-2">«</span><span class="text-tertiary inline-block pkt-fast-1">●</span>   ┌───────────────┐             │
+│       │  <span class="text-tertiary font-bold">Node_04 (0xBF)</span>│ ◀════════════════ │  <span class="text-primary font-bold">Node_03 (0x7F)</span>│             │
+│       │  <span class="text-outline">Tokio Worker</span> │                  │  <span class="text-outline">Tokio Worker</span> │             │
+│       └───────────────┘                  └───────────────┘             │
+│                                                                        │
+└────────────────────────────────────────────────────────────────────────┘</div>
+<div class="mt-2.5 pt-2 border-t border-outline-variant/30 flex items-center justify-between text-outline text-[10px] font-mono">
+<span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-secondary inline-block pkt-fast-1"></span> 180µs P99 Read SLA • Ring Buffer Quorum 4/4</span>
+<span class="text-secondary font-semibold">Mem: 0.82 bytes/key</span>
+</div>
+</div>
+</div>
+<div class="p-4 flex flex-col space-y-space-md">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">HyperScale Cache</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+            Ultra-high throughput distributed in-memory key-value cache written in Rust. Features asynchronous lock-free ring buffers, SIMD-accelerated hashing, and custom zero-copy gRPC RPC serialization.
+          </p>
+</div>
+<!-- Tech Badges -->
+<div class="flex flex-wrap gap-1.5">
+<span class="font-label-tag text-label-tag bg-surface-container-high text-on-surface-variant px-2.5 py-1 rounded">Rust</span>
+<span class="font-label-tag text-label-tag bg-surface-container-high text-on-surface-variant px-2.5 py-1 rounded">Tokio</span>
+<span class="font-label-tag text-label-tag bg-surface-container-high text-on-surface-variant px-2.5 py-1 rounded">gRPC / Protobuf</span>
+<span class="font-label-tag text-label-tag bg-surface-container-high text-on-surface-variant px-2.5 py-1 rounded">Docker</span>
+<span class="font-label-tag text-label-tag bg-surface-container-high text-on-surface-variant px-2.5 py-1 rounded">Kubernetes</span>
+</div>
+<!-- Metrics Callout Grid -->
+<div class="grid grid-cols-2 gap-2">
+<div class="bg-surface-container p-2.5 rounded-lg flex flex-col">
+<span class="font-label-micro text-label-micro text-outline">P99 Read Latency</span>
+<span class="font-label-metric text-label-metric text-on-surface font-bold mt-1">180µs</span>
+<span class="font-label-micro text-label-micro text-secondary mt-0.5">Benchmarked via wrk</span>
+</div>
+<div class="bg-surface-container p-2.5 rounded-lg flex flex-col">
+<span class="font-label-micro text-label-micro text-outline">Memory Overhead</span>
+<span class="font-label-metric text-label-metric text-on-surface font-bold mt-1">0.82b</span>
+<span class="font-label-micro text-label-micro text-tertiary mt-0.5">Per cached key index</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="grid grid-cols-2 gap-2 pt-1">
+<a class="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-surface-container-high text-on-surface font-headline-sm text-body-sm font-medium hover:bg-surface-bright transition-colors" href="#">
+<span class="material-symbols-outlined text-[16px]">bar_chart</span>
+<span class="">Benchmarks</span>
+</a>
+<a class="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-surface-container-high text-on-surface font-headline-sm text-body-sm font-medium hover:bg-surface-bright transition-colors" href="#">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+<span class="">View Crate</span>
+</a>
+</div>
+</div>
+</article>
+</section>
+<!-- Interactive Conversion / Technical Chat Banner -->
+<section class="bg-gradient-to-br from-surface-container via-surface-container-high to-surface-container-low p-5 rounded-2xl relative overflow-hidden shadow-xl">
+<div class="relative z-10 flex flex-col space-y-space-sm">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
+<span class="font-label-tag text-label-tag uppercase text-secondary font-semibold tracking-wider">Direct Engineering Inquiry</span>
+</div>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">
+        Have a complex distributed architecture challenge?
+      </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+        I am currently considering select staff/principal-level engineering contracts and technical advisory roles for Q2/Q3.
+      </p>
+<div class="pt-2">
+<button class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-primary text-on-primary font-headline-sm text-body-md font-semibold shadow-[0_0_24px_-4px_rgba(192,193,255,0.4)] active:scale-[0.99] transition-all" id="cta-schedule-btn">
+<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+<span class="">Schedule 15-min Technical Chat</span>
+</button>
+</div>
+<div class="hidden mt-3 p-3 bg-secondary-container/20 text-secondary rounded-lg font-label-tag text-label-tag text-center flex items-center justify-center gap-2" id="booking-toast">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="">Availability slots synchronized. Opening calendar modal...</span>
+</div>
+</div>
+</section>
+</div>
+<script>
+  // Filter chips functionality
+  const chips = document.querySelectorAll('.filter-chip');
+  const cards = document.querySelectorAll('.project-card');
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => {
+        c.classList.remove('bg-primary', 'text-on-primary');
+        c.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+      });
+      chip.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+      chip.classList.add('bg-primary', 'text-on-primary');
+
+      const filter = chip.getAttribute('data-filter');
+
+      cards.forEach(card => {
+        const categories = card.getAttribute('data-category') || '';
+        if (filter === 'all' || categories.includes(filter)) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // Architecture toggle dropdown
+  const archButtons = document.querySelectorAll('.architecture-toggle');
+  archButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const content = btn.nextElementSibling;
+      const chevron = btn.querySelector('.chevron-icon');
+      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+
+      if (isExpanded) {
+        content.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+        chevron.style.transform = 'rotate(0deg)';
+      } else {
+        content.classList.remove('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+        chevron.style.transform = 'rotate(180deg)';
+      }
+    });
+  });
+
+  // Code snippet toggle
+  const codeToggles = document.querySelectorAll('.code-toggle');
+  codeToggles.forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      const container = toggle.closest('.bg-surface-container-lowest');
+      const codeBody = container.querySelector('.code-snippet-body');
+      codeBody.classList.toggle('hidden');
+      toggle.textContent = codeBody.classList.contains('hidden') ? 'Show Snippet' : 'Hide Snippet';
+    });
+  });
+
+  // Spec Copy Micro-interaction
+  const copyButtons = document.querySelectorAll('.copy-spec-btn');
+  copyButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const spec = btn.getAttribute('data-spec');
+      const icon = btn.querySelector('.spec-icon');
+      const text = btn.querySelector('.spec-text');
+
+      navigator.clipboard?.writeText(`https://docs.alexrivera.io/specs/${spec}`);
+      icon.textContent = 'check';
+      text.textContent = 'Copied!';
+      btn.classList.add('text-secondary');
+
+      setTimeout(() => {
+        icon.textContent = 'file_download';
+        text.textContent = 'Specs';
+        btn.classList.remove('text-secondary');
+      }, 2000);
+    });
+  });
+
+  // Interactive ASCII Art & Diagram View Switcher Logic
+  const diagramModeBtns = document.querySelectorAll('.diagram-mode-btn');
+  function setCardDiagramMode(cardId, mode) {
+    const guiView = document.getElementById(`${cardId}-gui-view`);
+    const asciiView = document.getElementById(`${cardId}-ascii-view`);
+    const cardBtns = document.querySelectorAll(`.diagram-mode-btn[data-card="${cardId}"]`);
+
+    cardBtns.forEach(btn => {
+      if (btn.getAttribute('data-mode') === mode) {
+        btn.classList.add('active', 'text-primary', 'bg-surface-container-high');
+        btn.classList.remove('text-on-surface-variant');
+      } else {
+        btn.classList.remove('active', 'text-primary', 'bg-surface-container-high');
+        btn.classList.add('text-on-surface-variant');
+      }
+    });
+
+    if (mode === 'ascii') {
+      guiView?.classList.add('hidden');
+      asciiView?.classList.remove('hidden');
+    } else {
+      asciiView?.classList.add('hidden');
+      guiView?.classList.remove('hidden');
+    }
+  }
+
+  diagramModeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cardId = btn.getAttribute('data-card');
+      const mode = btn.getAttribute('data-mode');
+      setCardDiagramMode(cardId, mode);
+    });
+  });
+
+  // Copy ASCII text button handler
+  const copyAsciiBtns = document.querySelectorAll('.copy-ascii-btn');
+  copyAsciiBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-target');
+      const targetEl = document.getElementById(targetId);
+      if (targetEl) {
+        const text = targetEl.innerText;
+        navigator.clipboard?.writeText(text);
+        const origHtml = btn.innerHTML;
+        btn.innerHTML = `<span class="material-symbols-outlined text-[13px] text-secondary">check</span><span class="text-secondary">Copied!</span>`;
+        setTimeout(() => {
+          btn.innerHTML = origHtml;
+        }, 1800);
+      }
+    });
+  });
+
+  // Global ASCII mode toggle
+  let globalAsciiState = false;
+  const globalAsciiToggleBtn = document.getElementById('global-ascii-toggle-btn');
+  const globalAsciiIndicator = document.getElementById('global-ascii-indicator');
+
+  function toggleGlobalAscii(forceState) {
+    globalAsciiState = typeof forceState === 'boolean' ? forceState : !globalAsciiState;
+    const cards = ['nexus', 'synapse', 'hyperscale'];
+    cards.forEach(cardId => {
+      setCardDiagramMode(cardId, globalAsciiState ? 'ascii' : 'gui');
+    });
+
+    if (globalAsciiToggleBtn) {
+      if (globalAsciiState) {
+        globalAsciiToggleBtn.classList.add('bg-tertiary/20', 'border-tertiary', 'text-tertiary');
+        globalAsciiIndicator?.classList.add('animate-ping');
+      } else {
+        globalAsciiToggleBtn.classList.remove('bg-tertiary/20', 'border-tertiary', 'text-tertiary');
+        globalAsciiIndicator?.classList.remove('animate-ping');
+      }
+    }
+  }
+
+  globalAsciiToggleBtn?.addEventListener('click', () => toggleGlobalAscii());
+
+  // CTA Toast interaction
+  const ctaBtn = document.getElementById('cta-schedule-btn');
+  const toast = document.getElementById('booking-toast');
+  if (ctaBtn && toast) {
+    ctaBtn.addEventListener('click', () => {
+      toast.classList.remove('hidden');
+      ctaBtn.disabled = true;
+      ctaBtn.classList.add('opacity-80');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+        ctaBtn.disabled = false;
+        ctaBtn.classList.remove('opacity-80');
+      }, 3500);
+    });
+  }
+</script></main>
+<!-- Full Retro CRT & Matrix Overlay Environment -->
+<div class="fixed inset-0 z-40 pointer-events-none hidden transition-opacity duration-300" id="retro-crt-matrix-layer">
+<!-- Matrix Glyphs Canvas Layer -->
+<canvas class="absolute inset-0 w-full h-full opacity-20 pointer-events-none" id="matrix-rain-canvas"></canvas>
+<!-- CRT Moving Scanlines & Rolling Beam -->
+<div class="absolute inset-0 crt-scanlines pointer-events-none opacity-70"></div>
+<div class="absolute inset-x-0 w-full crt-beam pointer-events-none" id="crt-beam-bar"></div>
+<!-- Radial Vignette / Curved Glass Edge Falloff -->
+<div class="absolute inset-0 crt-vignette pointer-events-none"></div>
+<!-- Retro Glass Curvature Edge Border Frame -->
+<div class="absolute inset-0 border-[6px] border-black/40 rounded-sm pointer-events-none shadow-[inset_0_0_40px_rgba(0,0,0,0.9)]"></div>
+<!-- CRT Retro HUD Telemetry Banner (Top) -->
+<div class="absolute top-16 left-0 right-0 px-4 pt-1 pointer-events-none flex items-center justify-between font-label-micro text-[10px] text-secondary/80 select-none z-10" id="crt-hud-bar">
+<div class="flex items-center gap-2 bg-black/60 backdrop-blur-sm px-2 py-0.5 rounded border border-secondary/20">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-ping"></span>
+<span class="tracking-widest uppercase font-mono" id="crt-hud-status">CRT: ACTIVE // 60Hz INTERLACED</span>
+</div>
+<div class="flex items-center gap-1.5 bg-black/60 backdrop-blur-sm px-2 py-0.5 rounded border border-secondary/20">
+<span class="text-outline uppercase">COLOR-PHOSPHOR:</span>
+<span class="font-bold text-secondary" id="crt-phosphor-label">P1-GREEN</span>
+</div>
+</div>
+</div>
+<div class="fixed bottom-16 left-0 right-0 z-50 px-gutter-mobile pointer-events-none flex flex-col items-end pb-2" id="cli-drawer-container"><button aria-label="Open Developer Terminal Drawer" class="pointer-events-auto flex items-center gap-2 px-3 py-2 rounded-full bg-surface-container-high border border-outline-variant shadow-xl hover:border-primary text-primary transition-all active:scale-[0.99] mb-2" id="floating-cli-trigger"><span class="material-symbols-outlined text-[18px] text-secondary animate-pulse">terminal</span><span class="font-label-tag text-label-tag font-semibold">Quick CLI</span><span class="font-label-micro text-label-micro px-1.5 py-0.5 rounded bg-surface-container-lowest text-outline">` / ~</span></button><div class="hidden pointer-events-auto w-full max-w-xl mx-auto bg-surface-container-lowest/95 backdrop-blur-md border border-secondary/40 rounded-xl shadow-2xl overflow-hidden font-code-block mb-1 matrix-glow-green transition-all duration-200" id="cli-terminal-drawer"><div class="bg-surface-container px-3 py-2 flex items-center justify-between border-b border-outline-variant/60"><div class="flex items-center space-x-1.5"><span class="w-2.5 h-2.5 rounded-full bg-[#ef4444]/80 inline-block"></span><span class="w-2.5 h-2.5 rounded-full bg-[#eab308]/80 inline-block"></span><span class="w-2.5 h-2.5 rounded-full bg-[#10b981]/80 inline-block"></span><span class="font-label-micro text-label-micro text-outline ml-2">alexrivera@sysarch-v4:~</span></div><div class="flex items-center gap-1.5"><button class="font-label-micro text-label-micro px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant hover:text-tertiary flex items-center gap-1" id="cli-ascii-shortcut-btn" title="Toggle ASCII Diagrams">ASCII: TOGGLE</button><button class="font-label-micro text-label-micro px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant hover:text-secondary flex items-center gap-1" id="matrix-rain-toggle" title="Toggle Matrix Glyph Rain">RAIN: ON</button><button class="font-label-micro text-label-micro px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant hover:text-secondary" id="cli-crt-toggle">CRT: GREEN</button><button aria-label="Exit CLI Mode" class="text-outline hover:text-secondary flex items-center px-1" id="cli-close-btn"><span class="material-symbols-outlined text-[16px]">close</span></button></div></div><div class="p-3 text-[12px] h-44 overflow-y-auto space-y-1 text-secondary bg-surface-container-lowest/90 font-code-block" id="terminal-output"><div class="text-outline">Alex Rivera Interactive Portfolio CLI [v4.19.2-prod]</div><div class="text-secondary/90 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-secondary inline-block"></span> <span>CRT scanlines, Matrix sub-system &amp; ASCII schematics engine loaded.</span></div><div class="text-outline">Type <span class="text-primary font-semibold">help</span>, <span class="text-secondary font-semibold">ascii</span>, <span class="text-tertiary font-semibold">skills</span>, <span class="text-primary font-semibold">projects</span>, or <span class="text-secondary font-semibold">matrix</span>.</div></div><form class="flex items-center px-3 py-2 bg-surface-container-low border-t border-outline-variant/60" id="cli-input-form"><span class="text-secondary font-bold text-[13px] mr-1.5" id="cli-prompt-arrow">❯</span><input autocomplete="off" class="w-full bg-transparent text-[13px] text-secondary focus:outline-none font-code-block placeholder:text-outline/60" id="cli-command-input" placeholder="type command (try: 'ascii', 'nexus', or 'skills')..." spellcheck="false" type="text"/><button class="font-label-micro text-label-micro px-2.5 py-1 rounded bg-secondary text-on-secondary font-bold ml-2 shadow-[0_0_10px_rgba(78,222,163,0.4)]" id="cli-exec-btn" type="submit">EXEC</button></form></div></div>
+<script id="cli-interactive-logic">
+(() => {
+  const toggleBtn = document.getElementById('cli-mode-toggle-btn');
+  const floatTrigger = document.getElementById('floating-cli-trigger');
+  const drawer = document.getElementById('cli-terminal-drawer');
+  const closeBtn = document.getElementById('cli-close-btn');
+  const crtToggle = document.getElementById('cli-crt-toggle');
+  const rainToggle = document.getElementById('matrix-rain-toggle');
+  const cliAsciiBtn = document.getElementById('cli-ascii-shortcut-btn');
+  const form = document.getElementById('cli-input-form');
+  const input = document.getElementById('cli-command-input');
+  const output = document.getElementById('terminal-output');
+  const crtLayer = document.getElementById('retro-crt-matrix-layer');
+  const crtBeam = document.getElementById('crt-beam-bar');
+  const crtHudStatus = document.getElementById('crt-hud-status');
+  const crtPhosphorLabel = document.getElementById('crt-phosphor-label');
+  const cliIndicator = document.getElementById('cli-btn-indicator');
+  const execBtn = document.getElementById('cli-exec-btn');
+  const promptArrow = document.getElementById('cli-prompt-arrow');
+  const matrixCanvas = document.getElementById('matrix-rain-canvas');
+
+  let crtMode = 'green'; // 'green' or 'amber'
+  let isCrtActive = false;
+  let isRainActive = true;
+  let canvasAnimationId = null;
+
+  // Matrix Rain Simulation
+  const ctx = matrixCanvas?.getContext('2d');
+  const chars = '0123456789ABCDEFｦｱｳｴｵｶｷｹｺｻｼｽｾｿﾀﾂﾃﾅﾆﾇﾈﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ';
+  const charArray = chars.split('');
+  let fontSize = 14;
+  let columns = 0;
+  let drops = [];
+
+  function initMatrixRain() {
+    if (!matrixCanvas || !ctx) return;
+    matrixCanvas.width = window.innerWidth;
+    matrixCanvas.height = window.innerHeight;
+    columns = Math.floor(matrixCanvas.width / fontSize);
+    drops = [];
+    for (let x = 0; x < columns; x++) {
+      drops[x] = Math.floor(Math.random() * -50);
+    }
+  }
+
+  function drawMatrix() {
+    if (!ctx || !matrixCanvas) return;
+    ctx.fillStyle = 'rgba(17, 19, 24, 0.08)';
+    ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+    ctx.fillStyle = crtMode === 'amber' ? '#fbbf24' : '#4edea3';
+    ctx.font = `${fontSize}px "JetBrains Mono", monospace`;
+
+    for (let i = 0; i < drops.length; i++) {
+      const text = charArray[Math.floor(Math.random() * charArray.length)];
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+      if (drops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i]++;
+    }
+  }
+
+  function startMatrixLoop() {
+    if (canvasAnimationId) cancelAnimationFrame(canvasAnimationId);
+    initMatrixRain();
+    function loop() {
+      if (isCrtActive && isRainActive) {
+        drawMatrix();
+      }
+      canvasAnimationId = requestAnimationFrame(loop);
+    }
+    loop();
+  }
+
+  window.addEventListener('resize', initMatrixRain);
+
+  function applyPhosphorTheme(mode) {
+    crtMode = mode;
+    if (mode === 'amber') {
+      if (crtToggle) crtToggle.textContent = 'CRT: AMBER';
+      if (crtPhosphorLabel) {
+        crtPhosphorLabel.textContent = 'P3-AMBER';
+        crtPhosphorLabel.className = 'font-bold text-[#fbbf24]';
+      }
+      if (output) {
+        output.style.color = '#fbbf24';
+        output.style.textShadow = '0 0 6px rgba(251,191,36,0.8), 0 0 12px rgba(245,158,11,0.4)';
+      }
+      if (input) input.style.color = '#fbbf24';
+      if (promptArrow) promptArrow.className = 'text-[#fbbf24] font-bold text-[13px] mr-1.5';
+      if (drawer) {
+        drawer.classList.remove('matrix-glow-green', 'border-secondary/40');
+        drawer.classList.add('matrix-glow-amber', 'border-[#fbbf24]/50');
+      }
+      if (execBtn) {
+        execBtn.className = 'font-label-micro text-label-micro px-2.5 py-1 rounded bg-[#fbbf24] text-black font-bold ml-2 shadow-[0_0_10px_rgba(251,191,36,0.5)]';
+      }
+      if (crtBeam) {
+        crtBeam.classList.add('amber');
+      }
+      document.querySelectorAll('.ascii-schematic-pre').forEach(el => {
+        el.classList.add('text-[#fbbf24]');
+      });
+    } else {
+      if (crtToggle) crtToggle.textContent = 'CRT: GREEN';
+      if (crtPhosphorLabel) {
+        crtPhosphorLabel.textContent = 'P1-GREEN';
+        crtPhosphorLabel.className = 'font-bold text-secondary';
+      }
+      if (output) {
+        output.style.color = '#4edea3';
+        output.style.textShadow = '0 0 6px rgba(78,222,163,0.75), 0 0 12px rgba(0,255,102,0.35)';
+      }
+      if (input) input.style.color = '#4edea3';
+      if (promptArrow) promptArrow.className = 'text-secondary font-bold text-[13px] mr-1.5';
+      if (drawer) {
+        drawer.classList.remove('matrix-glow-amber', 'border-[#fbbf24]/50');
+        drawer.classList.add('matrix-glow-green', 'border-secondary/40');
+      }
+      if (execBtn) {
+        execBtn.className = 'font-label-micro text-label-micro px-2.5 py-1 rounded bg-secondary text-on-secondary font-bold ml-2 shadow-[0_0_10px_rgba(78,222,163,0.4)]';
+      }
+      if (crtBeam) {
+        crtBeam.classList.remove('amber');
+      }
+      document.querySelectorAll('.ascii-schematic-pre').forEach(el => {
+        el.classList.remove('text-[#fbbf24]');
+      });
+    }
+  }
+
+  function setCrtState(active) {
+    isCrtActive = active;
+    if (active) {
+      crtLayer?.classList.remove('hidden');
+      document.body.classList.add('crt-active-layer');
+      crtLayer?.classList.add('crt-boot-anim');
+      setTimeout(() => crtLayer?.classList.remove('crt-boot-anim'), 500);
+
+      toggleBtn?.classList.add('border-secondary', 'text-secondary', 'bg-secondary/15');
+      if (cliIndicator) {
+        cliIndicator.className = 'w-1.5 h-1.5 rounded-full bg-secondary animate-ping shadow-[0_0_10px_#4edea3]';
+      }
+      applyPhosphorTheme(crtMode);
+      startMatrixLoop();
+    } else {
+      crtLayer?.classList.add('hidden');
+      document.body.classList.remove('crt-active-layer');
+      toggleBtn?.classList.remove('border-secondary', 'bg-secondary/15');
+      if (cliIndicator) {
+        cliIndicator.className = 'w-1.5 h-1.5 rounded-full bg-secondary animate-pulse';
+      }
+    }
+  }
+
+  const toggleTerminal = () => {
+    if (!drawer) return;
+    const isOpening = drawer.classList.contains('hidden');
+    if (isOpening) {
+      drawer.classList.remove('hidden');
+      setCrtState(true);
+      input?.focus();
+    } else {
+      drawer.classList.add('hidden');
+      setCrtState(false);
+    }
+  };
+
+  toggleBtn?.addEventListener('click', toggleTerminal);
+  floatTrigger?.addEventListener('click', toggleTerminal);
+  closeBtn?.addEventListener('click', () => {
+    drawer?.classList.add('hidden');
+    setCrtState(false);
+  });
+
+  crtToggle?.addEventListener('click', () => {
+    applyPhosphorTheme(crtMode === 'amber' ? 'green' : 'amber');
+  });
+
+  cliAsciiBtn?.addEventListener('click', () => {
+    if (typeof toggleGlobalAscii === 'function') {
+      toggleGlobalAscii();
+      const resLine = document.createElement('div');
+      resLine.className = 'font-mono text-tertiary';
+      resLine.textContent = `[SYSTEM] ASCII schematic view toggled across all projects.`;
+      output?.appendChild(resLine);
+      output.scrollTop = output.scrollHeight;
+    }
+  });
+
+  rainToggle?.addEventListener('click', () => {
+    isRainActive = !isRainActive;
+    if (rainToggle) rainToggle.textContent = isRainActive ? 'RAIN: ON' : 'RAIN: OFF';
+    if (!isRainActive && ctx && matrixCanvas) {
+      ctx.clearRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+    }
+  });
+
+  const commands = {
+    help: 'Available commands:\n• ascii     - Toggle ASCII art schematic mode\n• nexus     - Print Nexus WASM CRDT schematic in terminal\n• synapse   - Print Synapse LLM pipeline schematic in terminal\n• skills    - Distributed systems & core competencies\n• projects  - Quick highlight of production architectures\n• about     - Career summary & metrics\n• matrix    - Toggle matrix background rain\n• crt       - Switch phosphor color (green / amber)\n• clear     - Clear terminal buffer\n• exit      - Close CLI and disable CRT mode',
+    skills: 'Languages : Rust, TypeScript, Go, Python, C++\nStack     : WebSockets CRDT, gRPC/Protobuf, Redis PubSub, Tokio, pgvector',
+    about: 'Alex Rivera :: Senior Full-Stack & Systems Architect\n7+ Years Exp | 1.2M+ MAU impact | 99.99% Production SLA track record',
+    projects: '1. Nexus Engine       :: Real-time CRDT Canvas (<15ms latency @ 5k peers)\n2. Synapse Copilot     :: Distributed LLM Pipeline (pgvector + quantized RAG)\n3. HyperScale Cache    :: Zero-alloc Rust in-memory KV engine (180µs P99)',
+    nexus: `┌───────────────────┐     TLS WebSockets ●»●»     ┌────────────────────────┐
+│  Local WASM Node  │ ════════════════════════════▶ │  Cloudflare Workers    │
+│  Client (YATA CRDT)│ ◀════════════════════════════ │  Edge PoP (<14ms)     │
+└─────────┬─────────┘     «●«● Binary Bin-Diffs   └───────────┬────────────┘
+          │ ▼                                                 │ ▼
+          │ ● Local Snapshot                                  │ ◆ Tokio Pub/Sub
+┌─────────▼─────────┐                               ┌───────────▼────────────┐
+│  IndexedDB Cache  │ ●                             │    Rust State Broker   │ ●
+│  (Offline-First)  │                               │  (Tokio RingBuffer)    │
+└───────────────────┘                               └────────────────────────┘`,
+    synapse: `[User Query] ══●»●══▶ [Embedding Gen (384d)] ══◆»◆══▶ [HNSW Vector ANN]
+                                                        │ ▼ Top-8 TopK
+[SSE Stream] ◀══●«●══ [FastAPI Agent Router] ◀══◆«◆══ [Quantized RAG Ctx]`,
+    ascii: 'ASCII_TOGGLE',
+    matrix: 'MATRIX_TOGGLE',
+    crt: 'CRT_TOGGLE',
+    exit: 'EXIT',
+    clear: 'CLEAR'
+  };
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const val = (input?.value || '').trim().toLowerCase();
+    if (!val) return;
+
+    const cmdLine = document.createElement('div');
+    cmdLine.className = 'text-outline mt-1 font-mono';
+    cmdLine.textContent = `❯ ${val}`;
+    output?.appendChild(cmdLine);
+
+    if (val === 'clear') {
+      if (output) output.innerHTML = '';
+    } else if (val === 'exit') {
+      drawer?.classList.add('hidden');
+      setCrtState(false);
+    } else if (val === 'ascii') {
+      if (typeof toggleGlobalAscii === 'function') toggleGlobalAscii();
+      const resLine = document.createElement('div');
+      resLine.className = 'font-mono text-tertiary';
+      resLine.textContent = `[OK] ASCII Art Architecture Mode active. View project cards above!`;
+      output?.appendChild(resLine);
+    } else if (val === 'crt') {
+      applyPhosphorTheme(crtMode === 'amber' ? 'green' : 'amber');
+      const resLine = document.createElement('div');
+      resLine.className = 'font-mono';
+      resLine.textContent = `Phosphor profile shifted to: ${crtMode.toUpperCase()}`;
+      output?.appendChild(resLine);
+    } else if (val === 'matrix') {
+      isRainActive = !isRainActive;
+      if (rainToggle) rainToggle.textContent = isRainActive ? 'RAIN: ON' : 'RAIN: OFF';
+      const resLine = document.createElement('div');
+      resLine.className = 'font-mono';
+      resLine.textContent = `Matrix rain streaming: ${isRainActive ? 'ACTIVE' : 'SUSPENDED'}`;
+      output?.appendChild(resLine);
+    } else if (commands[val]) {
+      const resLine = document.createElement('div');
+      resLine.className = 'whitespace-pre-wrap font-mono';
+      resLine.textContent = commands[val];
+      output?.appendChild(resLine);
+    } else {
+      const errLine = document.createElement('div');
+      errLine.className = 'text-error font-mono';
+      errLine.textContent = `Command not recognized: "${val}". Type 'help' for diagnostics.`;
+      output?.appendChild(errLine);
+    }
+
+    if (input) input.value = '';
+    output.scrollTop = output.scrollHeight;
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === '`' || e.key === '~') {
+      e.preventDefault();
+      toggleTerminal();
+    }
+  });
+})();
+</script>
+<nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface-container-lowest/85 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.4)]" data-active-classes="text-primary font-semibold"><div class="flex items-center justify-around h-16 px-gutter-mobile"><a aria-current="page" class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] py-1 transition-colors text-primary font-semibold" data-path="projects" href="#"><span class="material-symbols-outlined text-[22px]">terminal</span><span class="font-label-tag text-label-tag mt-0.5">Projects</span></a><a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="tech-stack" href="#"><span class="material-symbols-outlined text-[22px]">memory</span><span class="font-label-tag text-label-tag mt-0.5">Tech Stack</span></a><a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="experience" href="#"><span class="material-symbols-outlined text-[22px]">history_edu</span><span class="font-label-tag text-label-tag mt-0.5">Experience</span></a><a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="contact" href="#"><span class="material-symbols-outlined text-[22px]">alternate_email</span><span class="font-label-tag text-label-tag mt-0.5">Contact</span></a></div></nav>
+</body></html>

@@ -1,0 +1,624 @@
+================================================================================
+                       SŪTRA ATELIER - SYSTEM DESIGN SPECIFICATION
+================================================================================
+Document Version : 2.0.0
+Last Updated     : October 2026
+System Type      : Full-Stack E-Commerce Platform (Luxury Indian Handloom & Ready-to-Wear)
+Architecture     : Next.js App Router (Hybrid Server/Client), Supabase BaaS, Razorpay Gateway
+
+--------------------------------------------------------------------------------
+TABLE OF CONTENTS
+--------------------------------------------------------------------------------
+1.  Executive Summary & Purpose
+2.  High-Level System Architecture & Topology
+3.  Infrastructure & Hosting Environment
+4.  Technology Stack & Runtime Dependencies
+5.  Routing, UI Architecture & Client-Server Composition
+6.  Identity, Authentication & Dual-Session RBAC
+7.  End-to-End Operational Flows
+    7.1  Discovery, Catalog & Search Flow
+    7.2  Cart, Wishlist & Session Persistence
+    7.3  Address Management, Postal Validation & Map Pinning
+    7.4  Checkout, Inventory Locking & Payment Gateway (Razorpay/COD)
+    7.5  Order Lifecycle & Status Tracking (Order vs. Return Flow Separation)
+    7.6  Returns & Refunds Lifecycle (5-Stage Admin Workflow, Bank/UPI Payouts)
+    7.7  Admin Operations & Inventory Management
+8.  Complete API Endpoint Reference
+9.  Database Architecture & Data Model (Supabase Postgres)
+    9.1  Entity Relationship Overview
+    9.2  Core Table Schemas & Constraints
+    9.3  Transactional RPCs & Triggers
+    9.4  Row-Level Security (RLS) Policies
+10. Storage Architecture (Media & Public CDN)
+11. External Integrations (Razorpay, India Post, Leaflet/OSM, Twilio)
+12. Security, Compliance & Secret Management
+13. CI/CD, Deployment Pipelines & Vercel Production Nuances
+14. Source Code Directory Map
+
+================================================================================
+1. EXECUTIVE SUMMARY & PURPOSE
+================================================================================
+Sūtra Atelier is a modern digital flagship for artisanal, bespoke Indian handloom
+craftsmanship. The platform delivers an editorial, high-touch luxury storefront
+coupled with an enterprise-grade order management, inventory control, and customer
+returns/refund engine.
+
+Core System Objectives:
+- Deliver ultra-fast, server-rendered editorial product pages with responsive client interactivity.
+- Provide a robust checkout pipeline with real-time stock locking, coupon application, and Razorpay/COD support.
+- Maintain a strictly separated, tamper-proof 5-stage return and refund workflow with secure capture of customer UPI/Bank account details.
+- Guarantee high availability and graceful degradation: if backend services undergo maintenance, catalog browsing falls back seamlessly to embedded collections.
+- Strictly segregate administrative authority from customer accounts via isolated token cookies and server-side role validation.
+
+================================================================================
+2. HIGH-LEVEL SYSTEM ARCHITECTURE & TOPOLOGY
+================================================================================
+
+ [ CLIENT LAYER ]
+   +--------------------------------------------------------------------+
+   | Mobile Web / Desktop Browser (React 19, Tailwind CSS, Lucide Icons)|
+   |   - Storefront, Mini Bag Drawer, Wishlist, Leaflet Map Picker      |
+   |   - Customer Portal: Profile, Order History, Return Tracking       |
+   |   - Admin Console: Inventory Watch, 5 Recent Orders, Return Actions|
+   +---------------------------------+----------------------------------+
+                                     | HTTPS (TLS 1.3)
+                                     v
+ [ APPLICATION LAYER - VERCEL SERVERLESS EDGE / NODE.JS RUNTIME ]
+   +--------------------------------------------------------------------+
+   | Next.js 15 App Router                                              |
+   |   - Dynamic Server Components (SEO-optimized catalog, Admin shell)  |
+   |   - Interactive Client Components (Cart drawer, Checkout steps)     |
+   |   - Route Handlers (/api/* for auth, orders, payments, admin)      |
+   |   - Security Middlewares & Server Auth Parsers (sb-*-auth-token)   |
+   +----------+--------------------+---------------------+--------------+
+              |                    |                     |
+              v                    v                     v
+ [ BACKEND SERVICES ]     [ PAYMENT GATEWAY ]   [ THIRD-PARTY APIS ]
+   +------------------+   +-----------------+   +-----------------------+
+   | Supabase Cloud   |   | Razorpay API    |   | India Post PIN API    |
+   |  - PostgreSQL 15 |   |  - Order Create |   |  (Pincode validation) |
+   |  - Supabase Auth |   |  - Webhooks     |   | OpenStreetMap Tiles   |
+   |  - Supabase S3   |   |  - Signatures   |   |  (Leaflet mapping)    |
+   |  - PostgREST RPC |   +-----------------+   | Twilio SMS (Optional) |
+   +------------------+                         +-----------------------+
+
+Fail-Safe Architectural Safeguards:
+1. Catalog Resilience: If Supabase connection fails, `src/lib/products.ts` provides a curated catalog fallback.
+2. Admin Dashboard Resilience: `/admin` utilizes dual-layer credential fallback (Service-Role -> Authenticated Session client) with try/catch prefetching to prevent 500 runtime rendering crashes.
+3. Database Isolation: Original customer order records and return flow lifecycles are maintained independently so historical orders remain intact.
+
+================================================================================
+3. INFRASTRUCTURE & HOSTING ENVIRONMENT
+================================================================================
+Hosting Platform:
+- Frontend & API: Vercel Serverless Infrastructure (Node.js 20.x runtime, Edge network for assets).
+- Region: Primary AWS Mumbai (ap-south-1) / Vercel Edge routing optimized for Indian traffic.
+- Custom Domains & SSL: Automatic TLS certificate provisioning via Let's Encrypt / Vercel DNS.
+
+Database & Auth Infrastructure:
+- Engine: Supabase Cloud (Managed PostgreSQL 15 on AWS).
+- Connection Mode: Direct connection via `@supabase/supabase-js` and `@supabase/ssr`.
+- Storage: Supabase Object Storage (S3-compliant) configured with public read buckets (`product-images`, `banners`).
+
+Payment Gateway Infrastructure:
+- Razorpay India Production / Sandbox environment with mutual HMAC SHA-256 signature verification.
+- Webhook endpoints listening to asynchronous server-to-server `payment.captured` and `payment.failed` payloads.
+
+External Mapping & Postal Services:
+- India Post Public Postal API for real-time district, state, and branch post office lookup.
+- OpenStreetMap CDN (`tile.openstreetmap.org`) for interactive leaflet delivery coordinates.
+
+================================================================================
+4. TECHNOLOGY STACK & RUNTIME DEPENDENCIES
+================================================================================
+Core Framework:
+- Next.js 15.5+ (App Router architecture, React Server Components enabled)
+- React 19.x & React-DOM 19.x
+- TypeScript 5.9+ (Strict Type Checking enabled)
+
+Libraries & Dependencies:
+- `@supabase/ssr` (^0.6.1) & `@supabase/supabase-js` (^2.57.4): Secure cookie-driven Auth & Postgres interface.
+- `razorpay` (^2.9.6): Official server-side SDK for order creation and verification.
+- `leaflet` (^1.9.4) & `@types/leaflet` (^1.9.22): Client-side map rendering for precise delivery geocoding.
+- `lucide-react` (^0.468.0): Iconography suite for luxury UI.
+- `jspdf` (^4.2.1): Automated client/server generation of GST-compliant PDF invoices.
+- `tailwindcss` (^4.1.13) & `@tailwindcss/postcss`: Modern utility-first responsive styling.
+
+Build & Tooling Commands:
+- `npm run dev`       : Boots local Turbopack/Next.js development server.
+- `npm run build`     : Compiles production bundles, validates types, and optimizes static pages.
+- `npm run typecheck` : Runs non-emitting TypeScript compiler verification (`tsc --noEmit`).
+- `npm run lint`      : Runs ESLint 9 checks.
+- `npm run seed`      : Executes `scripts/seed.ts` via TSX to populate Supabase with catalog data.
+
+================================================================================
+5. ROUTING, UI ARCHITECTURE & CLIENT-SERVER COMPOSITION
+================================================================================
+
+App Router Hierarchy:
+  src/app/
+  ├── layout.tsx                  # Global shell, font preloads, navigation header, cart drawer
+  ├── page.tsx                    # Landing page (editorial hero, featured carousel, story)
+  ├── [slug]/page.tsx             # Dynamic storefront page dispatcher (shop, cart, confirmation)
+  ├── sale/page.tsx               # Curated clearance & promotional collection
+  ├── category/[slug]/page.tsx    # Category catalog with color, price & size filters
+  ├── products/[slug]/page.tsx    # Luxury PDP with image gallery, size selector, delivery check
+  ├── address/page.tsx            # Dedicated saved address book with Leaflet map locator
+  ├── returns/page.tsx            # Customer returns portal, tracking & 7-day policy details
+  ├── reset-password/page.tsx     # Recovery password update interface
+  ├── admin/
+  │   ├── page.tsx                # Server-rendered protected admin dashboard
+  │   └── login/page.tsx          # Dedicated administrator login form
+  ├── api/                        # REST Route Handlers (JSON responses)
+  ├── robots.ts                   # Search crawler directives
+  └── sitemap.ts                  # Dynamic XML sitemap generator
+
+UI Component Architecture:
+- `src/components/storefront.tsx`      : Shared client-side shopping journey orchestrator (cart state, modals, toasts).
+- `src/components/admin-dashboard.tsx` : Administrative control panel (Overview, Orders, Returns, Products, Coupons, Customers).
+- `src/components/location-map.tsx`    : Dynamic Leaflet map component with draggable pin and GPS geolocation.
+- `src/components/store-page.tsx`      : Multi-view legacy customer journey backup.
+
+================================================================================
+6. IDENTITY, AUTHENTICATION & DUAL-SESSION RBAC
+================================================================================
+
+Sūtra Atelier implements a strict **Dual-Session Isolation Architecture** to prevent
+privilege cross-contamination:
+
+1. Customer Session (`sb-customer-auth-token`):
+   - Created when customers log in via email/password or phone OTP.
+   - Restricted to customer-facing APIs (`/api/cart`, `/api/addresses`, `/api/orders`).
+   - Server-side guard `getCustomerUser()` actively blocks any account marked `is_admin = true` from acting as a customer.
+
+2. Administrator Session (`sb-admin-auth-token`):
+   - Stored in an isolated cookie distinct from customer authentication.
+   - Dedicated login gateway at `/admin/login`.
+   - Access to `/admin` and `/api/admin/*` requires:
+     a) Valid Supabase Auth session in `sb-admin-auth-token`.
+     b) Profile record with `is_admin = true`.
+   - Admin APIs strictly enforce server-side authentication on every request (GET, POST, PATCH, DELETE).
+
+Role-Based Permissions Matrix:
++------------------------+------------+--------------------+--------------------+
+| Resource / Action      | Anonymous  | Authenticated Cust | Store Admin        |
++------------------------+------------+--------------------+--------------------+
+| Browse Catalog         | Read-Only  | Read-Only          | Full CRUD          |
+| Local Storage Cart     | Read/Write | Read/Write         | N/A                |
+| Synced Cart (DB)       | Denied     | Own records only   | Denied             |
+| Address Book           | Denied     | Own records (<= 5) | Denied             |
+| Place Order            | Denied     | Create own orders  | Denied             |
+| Cancel Order (Pending) | Denied     | Own orders only    | Full update        |
+| Request Return (<=7d)  | Denied     | Own delivered ord  | Full update        |
+| Manage 5-Stage Return  | Denied     | Denied             | Full execution     |
+| View Customer Bank/UPI | Denied     | During return only | Refund phase only  |
+| Update Product Stock   | Denied     | Denied             | Full access        |
++------------------------+------------+--------------------+--------------------+
+
+================================================================================
+7. END-TO-END OPERATIONAL FLOWS
+================================================================================
+
+7.1 DISCOVERY, CATALOG & SEARCH FLOW
+- Home and Category pages pre-fetch products dynamically from Supabase `products` table joined with `categories` and `product_variants`.
+- Filters support Color (natural, indigo, charcoal, terracotta, etc.), Size (XS, S, M, L, XL), and Fabric (Khadi Cotton, Mulberry Silk, Linen, Chanderi).
+- Fallback Mechanism: If database query times out, `src/lib/products.ts` populates the catalog without interrupting the user.
+
+7.2 CART, WISHLIST & SESSION PERSISTENCE
+- Guest Cart: Stored in browser `localStorage` under `sutra-cart` for zero-latency UI updates.
+- Persistent Cart: For authenticated users, `/api/cart` synchronizes local items with `cart_items` in PostgreSQL.
+- Mini Bag Drawer: Slide-out panel providing real-time quantity adjustments, free shipping progress bar, and immediate checkout link.
+
+7.3 ADDRESS MANAGEMENT, POSTAL VALIDATION & MAP PINNING
+- Customers can maintain up to 5 saved addresses in PostgreSQL `addresses`.
+- Real-Time Postal Verification: When the customer enters a 6-digit Indian PIN code, the system queries `/api/pincode/[pin]` (backed by India Post API) to auto-populate City and State while validating geographic accuracy.
+- Leaflet Map Geocoding: Customers can drag a pin or click "Use Current Location" to attach exact `latitude` and `longitude` coordinates to their shipping address for delivery precision.
+
+7.4 CHECKOUT, INVENTORY LOCKING & PAYMENT GATEWAY
+- Step 1 (Address Selection): Customer chooses or creates a validated address.
+- Step 2 (Coupon & Review): Order summary recalculates subtotal, applies verified coupon discounts (`/api/coupons/validate`), and adds shipping/GST.
+- Step 3 (Payment Selection):
+  * Cash on Delivery (COD): Permitted for eligible PIN codes; immediately creates order in `placed` status.
+  * Razorpay Online Payment:
+    1. Client calls `/api/payments/create-order`.
+    2. Server initiates Razorpay Order via SDK and creates pending order in PostgreSQL via `create_order` RPC.
+    3. Browser opens Razorpay Checkout modal.
+    4. Upon customer authorization, client sends `razorpay_payment_id`, `razorpay_order_id`, and `razorpay_signature` to `/api/payments/verify`.
+    5. Server computes HMAC SHA-256 hash using `RAZORPAY_KEY_SECRET`. If valid, order status is updated to `placed` and payment status to `paid`.
+    6. Backup reconciliation: Razorpay webhook (`/api/payments/webhook`) listens for `payment.captured` to prevent dropped orders if user closes the browser early.
+
+7.5 ORDER LIFECYCLE & STATUS TRACKING (ORDER VS RETURN SEPARATION)
+- Operational order statuses follow a strict forward progression:
+  `placed` -> `packed` -> `shipped` -> `out_for_delivery` -> `delivered` (or `cancelled`).
+- Order vs. Return Separation:
+  * The historical order details, delivery snapshots, and status history remain permanently isolated in `orders` and `order_status_history`.
+  * Return requests DO NOT overwrite the order status or erase delivery timestamps. The customer order card displays the clean original fulfillment pipeline, keeping return activity in a dedicated, expandable return card.
+
+7.6 RETURNS & REFUNDS LIFECYCLE (5-STAGE ADMIN WORKFLOW, BANK/UPI PAYOUTS)
+- Eligibility: Customer may request a return within 7 calendar days of delivery.
+- Return Submission:
+  * Customer selects items, specifies reason, and provides refund payout details (Bank Account Number + IFSC + Account Holder Name OR UPI ID).
+  * Refund details are securely stored in `profiles` and attached as a snapshot to the return record.
+  * Customer pays NOTHING on returns; only the admin issues refund payments to the customer.
+- The 5-Stage Admin Return Flow:
+  1. `return_requested`        : Customer submitted return; pending initial review.
+  2. `return_acknowledged`     : Admin acknowledges the return request.
+  3. `return_pickup_scheduled` : Admin schedules a reverse courier pickup date.
+  4. `return_pickup_completed` : Reverse logistics team collects the items from the customer.
+  5. `refund_initiated`        : Items received and verified. The Admin dashboard REVEALS customer UPI ID / Bank Account details. Admin initiates bank transfer.
+  6. `refund_completed`        : Admin marks refund settled. The ENTIRE return flow is permanently closed and locked against any further edits.
+
+7.7 ADMIN OPERATIONS & INVENTORY MANAGEMENT
+- Overview Screen: Real-time captured sales metrics, fulfillment counter, active coupons, and an optimized table displaying the **5 most recent orders** with direct navigation.
+- Orders Console: Filter orders by `All`, `To Fulfil`, `Dispatched`, `Delivered`, and `Cancelled`. Update fulfillment status with one click.
+- Returns Console: Filter by `Review Pending`, `Pickup In Progress`, `Refund Processing`, and `Closed`.
+- Product & Variant Suite: Manage catalog items, image uploads to Supabase CDN, and real-time size-wise stock replenishment.
+
+================================================================================
+8. COMPLETE API ENDPOINT REFERENCE
+================================================================================
+
+AUTH & IDENTITY
+---------------
+- POST /api/auth/register
+  Payload: `{ email, password, full_name, phone }`
+  Response: `{ success: true, user: { id, email } }`
+  Creates Supabase Auth user and auto-provisions `profiles` row.
+
+- POST /api/auth/resolve-identifier
+  Payload: `{ identifier }` (email or 10-digit Indian phone)
+  Response: `{ exists: boolean, email?: string }`
+  Resolves phone numbers to primary auth email for seamless login.
+
+CUSTOMER DATA
+-------------
+- GET /api/addresses
+  Headers: `Cookie: sb-customer-auth-token=...` or `Authorization: Bearer <token>`
+  Response: `{ addresses: Address[] }`
+  Returns up to 5 saved addresses, ordered by default flag and creation date.
+
+- POST /api/addresses
+  Payload: `{ recipient_name, phone, street_address, city, state, postal_code, is_default, latitude, longitude }`
+  Response: `{ success: true, address: Address }`
+  Validates 6-digit pincode and enforces maximum 5 address limit per customer.
+
+- PATCH /api/addresses
+  Payload: `{ id, ...updatedFields }`
+  Updates address details or sets new default address.
+
+- DELETE /api/addresses
+  Payload: `{ id }`
+  Deletes address; automatically promotes newest remaining address to default if needed.
+
+- GET / POST / DELETE /api/cart
+  Manages server-persisted cart items linked to `product_variants`.
+
+- GET / POST /api/wishlist
+  Synchronizes customer wishlist records with `wishlist_items`.
+
+CATALOG & PROMOTIONS
+--------------------
+- GET /api/catalog
+  Query: `?category=slug&featured=true`
+  Response: `{ products: Product[] }`
+  Public product catalog with active variants and categories.
+
+- GET /api/pincode/[pin]
+  Response: `{ valid: boolean, city: string, state: string, district: string }`
+  Validates Indian postal codes via India Post API.
+
+- POST /api/coupons/validate
+  Payload: `{ code, cartTotal }`
+  Response: `{ valid: boolean, discount: number, message?: string }`
+  Checks coupon expiration, min_order_value, and active status.
+
+ORDERS & PAYMENTS
+-----------------
+- POST /api/payments/create-order
+  Payload: `{ items: CartItem[], address_id: string, payment_method: "razorpay" | "cod", coupon_code?: string }`
+  Response: `{ order_id: string, razorpay_order_id?: string, amount: number, currency: "INR" }`
+  Executes `create_order` database RPC to atomically lock inventory and create order record.
+
+- POST /api/payments/verify
+  Payload: `{ razorpay_order_id, razorpay_payment_id, razorpay_signature, order_id }`
+  Response: `{ success: true, order_number: string }`
+  Validates HMAC SHA-256 signature; transitions order to `placed` and payment to `paid`.
+
+- POST /api/payments/webhook
+  Listens for Razorpay asynchronous events (`payment.captured`, `payment.failed`).
+
+- GET /api/orders
+  Response: `{ orders: Order[] }`
+  Returns full customer order history with snapshots and return statuses.
+
+- GET /api/orders/invoice?order_id=...
+  Streams client/server generated PDF invoice with GST details.
+
+- POST /api/orders/cancel
+  Payload: `{ order_id, reason }`
+  Cancels placed or packed orders; restores inventory stock in `product_variants`.
+
+- POST /api/orders/return
+  Payload: `{ order_id, items: string[], reason: string, refund_method: "upi" | "bank", refund_details: { upi_id?, account_number?, ifsc?, account_holder? } }`
+  Validates 7-day post-delivery eligibility; creates return record and securely stores refund credentials.
+
+ADMINISTRATION (Requires `sb-admin-auth-token` & `is_admin = true`)
+------------------------------------------------------------------
+- GET /api/admin/orders
+  Query: `?status=all&limit=50`
+  Response: `{ orders: Order[] }`
+  Operational order feed with customer profiles and status history.
+
+- PATCH /api/admin/orders
+  Payload: `{ id, status, tracking_number, courier_name, return_status, pickup_date }`
+  Updates order progression or advances the 5-stage return and refund workflow.
+
+- GET / POST / PATCH /api/admin/products
+  Full catalog product management with image upload handling.
+
+- GET / POST / PATCH /api/admin/categories
+  Category taxonomy management.
+
+- GET / POST / PATCH /api/admin/coupons
+  Promotional coupon code management.
+
+================================================================================
+9. DATABASE ARCHITECTURE & DATA MODEL (SUPABASE POSTGRES)
+================================================================================
+
+9.1 ENTITY RELATIONSHIP OVERVIEW
+
+   [auth.users] 1:1 [profiles]
+                         |
+         +---------------+---------------+----------------+
+         | 1:N           | 1:N           | 1:N            | 1:N
+   [addresses]     [cart_items]   [wishlist]          [orders]
+                         |               |                | 1:N
+                 [product_variants]  [products]     [order_items]
+                         |               |                | 1:N
+                         +---------------+          [order_status_history]
+                                 |
+                            [categories]
+
+9.2 CORE TABLE SCHEMAS & CONSTRAINTS
+
+TABLE: profiles
+- id             : UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE
+- email          : TEXT NOT NULL
+- phone          : TEXT
+- full_name      : TEXT
+- is_admin       : BOOLEAN DEFAULT false
+- refund_upi_id  : TEXT (encrypted/scoped for refund payouts)
+- refund_bank_acc: TEXT (encrypted/scoped for refund payouts)
+- refund_ifsc    : TEXT (scoped for refund payouts)
+- refund_holder  : TEXT (scoped for refund payouts)
+- created_at     : TIMESTAMPTZ DEFAULT now()
+- updated_at     : TIMESTAMPTZ DEFAULT now()
+
+TABLE: addresses
+- id             : UUID PRIMARY KEY DEFAULT gen_random_uuid()
+- user_id        : UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE
+- recipient_name : TEXT NOT NULL
+- phone          : TEXT NOT NULL
+- street_address : TEXT NOT NULL
+- landmark       : TEXT
+- city           : TEXT NOT NULL
+- state          : TEXT NOT NULL
+- postal_code    : VARCHAR(6) NOT NULL CHECK (postal_code ~ '^[1-9][0-9]{5}$')
+- latitude       : NUMERIC(10, 7)
+- longitude      : NUMERIC(10, 7)
+- is_default     : BOOLEAN DEFAULT false
+- created_at     : TIMESTAMPTZ DEFAULT now()
+
+TABLE: products
+- id             : UUID PRIMARY KEY DEFAULT gen_random_uuid()
+- category_id    : UUID REFERENCES categories(id) ON DELETE SET NULL
+- name           : TEXT NOT NULL
+- slug           : TEXT UNIQUE NOT NULL
+- description    : TEXT
+- fabric         : TEXT
+- care           : TEXT
+- price          : NUMERIC(10, 2) NOT NULL CHECK (price >= 0)
+- compare_at_price: NUMERIC(10, 2) CHECK (compare_at_price >= price)
+- image_urls     : TEXT[] DEFAULT '{}'
+- status         : TEXT DEFAULT 'active' CHECK (status IN ('active', 'draft', 'archived'))
+- is_featured    : BOOLEAN DEFAULT false
+- is_sale        : BOOLEAN DEFAULT false
+- created_at     : TIMESTAMPTZ DEFAULT now()
+
+TABLE: product_variants
+- id             : UUID PRIMARY KEY DEFAULT gen_random_uuid()
+- product_id     : UUID NOT NULL REFERENCES products(id) ON DELETE CASCADE
+- size           : VARCHAR(10) NOT NULL
+- color          : TEXT
+- color_hex      : VARCHAR(7)
+- sku            : TEXT UNIQUE
+- stock          : INTEGER NOT NULL DEFAULT 0 CHECK (stock >= 0)
+- created_at     : TIMESTAMPTZ DEFAULT now()
+
+TABLE: orders
+- id             : UUID PRIMARY KEY DEFAULT gen_random_uuid()
+- order_number   : TEXT UNIQUE NOT NULL
+- user_id        : UUID NOT NULL REFERENCES profiles(id)
+- status         : TEXT NOT NULL DEFAULT 'placed' 
+                   CHECK (status IN ('payment_pending', 'placed', 'packed', 'shipped', 'out_for_delivery', 'delivered', 'cancelled'))
+- payment_method : TEXT NOT NULL CHECK (payment_method IN ('razorpay', 'cod'))
+- payment_status : TEXT NOT NULL DEFAULT 'pending' 
+                   CHECK (payment_status IN ('pending', 'paid', 'failed', 'refunded'))
+- subtotal       : NUMERIC(10, 2) NOT NULL
+- discount       : NUMERIC(10, 2) DEFAULT 0
+- shipping_fee   : NUMERIC(10, 2) DEFAULT 0
+- total          : NUMERIC(10, 2) NOT NULL
+- address        : JSONB NOT NULL  -- Immutable snapshot of recipient, street, city, pin, coordinates
+- razorpay_order_id: TEXT
+- razorpay_payment_id: TEXT
+- tracking_number: TEXT
+- courier_name   : TEXT
+- return_status  : TEXT CHECK (return_status IN ('none', 'requested', 'acknowledged', 'pickup_scheduled', 'pickup_done', 'refund_initiated', 'refund_completed'))
+- return_reason  : TEXT
+- return_pickup_date: DATE
+- return_refund_details: JSONB -- Immutable snapshot of bank/UPI details captured during return
+- delivered_at   : TIMESTAMPTZ
+- created_at     : TIMESTAMPTZ DEFAULT now()
+
+TABLE: order_items
+- id             : UUID PRIMARY KEY DEFAULT gen_random_uuid()
+- order_id       : UUID NOT NULL REFERENCES orders(id) ON DELETE CASCADE
+- product_id     : UUID REFERENCES products(id)
+- variant_id     : UUID REFERENCES product_variants(id)
+- name           : TEXT NOT NULL
+- size           : TEXT NOT NULL
+- color          : TEXT
+- price          : NUMERIC(10, 2) NOT NULL
+- quantity       : INTEGER NOT NULL CHECK (quantity > 0)
+- image_url      : TEXT
+
+TABLE: order_status_history
+- id             : UUID PRIMARY KEY DEFAULT gen_random_uuid()
+- order_id       : UUID NOT NULL REFERENCES orders(id) ON DELETE CASCADE
+- status         : TEXT NOT NULL
+- note           : TEXT
+- created_at     : TIMESTAMPTZ DEFAULT now()
+
+9.3 TRANSACTIONAL RPCS & TRIGGERS
+- `create_order` RPC:
+  Executes in a single database transaction:
+  1. Validates user profile.
+  2. Queries `product_variants` with `SELECT ... FOR UPDATE` (pessimistic lock) to verify stock availability.
+  3. Recomputes order subtotal from database price truth (prevents client tampering).
+  4. Deducts stock from `product_variants`.
+  5. Inserts `orders`, bulk inserts `order_items`, and records initial `order_status_history`.
+- `update_default_address` Trigger:
+  Automatically flips previous default address to `false` when a new default address is designated.
+- `enforce_order_state_transition` Trigger:
+  Prevents invalid state jumps (e.g., from `delivered` to `packed`).
+
+9.4 ROW-LEVEL SECURITY (RLS) POLICIES
+- `profiles`:
+  * SELECT / UPDATE: `auth.uid() = id` OR `is_admin = true`.
+- `addresses`:
+  * ALL: `auth.uid() = user_id`.
+- `orders` & `order_items`:
+  * SELECT: `auth.uid() = user_id` OR `is_admin = true`.
+  * INSERT: Server service-role / `create_order` RPC.
+  * UPDATE: `is_admin = true` (or cancellation by owner if status = 'placed').
+- `products` & `categories`:
+  * SELECT: `true` (Public read for active catalog).
+  * ALL: `is_admin = true`.
+
+================================================================================
+10. STORAGE ARCHITECTURE (MEDIA & PUBLIC CDN)
+================================================================================
+Buckets configured in Supabase Storage:
+1. `product-images`:
+   - Access: Public Read.
+   - Max File Size: 5 MB.
+   - Allowed Types: `image/jpeg`, `image/png`, `image/webp`, `image/avif`.
+   - Security: Write/Update/Delete restricted exclusively to administrators.
+2. `banners`:
+   - Access: Public Read.
+   - Max File Size: 10 MB.
+   - Purpose: Editorial campaign imagery, lookbooks, and category headers.
+
+CDN Delivery:
+All media is served through Supabase's global Cloudflare CDN cache layer,
+minimizing origin storage egress.
+
+================================================================================
+11. EXTERNAL INTEGRATIONS
+================================================================================
+
+1. Razorpay Payment Gateway:
+   - Order Initiation: Server SDK (`razorpay.orders.create`).
+   - Webhook Ingestion: Secret-authenticated endpoint `/api/payments/webhook`.
+   - Verification: Cryptographic HMAC SHA-256 validation before database commits.
+
+2. India Post PIN Code Validation API:
+   - Endpoint: `https://api.postalpincode.in/pincode/{PINCODE}`
+   - Integration: Server-proxied through `/api/pincode/[pin]` to avoid client CORS.
+   - Caches responses in memory for high-frequency PIN lookups.
+
+3. OpenStreetMap & Leaflet:
+   - Client-side lazy-loaded map engine (`src/components/location-map.tsx`).
+   - Touch-optimized pin dragging with browser GPS reverse geocoding fallback.
+
+4. Twilio Messaging Service (Optional):
+   - Configured via server environment variables for SMS dispatch notifications.
+
+================================================================================
+12. SECURITY, COMPLIANCE & SECRET MANAGEMENT
+================================================================================
+- Zero-Trust Server Architecture: Never trust client calculations. All order totals, discounts, and inventory counts are authoritatively evaluated on the server.
+- Secret Hygiene:
+  * `SUPABASE_SERVICE_ROLE_KEY`, `RAZORPAY_KEY_SECRET`, and `RAZORPAY_WEBHOOK_SECRET` reside solely in Vercel Encrypted Environment Variables.
+  * Secrets are NEVER bundled into client-side JS (`NEXT_PUBLIC_*`).
+- CSRF & Session Protection:
+  * Strict `SameSite=Lax` and `Secure` cookie policies across customer and admin sessions.
+- PII Scoping:
+  * Customer Bank Account / UPI details are only queryable by administrators during an active `refund_initiated` state and are hidden from all other views.
+
+================================================================================
+13. CI/CD, DEPLOYMENT PIPELINES & VERCEL PRODUCTION NUANCES
+================================================================================
+Deployment Pipeline:
+1. Pull Requests trigger Vercel Preview Deployments.
+2. Commits pushed or merged into `main` branch trigger Production Deployments.
+3. Pre-Flight Verification Pipeline:
+   - `npm run typecheck` : Ensures 100% strict TypeScript compliance.
+   - `npm run lint`      : Enforces ESLint standards.
+   - `npm run build`     : Generates optimized static and dynamic route traces.
+
+Vercel Hobby Plan Collaboration Consideration:
+- On Vercel's free Hobby plan, private repositories reject automatic deployments when a commit author does not own the Vercel account.
+- Operational Standard: Collaborator pull requests must be merged/committed under the project owner's Git author credentials (`Apurv Raj <80682397+ApurvRj@users.noreply.github.com>`) or deployed via GitHub Actions using a personal `VERCEL_TOKEN`.
+
+================================================================================
+14. SOURCE CODE DIRECTORY MAP
+================================================================================
+
+├── src/
+│   ├── app/                                 # Next.js App Router root
+│   │   ├── layout.tsx                       # Global layout & styling
+│   │   ├── page.tsx                         # Editorial storefront homepage
+│   │   ├── address/page.tsx                 # Address management page
+│   │   ├── returns/page.tsx                 # Returns portal & policy page
+│   │   ├── admin/
+│   │   │   ├── page.tsx                     # Server-rendered admin console
+│   │   │   └── login/page.tsx               # Admin authentication page
+│   │   └── api/
+│   │       ├── addresses/route.ts           # Customer saved address CRUD
+│   │       ├── admin/                       # Protected admin route handlers
+│   │       │   ├── orders/route.ts          # Order & return lifecycle updates
+│   │       │   ├── products/route.ts        # Product CRUD
+│   │       │   ├── categories/route.ts      # Category CRUD
+│   │       │   └── coupons/route.ts         # Coupon CRUD
+│   │       ├── auth/                        # Registration, OTP & resolve routes
+│   │       ├── catalog/route.ts             # Public catalog endpoint
+│   │       ├── coupons/validate/route.ts    # Coupon checkout validation
+│   │       ├── payments/                    # Razorpay order, verify & webhook
+│   │       ├── pincode/[pin]/route.ts       # India Post validation proxy
+│   │       └── orders/                      # Customer order, cancel, return APIs
+│   ├── components/                          # React client & server components
+│   │   ├── admin-dashboard.tsx              # Comprehensive admin operations panel
+│   │   ├── location-map.tsx                 # Interactive Leaflet map picker
+│   │   ├── storefront.tsx                   # Storefront state & journey provider
+│   │   └── store-page.tsx                   # Multi-view customer journey engine
+│   └── lib/
+│       ├── products.ts                      # Resilient offline catalog fallback
+│       ├── theme.ts                         # Editorial color & styling constants
+│       └── supabase/                        # Database client factories
+│           ├── client.ts                    # Customer browser client
+│           ├── server.ts                    # Customer server client
+│           ├── admin.ts                     # Service-role admin client
+│           ├── admin-client.ts              # Admin browser client
+│           └── admin-server.ts              # Admin server client
+├── supabase/
+│   ├── migrations/                          # Primary SQL migration scripts
+│   └── *.sql                                # Database update & fix scripts
+├── public/                                  # Static brand assets, logos, icons
+├── package.json                             # Dependencies & scripts
+└── SYSTEM_DESIGN.txt                        # This system architecture specification
+
+================================================================================
+END OF SYSTEM DESIGN SPECIFICATION
+================================================================================

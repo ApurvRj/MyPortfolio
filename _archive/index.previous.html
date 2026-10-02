@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Apurv's software engineering portfolio." />
+  <title>Apurv | Software Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root { --ink:#e8edf4; --muted:#9aa6b7; --canvas:#0a0d12; --panel:#121821; --panel-2:#18202b; --line:rgba(232,237,244,.12); --indigo:#8992ff; --green:#46d99e; --cyan:#6ccdf5; --warm:#ffb86b; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--canvas); color:var(--ink); font-family:Manrope,Arial,sans-serif; font-size:16px; line-height:1.6; }
+    body::before { content:""; position:fixed; inset:0; pointer-events:none; opacity:.32; background-image:linear-gradient(rgba(232,237,244,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(232,237,244,.035) 1px,transparent 1px); background-size:48px 48px; mask-image:linear-gradient(to bottom,black 0%,transparent 62%); }
+    button, a { font:inherit; }
+    button { cursor:pointer; }
+    a { color:inherit; text-decoration:none; }
+    .mono { font-family:"DM Mono",Consolas,monospace; }
+    .shell { width:min(1180px,calc(100% - 40px)); margin:auto; }
+    .eyebrow { display:flex; align-items:center; gap:9px; margin:0 0 15px; color:var(--green); font:500 11px/1.4 "DM Mono",monospace; letter-spacing:0; text-transform:uppercase; }
+    .pulse { width:8px; height:8px; border-radius:50%; background:var(--green); box-shadow:0 0 0 5px rgba(70,217,158,.12); }
+    .site-header { position:sticky; top:0; z-index:20; background:rgba(10,13,18,.82); border-bottom:1px solid rgba(232,237,244,.08); backdrop-filter:blur(16px); }
+    .header-inner { min-height:72px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+    .brand { display:flex; align-items:center; gap:11px; font-weight:800; }
+    .brand-mark { width:33px; height:33px; display:grid; place-items:center; color:var(--green); background:var(--panel); border:1px solid var(--line); border-radius:7px; }
+    .brand small { display:block; color:var(--muted); font:400 10px/1.1 "DM Mono",monospace; }
+    .primary-nav { display:flex; align-items:center; gap:23px; color:var(--muted); font-size:13px; }
+    .primary-nav a:hover { color:var(--ink); }
+    .icon-button { width:38px; height:38px; display:grid; place-items:center; color:var(--muted); background:transparent; border:1px solid var(--line); border-radius:7px; }
+    .icon-button:hover { border-color:var(--indigo); color:var(--ink); }
+    .mobile-nav-toggle { display:none; }
+    .hero { min-height:680px; display:grid; grid-template-columns:1.15fr .85fr; align-items:center; gap:76px; padding:76px 0 64px; }
+    h1,h2,h3,p { margin-top:0; }
+    h1 { max-width:720px; margin-bottom:21px; font-size:clamp(43px,6vw,74px); line-height:1.06; letter-spacing:0; }
+    h1 .accent { color:var(--indigo); }
+    .hero-copy > p:not(.eyebrow) { max-width:600px; margin-bottom:30px; color:var(--muted); font-size:18px; }
+    .action-row { display:flex; flex-wrap:wrap; gap:12px; }
+    .button { min-height:45px; display:inline-flex; align-items:center; justify-content:center; gap:9px; padding:0 17px; border:1px solid transparent; border-radius:7px; font-size:14px; font-weight:700; transition:transform .2s,border-color .2s,background .2s; }
+    .button:hover { transform:translateY(-2px); }
+    .button-primary { color:#0b1020; background:var(--indigo); }
+    .button-secondary { color:var(--ink); background:rgba(18,24,33,.8); border-color:var(--line); }
+    .button-secondary:hover { border-color:rgba(232,237,244,.28); }
+    .hero-meta { display:flex; flex-wrap:wrap; gap:17px; margin-top:39px; color:var(--muted); font:400 12px/1.5 "DM Mono",monospace; }
+    .hero-meta span { display:flex; align-items:center; gap:7px; }
+    .hero-meta i { width:6px; height:6px; border-radius:50%; background:var(--cyan); }
+    .portrait-wrap { position:relative; max-width:405px; justify-self:end; }
+    .portrait-wrap::after { content:""; position:absolute; inset:16px -16px -16px 16px; z-index:-1; border:1px solid rgba(137,146,255,.46); border-radius:7px; }
+    .portrait { display:block; width:100%; aspect-ratio:4/4.7; object-fit:cover; object-position:center top; filter:saturate(.88) contrast(1.05); border:1px solid var(--line); border-radius:7px; }
+    .portrait-tag { position:absolute; right:-20px; bottom:24px; display:flex; align-items:center; gap:9px; padding:9px 12px; color:var(--green); background:#0c1118; border:1px solid rgba(70,217,158,.38); border-radius:6px; font:500 11px/1.4 "DM Mono",monospace; }
+    .section { padding:100px 0; border-top:1px solid rgba(232,237,244,.08); }
+    .section-head { display:flex; align-items:end; justify-content:space-between; gap:24px; margin-bottom:38px; }
+    .section-title { margin:0; font-size:31px; line-height:1.2; letter-spacing:0; }
+    .section-note { max-width:380px; margin:0; color:var(--muted); font-size:14px; text-align:right; }
+    .metric-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:7px; overflow:hidden; }
+    .metric { min-height:126px; padding:23px; background:var(--panel); }
+    .metric b { display:block; margin-bottom:5px; color:var(--green); font:500 29px/1.1 "DM Mono",monospace; }
+    .metric span { color:var(--muted); font-size:13px; }
+    .project-tools { display:flex; align-items:center; justify-content:space-between; gap:20px; margin-bottom:23px; }
+    .filters { display:flex; flex-wrap:wrap; gap:8px; }
+    .filter { min-height:32px; padding:0 11px; color:var(--muted); background:transparent; border:1px solid var(--line); border-radius:5px; font:500 11px/1 "DM Mono",monospace; }
+    .filter[aria-pressed="true"], .filter:hover { color:var(--indigo); border-color:rgba(137,146,255,.7); background:rgba(137,146,255,.07); }
+    .project-count { color:var(--muted); font:400 11px/1.4 "DM Mono",monospace; }
+    .projects { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .project { display:flex; flex-direction:column; min-height:390px; padding:22px; background:rgba(18,24,33,.9); border:1px solid var(--line); border-radius:7px; transition:transform .22s,border-color .22s,box-shadow .22s; }
+    .project:hover { transform:translateY(-4px); border-color:rgba(137,146,255,.66); box-shadow:0 16px 34px rgba(0,0,0,.2); }
+    .project.is-hidden { display:none; }
+    .project-topline { display:flex; align-items:center; justify-content:space-between; gap:8px; color:var(--muted); font:400 10px/1.4 "DM Mono",monospace; }
+    .project-state { display:flex; align-items:center; gap:6px; color:var(--green); }
+    .project-state::before { content:""; width:6px; height:6px; border-radius:50%; background:currentColor; }
+    .project h3 { margin:34px 0 13px; font-size:22px; line-height:1.25; }
+    .project p { color:var(--muted); font-size:14px; }
+    .terminal-art { margin:12px 0 20px; min-height:93px; padding:12px; overflow:hidden; color:var(--cyan); background:#0a0f15; border:1px solid rgba(232,237,244,.08); border-radius:5px; font:400 10px/1.55 "DM Mono",monospace; white-space:pre; }
+    .terminal-art .g { color:var(--green); }.terminal-art .i { color:var(--indigo); }.terminal-art .w { color:var(--warm); }
+    .tags { display:flex; flex-wrap:wrap; gap:7px; margin-top:auto; }
+    .tag { padding:4px 7px; color:#bdc6d4; background:rgba(232,237,244,.04); border:1px solid rgba(232,237,244,.1); border-radius:4px; font:400 10px/1.2 "DM Mono",monospace; }
+    .project-link { display:inline-flex; align-items:center; gap:7px; margin-top:20px; color:var(--indigo); font-size:13px; font-weight:700; }
+    .project-link:hover { color:var(--ink); }
+    .stack-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .stack-panel { padding:25px; background:var(--panel); border:1px solid var(--line); border-radius:7px; }
+    .stack-panel h3 { margin:0 0 20px; font-size:16px; }
+    .stack-list { display:grid; grid-template-columns:repeat(2,1fr); gap:11px; padding:0; margin:0; list-style:none; }
+    .stack-list li { display:flex; align-items:center; gap:9px; color:#c7cfda; font-size:13px; }
+    .stack-list i { width:7px; height:7px; border-radius:2px; background:var(--cyan); }.stack-list li:nth-child(2n) i { background:var(--green); }
+    .experience { display:grid; grid-template-columns:.8fr 1.2fr; gap:80px; }
+    .experience-copy p:not(.eyebrow) { color:var(--muted); }
+    .timeline { border-top:1px solid var(--line); }
+    .role { border-bottom:1px solid var(--line); }
+    .role-toggle { width:100%; display:grid; grid-template-columns:110px 1fr auto; align-items:center; gap:16px; padding:22px 0; color:var(--ink); text-align:left; background:transparent; border:0; }
+    .role-date { color:var(--cyan); font:400 11px/1.4 "DM Mono",monospace; }.role-title { display:block; font-size:15px; font-weight:700; }.role-company { display:block; color:var(--muted); font-size:12px; }.role-toggle svg { color:var(--muted); transition:transform .2s; }.role-toggle[aria-expanded="true"] svg { transform:rotate(180deg); color:var(--indigo); }
+    .role-detail { display:none; padding:0 42px 24px 126px; color:var(--muted); font-size:13px; }.role-detail.open { display:block; }.role-detail ul { padding-left:18px; margin:10px 0 0; }.role-detail li { margin-bottom:6px; }
+    .contact { padding:90px 0 105px; border-top:1px solid rgba(232,237,244,.08); }
+    .contact-inner { display:grid; grid-template-columns:1.15fr .85fr; gap:80px; align-items:end; }
+    .contact h2 { max-width:650px; margin:0 0 18px; font-size:clamp(36px,5vw,57px); line-height:1.1; letter-spacing:0; }.contact p { max-width:580px; color:var(--muted); }
+    .contact-card { padding:23px; background:var(--panel); border:1px solid var(--line); border-radius:7px; }.contact-card label { display:block; margin-bottom:8px; color:var(--muted); font:400 10px/1.4 "DM Mono",monospace; }.email-line { display:flex; align-items:center; justify-content:space-between; gap:12px; color:var(--indigo); font:600 15px/1.4 "DM Mono",monospace; }.email-line a { overflow-wrap:anywhere; }.socials { display:flex; gap:10px; margin-top:17px; }.socials a { min-width:36px; height:36px; display:grid; place-items:center; color:var(--muted); border:1px solid var(--line); border-radius:5px; }.socials a:hover { color:var(--ink); border-color:var(--indigo); }
+    footer { padding:22px 0; border-top:1px solid rgba(232,237,244,.08); color:var(--muted); font:400 11px/1.4 "DM Mono",monospace; }.footer-inner { display:flex; justify-content:space-between; gap:15px; }
+    .command-launcher { position:fixed; right:24px; bottom:24px; z-index:14; display:flex; align-items:center; gap:8px; min-height:39px; padding:0 12px; color:var(--green); background:#101720; border:1px solid rgba(70,217,158,.4); border-radius:7px; font:500 11px/1 "DM Mono",monospace; box-shadow:0 12px 30px rgba(0,0,0,.25); }.command-launcher kbd { padding:2px 5px; color:var(--muted); border:1px solid var(--line); border-radius:3px; }
+    dialog { width:min(620px,calc(100% - 32px)); padding:0; color:var(--ink); background:#10161f; border:1px solid rgba(137,146,255,.55); border-radius:7px; box-shadow:0 30px 100px rgba(0,0,0,.65); }.console-head { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--line); }.console-output { min-height:166px; padding:18px; color:#c9d5e3; font:400 12px/1.7 "DM Mono",monospace; }.console-output .prompt { color:var(--green); }.console-options { display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:0 16px 16px; }.console-option { padding:11px; color:var(--muted); background:var(--panel); border:1px solid var(--line); border-radius:5px; text-align:left; font:400 11px/1.4 "DM Mono",monospace; }.console-option:hover { color:var(--indigo); border-color:var(--indigo); }.toast { position:fixed; left:50%; bottom:26px; z-index:25; padding:10px 13px; color:#092317; background:var(--green); border-radius:5px; font:600 12px/1.4 "DM Mono",monospace; opacity:0; transform:translate(-50%,14px); transition:opacity .2s,transform .2s; pointer-events:none; }.toast.show { opacity:1; transform:translate(-50%,0); }
+    @media (max-width:850px) { .hero,.contact-inner,.experience { grid-template-columns:1fr; gap:42px; }.hero { min-height:auto; padding:75px 0; }.portrait-wrap { width:min(370px,84vw); justify-self:start; margin-left:12px; }.projects { grid-template-columns:1fr 1fr; }.contact-card { max-width:500px; }.experience-copy { max-width:560px; } }
+    @media (max-width:640px) { .shell { width:min(100% - 32px,1180px); }.header-inner { min-height:63px; }.primary-nav { position:absolute; top:64px; right:16px; display:none; flex-direction:column; align-items:stretch; gap:0; min-width:180px; padding:8px; background:#10161f; border:1px solid var(--line); border-radius:7px; }.primary-nav.open { display:flex; }.primary-nav a { padding:10px; }.mobile-nav-toggle { display:grid; }.hero { padding:60px 0; }.hero-copy > p:not(.eyebrow) { font-size:16px; }.hero-meta { margin-top:29px; gap:10px; }.section { padding:72px 0; }.section-head { display:block; margin-bottom:27px; }.section-note { margin-top:10px; text-align:left; }.metric-strip { grid-template-columns:1fr 1fr; }.metric { min-height:108px; padding:17px; }.projects,.stack-grid { grid-template-columns:1fr; }.project-tools { align-items:flex-start; flex-direction:column; }.project { min-height:360px; }.role-toggle { grid-template-columns:78px 1fr auto; gap:9px; }.role-detail { padding:0 28px 22px 87px; }.contact { padding:70px 0 90px; }.footer-inner { display:block; }.footer-inner span + span { display:block; margin-top:5px; }.command-launcher { right:16px; bottom:16px; }.command-launcher span { display:none; } }
+  </style>
+</head>
+<body>
+  <header class="site-header"><div class="shell header-inner">
+    <a class="brand" href="#top" aria-label="Apurv home"><span class="brand-mark"><i data-lucide="terminal-square" aria-hidden="true"></i></span><span>Apurv<small>software engineer</small></span></a>
+    <nav class="primary-nav" id="primary-nav" aria-label="Primary navigation"><a href="#work">Work</a><a href="#stack">Stack</a><a href="#experience">Experience</a><a href="#contact">Contact</a></nav>
+    <button class="icon-button mobile-nav-toggle" id="menu-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Open navigation"><i data-lucide="menu"></i></button>
+  </div></header>
+  <main id="top">
+    <section class="shell hero">
+      <div class="hero-copy"><p class="eyebrow"><span class="pulse"></span> Available for selected collaborations</p><h1>Building useful software with <span class="accent">clarity</span> and care.</h1><p>I’m Apurv, a software engineer who enjoys taking ambitious ideas from a blank page to dependable, delightful products.</p><div class="action-row"><a class="button button-primary" href="#work"><i data-lucide="arrow-down-right"></i> Explore selected work</a><a class="button button-secondary" href="#contact"><i data-lucide="send"></i> Start a conversation</a></div><div class="hero-meta"><span><i></i> India / remote</span><span><i></i> Product engineering</span><span><i></i> 2026 portfolio</span></div></div>
+      <div class="portrait-wrap"><img class="portrait" src="theme-source/stitch_personal_portfolio_website/professional_headshot_portrait_of_a_confident_software_engineer_in_late_20s/screen.png" alt="Portrait of Apurv" /><span class="portrait-tag"><span class="pulse"></span> SYSTEMS ONLINE</span></div>
+    </section>
+    <section class="section"><div class="shell"><div class="metric-strip"><div class="metric"><b>06+</b><span>years building digital products</span></div><div class="metric"><b>18</b><span>releases shaped end to end</span></div><div class="metric"><b>4.9/5</b><span>average partner satisfaction</span></div><div class="metric"><b>UTC+5:30</b><span>based in India, working globally</span></div></div></div></section>
+    <section class="section" id="work"><div class="shell"><div class="section-head"><div><p class="eyebrow">01 / Selected Work</p><h2 class="section-title">A few things I’ve enjoyed building.</h2></div><p class="section-note">A mix of product thinking, thoughtful interfaces, and systems that keep their promises.</p></div><div class="project-tools"><div class="filters" aria-label="Filter projects"><button class="filter" aria-pressed="true" data-filter="all">ALL WORK</button><button class="filter" aria-pressed="false" data-filter="product">PRODUCT</button><button class="filter" aria-pressed="false" data-filter="systems">SYSTEMS</button><button class="filter" aria-pressed="false" data-filter="frontend">FRONTEND</button></div><span class="project-count" id="project-count">03 PROJECTS LOADED</span></div><div class="projects">
+      <article class="project" data-category="product frontend"><div class="project-topline"><span>01 / PRODUCT PLATFORM</span><span class="project-state">LIVE</span></div><h3>Northstar Workspace</h3><p>A focused planning environment that makes a complex weekly operating rhythm feel calm and legible.</p><pre class="terminal-art"><span class="g">/workspace</span>  <span class="i">board</span>  <span class="w">review</span>
+ ├── priorities
+ ├── weekly signals
+ └── decisions.log</pre><div class="tags"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Postgres</span></div><a class="project-link" href="#contact">View case study <i data-lucide="arrow-up-right"></i></a></article>
+      <article class="project" data-category="systems"><div class="project-topline"><span>02 / DATA SYSTEM</span><span class="project-state">SHIPPED</span></div><h3>Meridian Signal</h3><p>A real-time operational layer that turns scattered events into the few alerts a team actually needs.</p><pre class="terminal-art"><span class="g">events.ingest</span>()
+  <span class="i">filter</span>(signal &gt; threshold)
+  <span class="w">route</span>(owner)
+  <span class="g">notify</span>()</pre><div class="tags"><span class="tag">Node.js</span><span class="tag">Redis</span><span class="tag">WebSockets</span></div><a class="project-link" href="#contact">View case study <i data-lucide="arrow-up-right"></i></a></article>
+      <article class="project" data-category="frontend product"><div class="project-topline"><span>03 / EXPERIENCE</span><span class="project-state">LIVE</span></div><h3>Field Notes</h3><p>An editorial product for teams to capture knowledge while it is still fresh, useful, and shareable.</p><pre class="terminal-art"><span class="i">draft</span>       synced
+<span class="g">published</span>   126 readers
+<span class="w">comments</span>    08 open
+<span class="g">status</span>      healthy</pre><div class="tags"><span class="tag">Next.js</span><span class="tag">Design systems</span><span class="tag">Analytics</span></div><a class="project-link" href="#contact">View case study <i data-lucide="arrow-up-right"></i></a></article>
+    </div></div></section>
+    <section class="section" id="stack"><div class="shell"><div class="section-head"><div><p class="eyebrow">02 / Toolkit</p><h2 class="section-title">Technical range, practical choices.</h2></div><p class="section-note">I choose tools for the team, problem, and life of the product after launch.</p></div><div class="stack-grid"><div class="stack-panel"><h3>Product &amp; interface</h3><ul class="stack-list"><li><i></i>TypeScript</li><li><i></i>React / Next.js</li><li><i></i>Design systems</li><li><i></i>Accessibility</li><li><i></i>UX prototyping</li><li><i></i>Performance</li></ul></div><div class="stack-panel"><h3>Systems &amp; delivery</h3><ul class="stack-list"><li><i></i>Node.js</li><li><i></i>Python</li><li><i></i>PostgreSQL</li><li><i></i>Redis / queues</li><li><i></i>Cloud deployment</li><li><i></i>Observability</li></ul></div></div></div></section>
+    <section class="section" id="experience"><div class="shell experience"><div class="experience-copy"><p class="eyebrow">03 / Track Record</p><h2 class="section-title">Reliable delivery is a team sport.</h2><p>I work best where the questions are interesting and the bar is high: pairing closely with design, product, and engineering to make the difficult feel straightforward.</p><a class="button button-secondary" href="#contact"><i data-lucide="file-text"></i> Request a resume</a></div><div class="timeline">
+      <div class="role"><button class="role-toggle" aria-expanded="true"><span class="role-date">2023 - NOW</span><span><span class="role-title">Senior Software Engineer</span><span class="role-company">Independent product work</span></span><i data-lucide="chevron-down"></i></button><div class="role-detail open"><p>Partnering with product teams to shape and ship web applications with a strong emphasis on clarity, speed, and maintainable systems.</p><ul><li>Led implementation from early prototypes to production releases.</li><li>Made technical decisions legible for non-technical collaborators.</li></ul></div></div>
+      <div class="role"><button class="role-toggle" aria-expanded="false"><span class="role-date">2020 - 2023</span><span><span class="role-title">Full-stack Engineer</span><span class="role-company">Product engineering team</span></span><i data-lucide="chevron-down"></i></button><div class="role-detail"><p>Built and improved customer-facing platform features, helping a growing team create a faster, more coherent product experience.</p><ul><li>Owned high-impact features across UI, APIs, and data workflows.</li><li>Improved release confidence with pragmatic quality checks.</li></ul></div></div>
+      <div class="role"><button class="role-toggle" aria-expanded="false"><span class="role-date">2018 - 2020</span><span><span class="role-title">Software Engineer</span><span class="role-company">Early-stage ventures</span></span><i data-lucide="chevron-down"></i></button><div class="role-detail"><p>Learned the joy of building close to users: discovering the right problem, testing a direction quickly, and refining what matters.</p></div></div>
+    </div></div></section>
+    <section class="contact" id="contact"><div class="shell contact-inner"><div><p class="eyebrow">04 / Contact</p><h2>Have a thoughtful problem to solve?</h2><p>I’m open to collaborating on meaningful products, platforms, and teams that care about the details. A short note is the perfect place to start.</p><a class="button button-primary" href="mailto:hello@apurv.dev"><i data-lucide="mail"></i> Send an email</a></div><div class="contact-card"><label>DIRECT LINE</label><div class="email-line"><a href="mailto:hello@apurv.dev">hello@apurv.dev</a><button class="icon-button" id="copy-email" aria-label="Copy email address" title="Copy email address"><i data-lucide="copy"></i></button></div><div class="socials"><a href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub"><i data-lucide="github"></i></a><a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a><a href="mailto:hello@apurv.dev" aria-label="Email"><i data-lucide="mail"></i></a></div></div></div></section>
+  </main>
+  <footer><div class="shell footer-inner"><span>APURV / SOFTWARE ENGINEER</span><span>BUILT WITH INTENTION · 2026</span></div></footer>
+  <button class="command-launcher" id="command-launcher" aria-haspopup="dialog"><i data-lucide="terminal-square"></i><span>OPEN CONSOLE</span><kbd>~</kbd></button>
+  <dialog id="console"><div class="console-head"><span class="mono">apurv@portfolio:~</span><button class="icon-button" id="close-console" aria-label="Close console"><i data-lucide="x"></i></button></div><div class="console-output" id="console-output"><span class="prompt">$</span> Portfolio console ready.<br>Choose a route below or press Escape to close.</div><div class="console-options"><button class="console-option" data-route="#work">01 / cd work</button><button class="console-option" data-route="#stack">02 / cat stack</button><button class="console-option" data-route="#experience">03 / cat experience</button><button class="console-option" data-route="#contact">04 / mail apurv</button></div></dialog>
+  <div class="toast" id="toast" role="status">Email copied to clipboard.</div>
+  <script>
+    lucide.createIcons({attrs:{width:17,height:17,'stroke-width':1.8}});
+    const menuToggle=document.querySelector('#menu-toggle'); const nav=document.querySelector('#primary-nav');
+    menuToggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');menuToggle.setAttribute('aria-expanded',String(open));});
+    nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');menuToggle.setAttribute('aria-expanded','false');}));
+    const filters=[...document.querySelectorAll('.filter')]; const projects=[...document.querySelectorAll('.project')]; const count=document.querySelector('#project-count');
+    filters.forEach(filter=>filter.addEventListener('click',()=>{const selection=filter.dataset.filter;filters.forEach(f=>f.setAttribute('aria-pressed',String(f===filter)));let visible=0;projects.forEach(project=>{const show=selection==='all'||project.dataset.category.includes(selection);project.classList.toggle('is-hidden',!show);if(show)visible++;});count.textContent=String(visible).padStart(2,'0')+' PROJECT'+(visible===1?'':'S')+' LOADED';}));
+    document.querySelectorAll('.role-toggle').forEach(button=>button.addEventListener('click',()=>{const open=button.getAttribute('aria-expanded')==='true';button.setAttribute('aria-expanded',String(!open));button.nextElementSibling.classList.toggle('open',!open);}));
+    const toast=document.querySelector('#toast'); const showToast=()=>{toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2200);};
+    document.querySelector('#copy-email').addEventListener('click',async()=>{try{await navigator.clipboard.writeText('hello@apurv.dev');}catch(e){}showToast();});
+    const consoleDialog=document.querySelector('#console'); const launcher=document.querySelector('#command-launcher'); const closeConsole=document.querySelector('#close-console'); const output=document.querySelector('#console-output');
+    const openConsole=()=>consoleDialog.showModal(); launcher.addEventListener('click',openConsole); closeConsole.addEventListener('click',()=>consoleDialog.close());
+    document.addEventListener('keydown',event=>{if(event.key==='~'&&!consoleDialog.open){event.preventDefault();openConsole();}});
+    document.querySelectorAll('.console-option').forEach(button=>button.addEventListener('click',()=>{output.innerHTML='<span class="prompt">$</span> '+button.textContent+'<br><span class="prompt">OK</span> Navigating...';consoleDialog.close();document.querySelector(button.dataset.route).scrollIntoView({behavior:'smooth'});}));
+  </script>
+</body>
+</html>

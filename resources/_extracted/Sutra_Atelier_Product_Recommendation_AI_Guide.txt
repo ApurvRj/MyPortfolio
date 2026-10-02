@@ -1,0 +1,461 @@
+﻿Product Recommendation AI
+Complete Build Guide for a Clothing Ecommerce Store
+
+Concepts, architecture, data pipeline, models, serving, evaluation and rollout
+October 2026
+
+
+Contents
+TOC \h \o "1-2"
+
+
+
+1. What You Are Building
+A recommendation system takes three inputs (who the user is, what they are doing right now, and what products exist) and returns a ranked list of products they are most likely to click and buy.
+For a clothing store, it powers several places on the site:
+Placement
+Type of recommendation
+Homepage
+"Recommended for you" (personalized)
+Product page
+"Similar items" and "Complete the look"
+Cart
+"Frequently bought together"
+Search results
+Personalized re-ranking
+Email / WhatsApp / push
+"Back in stock", "Based on your last order"
+
+2. Architecture
+WEBSITE / APP
+  |  (events: view, click, search, add-to-cart, purchase)
+  v
+[1] EVENT COLLECTION  (JS tracker -> API -> Kafka / Kinesis / PubSub)
+  v
+[2] STORAGE
+    - Data Lake / Warehouse (BigQuery, Snowflake, S3 + Parquet)
+    - Orders DB (your existing PostgreSQL / MySQL)
+    - Product catalog (DB + images)
+  v
+[3] DATA PROCESSING & FEATURE ENGINEERING (Spark / dbt / SQL / Python)
+  v
+[4] MODEL TRAINING PIPELINE (Airflow, scheduled daily/weekly)
+    - Candidate generation models (retrieval)
+    - Ranking model
+    - Embeddings for products and users
+  v
+[5] MODEL REGISTRY + VECTOR INDEX + FEATURE STORE
+    (MLflow, FAISS / Qdrant / pgvector, Redis / Feast)
+  v
+[6] SERVING API (FastAPI): retrieve -> rank -> re-rank -> return in <100ms
+  v
+WEBSITE displays recommendations
+  v
+[7] FEEDBACK LOOP: impressions + clicks + purchases flow back to [1]
+[8] MONITORING + A/B TESTING
+
+3. Step 1: Data Collection
+This is the foundation. Bad data means bad recommendations, whatever the model.
+3.1 What to track
+Behavioral events (anonymous and logged-in):
+product_view (with time spent on page)
+product_click (from a list or carousel)
+add_to_cart, remove_from_cart
+wishlist_add
+checkout_start, purchase
+scroll_depth, size_chart_opened, image_zoom
+filter_applied (size, color, price range)
+Search data: query text, results shown, which result was clicked, and "zero results" queries.
+Orders: order items, size, color, price, discount used, returns and return reasons, payment method, delivery pincode.
+Catalog: title, description, category, brand, color, fabric, fit, gender, season, price, images, stock by size, tags.
+User: user ID, signup date, city, device. Gender and age only if the user provides them.
+3.2 Event schema
+{
+  "event_id": "uuid",
+  "event_type": "add_to_cart",
+  "timestamp": "2026-10-01T10:15:30Z",
+  "user_id": "u_123",
+  "anonymous_id": "a_abc",
+  "session_id": "s_789",
+  "product_id": "p_456",
+  "properties": {"size": "M", "price": 1299, "source": "homepage_reco", "position": 3},
+  "device": "mobile"
+}
+
+Three details matter here:
+Anonymous ID: a cookie or device ID, so you can track visitors before login. When they log in, stitch anonymous_id to user_id so their history merges.
+Log the source and position of every recommendation shown (impressions). You need this later to measure performance and correct for position bias.
+Session ID: a session is a group of events with a gap of at most 30 minutes between them.
+Tools: build your own tracker, or use Segment, RudderStack (open source), Snowplow, or GA4 export to BigQuery to save time.
+4. Step 2: Data Processing and Feature Engineering
+Raw events become interaction scores. A purchase is a much stronger signal than a view, so you weight them:
+Event
+Weight
+View
+1
+Click from search
+2
+Wishlist
+3
+Add to cart
+4
+Purchase
+8
+Returned item
+-5 (negative signal)
+
+You also apply time decay, so a view from yesterday counts more than one from 6 months ago:
+score = weight x e^(-lambda x days_ago)
+
+This produces the key table, the user-item interaction matrix. Other features to compute:
+User features: average order value, preferred colors/brands/categories, price range, usual size, days since last order, discount sensitivity.
+Item features: popularity (7/30 day), conversion rate, return rate, price, margin, text and image embeddings.
+Context features: time of day, device, season, location.
+5. Step 3: The Concepts
+5.1 Implicit vs explicit feedback
+Explicit feedback is a rating or a like. In ecommerce, almost all your data is implicit: clicks, carts, purchases. A user not clicking something does not mean they dislike it; they may never have seen it. Models for implicit data (like ALS and BPR below) treat this carefully.
+5.2 Collaborative Filtering (CF)
+"People who behave like you liked these things."
+User-based CF: find users with similar histories and recommend what they bought. It does not scale well.
+Item-based CF: two items are similar if the same people interact with both. Compute cosine similarity between item columns of the interaction matrix. It is stable, scalable, and powers "People also bought".
+Matrix Factorization (MF): compress the huge sparse matrix (users x items) into two small dense matrices: user vectors and item vectors (e.g. 64 dimensions each). The dot product of a user vector and an item vector predicts the user's interest.
+R (users x items)  ~=  U (users x k) . V^T (k x items)
+
+ALS (Alternating Least Squares) is the standard algorithm for implicit data. Library: implicit in Python.
+BPR (Bayesian Personalized Ranking): trains the model so that items a user interacted with score higher than items they did not.
+Weakness: the cold-start problem. A new user or new product has no interactions.
+5.3 Content-Based Filtering
+"You liked this item, so here are items with similar attributes."
+Convert product text to vectors (TF-IDF, or better, sentence embeddings).
+Convert product images to vectors using a vision model (CLIP, ResNet). For fashion this is very powerful because it captures color, pattern, and style.
+Combine into one item embedding, then find the nearest neighbors.
+It solves the new-product cold start, because a new product has images and text from day one.
+5.4 Embeddings
+An embedding is a list of numbers (a vector) representing something so that similar things sit close together in space. Your products, users, and search queries can all live in the same vector space. Recommendation becomes "find the nearest vectors".
+5.5 Approximate Nearest Neighbor (ANN) search
+With 100k products, comparing against every vector for every request is too slow. ANN indexes (FAISS, HNSW, ScaNN, or a vector DB like Qdrant, Milvus, pgvector) find the top-K nearest vectors in milliseconds.
+5.6 Two-Tower model (deep learning retrieval)
+A neural network with two branches:
+User tower: input is user features and recent history, output is a user vector.
+Item tower: input is item features and embeddings, output is an item vector.
+Train it so purchased/clicked pairs have a high dot product and random pairs have a low one. Item vectors are pre-computed and stored in the ANN index. At request time you compute only the user vector and search. This is the industry standard at large platforms like YouTube, Pinterest, and fashion marketplaces.
+5.7 Session-based recommendation
+Many visitors are anonymous or new, with no long history. Their current session is the best signal: viewed black jeans, then white sneakers, then a belt.
+Simple: item-to-item co-occurrence within sessions.
+Word2Vec on sessions (Item2Vec / Prod2Vec): treat each session as a sentence and each product as a word. Cheap and works surprisingly well.
+Advanced: GRU4Rec, SASRec, BERT4Rec, which are sequence models (RNN or Transformer) that predict the next item.
+5.8 Learning to Rank (LTR)
+Retrieval gives you roughly 200-500 candidates. The ranking model orders them precisely using many more features (user-item affinity, price match, popularity, return rate, stock, recency).
+Typical model: LightGBM / XGBoost with the LambdaRank objective.
+Training data: impressions labeled 1 (clicked/bought) or 0 (shown, ignored).
+Features: the retrieval score plus everything from section 4.
+5.9 Search personalization
+Search itself is a separate system (Elasticsearch / OpenSearch / Algolia / Typesense), but you add:
+Query understanding, such as spelling correction and synonyms ("tee" = "t-shirt").
+Re-ranking of results using the user's profile (a user who buys Nike sees Nike first).
+Search history as a signal: queries are strong intent ("blue linen shirt" tells you color, fabric, and category).
+A semantic search layer with embeddings, so "something to wear at a beach wedding" returns relevant results.
+5.10 Cold-start strategies
+Case
+Strategy
+New visitor
+Trending / best sellers, city-based popularity, then session-based after 2-3 clicks
+New product
+Content-based (image and text embeddings), plus an "exploration boost"
+New user after login
+Merge anonymous history, ask for style preferences at signup
+
+5.11 Re-ranking and business rules
+After the ranker, apply final adjustments:
+Diversity (MMR, Maximal Marginal Relevance): do not show 10 near-identical black T-shirts.
+Filter out: out-of-stock or size-unavailable items, items already purchased (except consumables like socks), gender mismatch.
+Boost: high-margin items, new arrivals, items on sale.
+Penalize: high return-rate items.
+5.12 Exploration vs exploitation
+If you only show what the model is sure about, you never learn about new items. Use epsilon-greedy or Thompson sampling / bandits to show a small share (5-10%) of exploratory items.
+5.13 Fashion-specific considerations
+Size availability: do not recommend a product where the user's usual size is sold out.
+Returns: recommend fits that are less likely to be returned.
+Seasonality: Diwali, wedding season, monsoon, winter. Use time-aware popularity.
+Complementary items: "complete the look" (shirt, trousers, shoes) is different from "similar items". It needs a model trained on items bought together across categories.
+Price sensitivity: match the user's typical price band.
+6. Step 4: The Two-Stage Pipeline in Detail
+Production systems never score every product with a heavy model. They use a funnel:
+All products (e.g. 50,000)
+       |
+STAGE 1: CANDIDATE GENERATION (fast, recall-focused)
+  - ALS / two-tower nearest neighbors   -> 100
+  - Session-based (recent views)        -> 100
+  - Content similar to last purchase    -> 50
+  - Trending in user's category/city    -> 50
+  - Search-intent matches               -> 50
+       |  merge + deduplicate -> ~300 candidates
+       v
+STAGE 2: RANKING (slow, precision-focused)
+  LightGBM scores each candidate using ~50 features
+       |  -> top 50
+       v
+STAGE 3: RE-RANKING
+  diversity, stock, business rules
+       |
+       v
+FINAL: top 10-20 shown
+
+Why it works: stage 1 is cheap and casts a wide net, so it needs high recall. Stage 2 is expensive but runs on only a few hundred items, so it can afford rich features.
+7. Step 5: Evaluation
+7.1 Offline (before launch)
+Split data by time: train on days 1-60, test on days 61-67. Never split randomly, because that leaks the future into training.
+Metric
+Meaning
+Recall@K / Hit Rate@K
+Did the item the user actually bought appear in the top K?
+Precision@K
+Share of the top K that were relevant
+MAP, NDCG@K
+Rewards putting the correct items higher in the list
+Coverage
+How much of the catalog gets recommended
+Diversity / Novelty
+Variety and non-obviousness
+
+7.2 Online (the real test): A/B testing
+Randomly split users into control (existing site, or popularity-based) and treatment (AI). Measure:
+Click-through rate on recommendations
+Add-to-cart rate
+Conversion rate
+Revenue per session / per visitor (the most important)
+Average order value, return rate
+Run for at least 2 full weeks, and wait for statistical significance.
+8. Step 6: Serving (How It Works at Request Time)
+Example: a user opens the homepage.
+The frontend calls GET /recommendations?user_id=u_123&placement=home.
+The serving API (FastAPI) fetches user features from Redis, including recent session items.
+It builds the user vector (user tower or ALS vector).
+It queries the vector index for candidates (~10 ms).
+It merges the other candidate sources (trending, session-based).
+It fetches item features and runs the LightGBM ranker (~20 ms).
+It applies re-ranking and filters (stock, already purchased).
+It returns product IDs, and the frontend renders the carousel.
+It logs an impression event with a request ID.
+The target is under 100-200 ms. To hit it:
+Pre-compute item embeddings and popular lists in batch (daily).
+Cache results for anonymous or cold users.
+Always have a fallback (best sellers) if anything fails or times out.
+Batch vs real-time: heavy training runs offline (nightly or weekly). Session features update in real time, so recommendations react immediately when a user clicks something.
+9. Step 7: The Feedback Loop
+Every impression, click, and purchase from the recommendation widgets is logged and becomes tomorrow's training data. Two things to watch:
+Position bias: items at position 1 get clicked more just because of where they are. Log position and use it as a training feature (or correct for it).
+Feedback loops / popularity bias: the model recommends popular items, so they get more clicks, so they become more popular. Counter it with exploration and diversity.
+10. Step 8: Monitoring and MLOps
+Data drift: has user behavior or the catalog changed?
+Model metrics: daily CTR / conversion per placement.
+Pipeline health: failed jobs, stale embeddings, latency spikes.
+Retraining: automated schedule, with a model registry (MLflow) and the ability to roll back.
+Bot filtering: remove crawlers from the training data.
+11. Tech Stack (A Practical Choice)
+Layer
+Option
+Tracking
+RudderStack / Segment / custom JS + API
+Streaming
+Kafka or a managed one (Kinesis, Pub/Sub)
+Warehouse
+BigQuery / Snowflake / PostgreSQL (for small scale)
+Processing
+SQL + dbt, PySpark if large
+Orchestration
+Airflow / Prefect
+Models
+implicit, LightGBM, PyTorch, sentence-transformers, CLIP
+Vector search
+FAISS, Qdrant, pgvector
+Feature store / cache
+Redis (Feast if you grow)
+Serving
+FastAPI + Docker + Kubernetes / Cloud Run
+Experimentation
+GrowthBook / Statsig / custom
+
+Buy instead of build: Amazon Personalize, Google Vertex AI Search for Retail, Algolia Recommend, Nosto, Bloomreach, Klevu. If your team is small, this gets you live in weeks. Building gives more control and lower cost at scale.
+12. Rollout Plan
+Phase
+Duration
+What you do
+0
+1-2 wks
+Implement event tracking and clean the catalog. Start collecting data now, even before building models.
+1
+2-3 wks
+Rules and baseline: best sellers, "recently viewed", same-category similar items. Set up A/B testing.
+2
+3-4 wks
+Item-to-item CF + content embeddings for "similar items" and "bought together" on product and cart pages.
+3
+4-6 wks
+Personalized homepage with ALS, session-based, and a basic ranker.
+4
+Ongoing
+Two-tower, sequence models, search personalization, bandits, email personalization.
+
+Minimum data needed: a few thousand users and tens of thousands of interactions give decent item-to-item results. Deep models need much more. If you have little data, start with Phases 1-2.
+13. Minimal Code Examples
+Item-based "similar products" with ALS
+import implicit, scipy.sparse as sp, pandas as pd
+ 
+# df columns: user_idx, item_idx, score (weighted & time-decayed)
+mat = sp.csr_matrix((df.score, (df.user_idx, df.item_idx)))
+ 
+model = implicit.als.AlternatingLeastSquares(
+    factors=64, regularization=0.05, iterations=20)
+model.fit(mat)  # check library version: newer ones expect user x item
+ 
+# Recommend for a user
+ids, scores = model.recommend(user_idx, mat[user_idx], N=20,
+                              filter_already_liked_items=True)
+ 
+# Similar items
+sim_ids, sim_scores = model.similar_items(item_idx, N=10)
+
+Vector search with FAISS
+import faiss, numpy as np
+index = faiss.IndexHNSWFlat(64, 32)
+index.add(item_vectors.astype("float32"))
+D, I = index.search(user_vector.reshape(1, -1).astype("float32"), 100)
+
+Ranker with LightGBM
+import lightgbm as lgb
+ranker = lgb.LGBMRanker(objective="lambdarank", n_estimators=300)
+ranker.fit(X_train, y_train, group=group_sizes)  # group = candidates per request
+scores = ranker.predict(X_candidates)
+
+14. Privacy and Legal
+Since you operate in India, follow the DPDP Act 2023: get consent for tracking, and offer a way to withdraw it and delete data. If you serve EU customers, GDPR applies too.
+Do not use sensitive attributes to recommend in ways that could feel invasive.
+Store personal data securely, and hash or pseudonymize IDs in the analytics pipeline.
+This is general guidance, not legal advice. Have a lawyer review your consent and data-retention setup.
+15. Common Mistakes
+Building complex models before the tracking data is clean.
+Random train/test splits (data leakage).
+Judging only by offline metrics and skipping A/B tests.
+Recommending out-of-stock or wrong-size items.
+Ignoring returns, which causes high sales but also high returns.
+Having no fallback, so the widget is empty when the model fails.
+Not logging impressions, which makes future improvement impossible.
+16. What To Do First
+Add event tracking and impression logging this week.
+Ship simple "similar items" and "recently viewed" (quick wins).
+Build item-based CF + image embeddings, then A/B test.
+Layer on personalization, ranking, and search once data volume grows.
+17. Planning and Decision Checklist
+Eight questions to settle before and during the build. Numbers are planning estimates; validate them against your own data and current cloud pricing.
+17.1 What customer problem are we solving?
+Customers face too many choices and cannot easily tell what fits their style, size and budget, so they leave without finding anything. Pick one or two problems for the first release:
+Problem
+Where it shows up
+Fix
+Cannot find something they like
+High bounce rate on category and home pages
+Personalized homepage
+Do not see related items
+Low items per order
+Similar items, "complete the look"
+Abandon after one product
+Low product-to-cart rate
+Session-based recommendations
+Search returns poor results
+High zero-result and search-exit rate
+Search re-ranking
+Do not come back
+Low repeat purchase rate
+Email and WhatsApp recommendations
+
+Look at your analytics first. Whichever funnel step loses the most people is your first target.
+17.2 Do we have enough customer data?
+Check
+Rough minimum
+Enables
+Products with clean images and attributes
+500+
+Content-based similarity
+Tracked events (views, carts)
+50k+
+Item-to-item "similar" and "bought together"
+Purchases
+5k+
+Collaborative filtering
+Users with 3+ interactions
+A few thousand
+Personalized homepage
+Interactions, logged by time
+500k+
+Two-tower and sequence models
+
+Quality beats quantity. You need working anonymous-to-user ID stitching, impression logging and a clean catalog.
+Fashion data is sparse. Most users buy only 1-3 times and styles change by season, so you will lean on session behavior and image similarity.
+If you fall short, start with rules plus content-based recommendations and collect data in the background.
+17.3 Which AI model should be used?
+Your situation
+Model
+Just starting, little data
+Popularity, recently viewed, content similarity (image and text embeddings)
+Some data
+Item-based CF, ALS, Item2Vec on sessions
+Growing, 100k+ monthly sessions
+ALS + session candidates, then a LightGBM ranker
+Large scale
+Two-tower retrieval and sequence models (SASRec)
+
+The best first model is usually a hybrid: image embeddings (CLIP) plus ALS, ranked by LightGBM. Start with the simplest model that beats your baseline and add complexity only if an A/B test shows it pays off. For a small team, buying a tool (Amazon Personalize, Algolia Recommend, Nosto) is a legitimate answer.
+17.4 How accurate should recommendations be?
+"Accuracy" here is not classification accuracy. A normal click-through rate on recommendation widgets is in the low single digits to roughly 10%, so set targets relative to your baseline:
+Offline: beat a "best sellers" baseline on Recall@20 and NDCG@10 using time-based splits, often by 20-50% or more.
+Online: a significant lift in conversion or revenue per visitor over the control group. Even 3-8% is a strong result.
+Hard constraints that must be 100% accurate: no out-of-stock, wrong-size, already-purchased or wrong-gender/category items.
+The target is not "90%". It is "measurably better than what we have now, with zero hard-rule violations".
+17.5 What will the infrastructure cost?
+Scale
+Approach
+Monthly cost (approx.)
+Small (<100k sessions/mo)
+Single server, PostgreSQL + pgvector, FastAPI, daily training
+Rs 10k-40k
+Medium (100k-2M sessions/mo)
+Warehouse, Airflow, Redis, small GPU only for embeddings, Cloud Run / Kubernetes
+Rs 50k-2.5L
+Large
+Streaming (Kafka), feature store, GPU training, multiple replicas
+Rs 3L+
+Managed service
+Pay per event or request
+Often Rs 30k-1.5L, scales with traffic
+
+The larger cost is people: usually 1-2 ML or data engineers plus some frontend work, which typically exceeds the cloud bill at the start. Justify the spend with: expected lift % x monthly revenue vs. total cost.
+17.6 How quickly should recommendations appear?
+Layer
+Target
+API response (total)
+Under 100-200 ms
+Page rendering
+Load recommendations asynchronously so the page never waits
+Reaction to behavior
+Session features updated within seconds
+Model retraining
+Nightly or weekly
+
+Precompute embeddings and popular lists in batch, keep user features in Redis, and cache results for anonymous users. Set a hard timeout (for example 300 ms) after which the site shows a fallback list. The page must never be blocked or empty because of the AI.
+17.7 How will we measure success?
+Primary: revenue per visitor (or per session) in an A/B test, run for at least 2 full weeks.
+Supporting: recommendation CTR, add-to-cart rate from recommendations, conversion rate, average order value, items per order.
+Guardrails (must not get worse): return rate, page load time, bounce rate, complaints and unsubscribes.
+Health: catalog coverage, diversity, share of revenue coming from recommendations.
+Keep a holdout group (for example 5-10% of users) with no AI recommendations, so you can prove the long-term effect, since short-term clicks can mislead.
+17.8 What happens when AI recommends irrelevant products?
+This will happen, so design for it in layers:
+Prevent with rules. Filter out-of-stock, wrong-size, wrong-gender and already-purchased items. Apply diversity so one bad guess does not fill the whole row.
+Fall back. If confidence is low or the user is new, show best sellers or trending items in the relevant category.
+Let users correct it. Add "not interested" and "hide this" controls and use them as strong negative signals.
+Detect it. Monitor CTR drops, high return rates and zero-click widgets per placement, set alerts, and review real recommendations for sample user profiles each week.
+Recover. Keep model versions in a registry for quick rollback, and use a feature flag to switch the AI off per placement without a deploy.
+Learn. Ignored impressions feed back into training as negatives.
+Because everything is A/B tested, a bad model affects only a small share of traffic before it is caught.
+

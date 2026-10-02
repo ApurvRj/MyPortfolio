@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 780" width="1600" height="780" role="img" aria-label="Proposed automated content pipeline for KarmaVriti">
+  <defs>
+    <linearGradient id="kbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111318"/><stop offset="1" stop-color="#0c0e12"/>
+    </linearGradient>
+    <marker id="kar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8083ff"/>
+    </marker>
+    <marker id="kar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7bd0ff"/>
+    </marker>
+    <style>
+      .t  { font-family:'Inter','Segoe UI',sans-serif; fill:#e2e2e8; }
+      .m  { font-family:'JetBrains Mono','Consolas',monospace; fill:#908fa0; }
+      .n  { font-family:'Inter','Segoe UI',sans-serif; font-weight:600; fill:#e2e2e8; font-size:19px; }
+      .d  { font-family:'Inter','Segoe UI',sans-serif; fill:#c7c4d7; font-size:14px; }
+      .box{ fill:#1a1c20; stroke:rgba(255,255,255,0.12); }
+      .plan{ fill:#151b22; stroke:rgba(123,208,255,0.30); stroke-dasharray:7 5; }
+      .now { fill:#16211d; stroke:rgba(78,222,163,0.35); }
+      .tagp{ font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.06em; fill:#7bd0ff; }
+      .tagg{ font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.06em; fill:#4edea3; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="780" fill="url(#kbg)"/>
+  <rect x="0" y="0" width="1600" height="5" fill="#8083ff"/>
+
+  <text class="t" x="60" y="62" font-size="34" font-weight="700">KarmaVriti — Proposed Automated Content Pipeline</text>
+  <text class="m" x="60" y="94" font-size="15">Planned architecture. Queue, scraper, media generation and distribution are NOT implemented today.</text>
+
+  <rect class="box" x="60" y="122" width="150" height="30" rx="15"/>
+  <text class="tagp" x="78" y="142">PLANNED — FUTURE STATE</text>
+  <rect class="box" x="222" y="122" width="150" height="30" rx="15"/>
+  <text class="tagg" x="240" y="142">HUMAN GATE STAYS</text>
+
+  <rect class="box" x="60" y="192" width="340" height="104" rx="14"/>
+  <rect x="60" y="192" width="5" height="104" rx="2" fill="#8083ff"/>
+  <text class="n" x="84" y="228">01 · Ingestion</text>
+  <text class="d" x="84" y="254">Admins submit a PDF, a URL or pasted</text>
+  <text class="d" x="84" y="276">text. A scraper adds notices from official</text>
+  <text class="d" x="84" y="298">sources into the same queue.</text>
+
+  <rect class="box" x="440" y="192" width="340" height="104" rx="14"/>
+  <rect x="440" y="192" width="5" height="104" rx="2" fill="#7bd0ff"/>
+  <text class="n" x="464" y="228">02 · Processing queue</text>
+  <text class="d" x="464" y="254">Original files to object storage (S3).</text>
+  <text class="d" x="464" y="276">Every notice becomes a queued job</text>
+  <text class="d" x="464" y="298">(RabbitMQ or Kafka) with retries.</text>
+
+  <rect class="box" x="820" y="192" width="340" height="104" rx="14"/>
+  <rect x="820" y="192" width="5" height="104" rx="2" fill="#4edea3"/>
+  <text class="n" x="844" y="228">03 · AI processing</text>
+  <text class="d" x="844" y="254">Extract text (OCR fallback), clean, LLM</text>
+  <text class="d" x="844" y="276">structuring engine, then a validation</text>
+  <text class="d" x="844" y="298">layer (rules plus AI cross-check).</text>
+
+  <rect class="box" x="1200" y="192" width="340" height="104" rx="14"/>
+  <rect x="1200" y="192" width="5" height="104" rx="2" fill="#8083ff"/>
+  <text class="n" x="1224" y="228">04 · Job draft</text>
+  <text class="d" x="1224" y="254">Structured job JSON becomes a draft</text>
+  <text class="d" x="1224" y="276">record an admin can correct in an</text>
+  <text class="d" x="1224" y="298">edit panel.</text>
+
+  <line x1="400" y1="244" x2="434" y2="244" stroke="#8083ff" stroke-width="2" marker-end="url(#kar)"/>
+  <line x1="780" y1="244" x2="814" y2="244" stroke="#8083ff" stroke-width="2" marker-end="url(#kar)"/>
+  <line x1="1160" y1="244" x2="1194" y2="244" stroke="#8083ff" stroke-width="2" marker-end="url(#kar)"/>
+
+  <rect class="now" x="60" y="374" width="340" height="104" rx="14"/>
+  <rect x="60" y="374" width="5" height="104" rx="2" fill="#4edea3"/>
+  <text class="n" x="84" y="410">05 · Human review</text>
+  <text class="d" x="84" y="436">A person checks the draft before</text>
+  <text class="d" x="84" y="458">anything is published. This is the safeguard</text>
+  <text class="d" x="84" y="480">for dates and vacancy counts.</text>
+
+  <rect class="plan" x="440" y="374" width="340" height="104" rx="14"/>
+  <text class="n" x="464" y="410">06 · Media generation</text>
+  <text class="d" x="464" y="436">Canva produces a thumbnail; Runway</text>
+  <text class="d" x="464" y="458">produces a short video, one per</text>
+  <text class="d" x="464" y="480">published job.</text>
+
+  <rect class="plan" x="820" y="374" width="340" height="104" rx="14"/>
+  <text class="n" x="844" y="410">07 · Distribution</text>
+  <text class="d" x="844" y="436">Media and links in cloud storage behind</text>
+  <text class="d" x="844" y="458">a CDN, posted to Telegram, Instagram</text>
+  <text class="d" x="844" y="480">and YouTube.</text>
+
+  <rect class="box" x="1200" y="374" width="340" height="104" rx="14"/>
+  <rect x="1200" y="374" width="5" height="104" rx="2" fill="#4edea3"/>
+  <text class="n" x="1224" y="410">08 · Website &amp; SEO</text>
+  <text class="d" x="1224" y="436">Approved jobs become server-rendered,</text>
+  <text class="d" x="1224" y="458">search-optimised pages with structured</text>
+  <text class="d" x="1224" y="480">data. (Implemented today.)</text>
+
+  <line x1="400" y1="426" x2="434" y2="426" stroke="#8083ff" stroke-width="2" marker-end="url(#kar)"/>
+  <line x1="780" y1="426" x2="814" y2="426" stroke="#8083ff" stroke-width="2" marker-end="url(#kar)"/>
+  <line x1="1160" y1="426" x2="1194" y2="426" stroke="#8083ff" stroke-width="2" marker-end="url(#kar)"/>
+
+  <path d="M1370 192 L1370 152 L230 152 L230 192" fill="none" stroke="#7bd0ff" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#kar2)"/>
+  <text class="m" x="620" y="144" font-size="13">Draft rejected or corrected &#8594; sent back for reprocessing</text>
+
+  <rect class="plan" x="60" y="556" width="730" height="104" rx="14"/>
+  <text class="n" x="84" y="592">09 · Prompt &amp; UX feedback loop</text>
+  <text class="d" x="84" y="618">Record every admin edit to a draft, find where extraction gets fields</text>
+  <text class="d" x="84" y="640">wrong, and refine the prompts and edit interface against that list.</text>
+
+  <rect class="plan" x="820" y="556" width="720" height="104" rx="14"/>
+  <text class="n" x="844" y="592">Cross-cutting: rate limiting &amp; hybrid retrieval</text>
+  <text class="d" x="844" y="618">Rate limit the public AI endpoints and combine semantic search with</text>
+  <text class="d" x="844" y="640">keyword-based search for more accurate retrieval.</text>
+
+  <text class="m" x="60" y="712" font-size="13">Legend</text>
+  <rect class="plan" x="122" y="700" width="14" height="14" rx="3"/>
+  <text class="m" x="144" y="712" font-size="13">dashed = planned, not built</text>
+  <rect class="now" x="366" y="700" width="14" height="14" rx="3"/>
+  <text class="m" x="388" y="712" font-size="13">green = already implemented</text>
+  <text class="m" x="60" y="748" font-size="13">Source: KarmaVriti repository README (commit fdd7182) and the Planned Improvements (Automated Content Pipeline) document.</text>
+</svg>

@@ -1,0 +1,90 @@
+﻿Sūtra Atelier: Planned Improvements (Product Recommendation System)
+Oct 2, 2026 · @Apurv Raj
+Goal
+The recommendation system helps shoppers find the next handloom piece they will love, while keeping the calm, luxury feel of the store.
+The first release uses product data only (similar pieces and "complete the look"), so it works before there is much purchase history. Personalisation comes later, once there is enough data to justify it. Everything runs on the existing Next.js and Supabase stack, with no new servers to start.
+Fit with the current system
+Most of the raw material already exists in Sūtra's database; the missing pieces are behaviour tracking and a similarity index. This table is based on your system design document.
+Component
+Already in Sūtra
+To add
+Product catalog
+Products with images, categories and prices
+Consistent attributes such as fabric, weave, colour and occasion, since similarity depends on them
+Sizes and stock
+Variants with stock, locked during order creation
+Reuse stock data to hide unavailable sizes in recommendations
+Orders
+Full order history
+Co-purchase pairs, once there are enough orders
+Returns
+Six-step workflow, kept separate from orders
+Return rate per product as a quality signal
+Wishlist and bag
+Guest bag in the browser, signed-in bag synced to the database
+Use wishlist and bag adds as interest signals
+Behaviour events
+Not built
+An events table for views, clicks and impressions, with an anonymous ID joined to the account at login
+Similarity search
+Supabase Postgres supports the pgvector extension
+Enable it and store a product embedding per item
+Fallback
+Embedded collection when the database is down
+Reuse the same pattern for a curated fallback list
+Where recommendations will appear
+Start with the product page, where the shopper's intent is clearest and no personal data is needed.
+Page
+What the shopper sees
+Data it needs
+Phase
+Product page
+"Similar pieces"
+Product attributes and image embeddings
+2
+Product page
+"Complete the look"
+Pairings curated by an admin, later co-purchase data
+1, then 3
+Bag drawer
+"Often bought together"
+Order history
+3
+Home
+New arrivals and featured pieces, later "Recommended for you"
+Recency and popularity first, personal history later
+1, then 4
+Category page
+"Popular in this category"
+Views and purchases
+1
+Email or WhatsApp (if added)
+Back-in-stock and re-order nudges
+Wishlist plus the shopper's opt-in
+4
+How it will work
+The system narrows the catalog in a few steps, and a safe default is always shown if anything fails.
+Collect events. Log product views, wishlist adds, bag adds, purchases, and which recommendations were shown and where. Guests get an anonymous ID that is joined to their account when they log in.
+Build candidates. Gather pieces from three sources: similar products (embedding plus attribute match), pieces bought together, and new or popular items.
+Apply hard rules. Remove sold-out items and sizes, items already in the bag or bought, and inactive products. Push down pieces with a high return rate.
+Rank. Start with a weighted score in SQL (similarity, popularity, recency, return rate). Add a learned ranking model only when there is enough data to train one.
+Diversify and cap. Show four to eight pieces with a mix of categories and prices, and no near-duplicates.
+Serve safely. A read-only API route returns the list with caching. If it fails or times out, the page shows the curated fallback.
+Measure. Track impressions, clicks and add-to-bag rate against a small holdout group that sees no recommendations.
+Customer and admin sessions stay unchanged. Refund details such as UPI or bank accounts must never be used as a signal.
+Suggested build order
+This order is my suggestion, sized for a boutique catalog: move to the next phase only when the previous one shows a measurable lift.
+Phase 0, foundations. Add the events table and anonymous ID, clean up product attributes, and let admins pair pieces for "complete the look".
+Phase 1, rules and curation. Ship new arrivals, popular-in-category and curated pairings. This gives a baseline to beat.
+Phase 2, similar pieces. Embed product images and descriptions, enable pgvector, and show similar pieces on the product page. Compare against the Phase 1 baseline.
+Phase 3, behaviour. Add "often bought together" once there are enough orders, and use return rate as a ranking signal.
+Phase 4, personalisation. Rank by each shopper's history and add opt-in back-in-stock messages, only if the data supports it.
+Risks and open decisions
+The main risk is building something clever for a catalog too small to need it, so the early phases lean on curation and product data.
+Data volume. Behaviour-based recommendations need thousands of purchases to work well. Open question: how many products and orders does Sūtra have today?
+Privacy. Tracking needs a clear consent notice under India's DPDP Act. Keep events pseudonymous and never use addresses, phone numbers or payment details. I am not a lawyer, so have this checked.
+Build or buy. Building inside Supabase keeps cost and stack simple. A hosted recommendation service is an alternative; decide after the Phase 1 baseline.
+Brand feel. A few well-chosen pieces suit a luxury store better than endless carousels. Give admins a way to pin or block items.
+Limited stock. Limited-run pieces sell out, and recommending a sold-out item frustrates shoppers, so always filter on live stock.
+Cold start. New pieces and new visitors have no history. Product-based similarity and curated lists cover them.
+

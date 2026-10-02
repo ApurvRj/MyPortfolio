@@ -1,0 +1,4 @@
+node_modules/
+.vercel/
+stitch_personal_portfolio_website.zip
+*.log

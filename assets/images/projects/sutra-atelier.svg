@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-label="Sutra Atelier project thumbnail">
+  <defs>
+    <linearGradient id="sbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#141b1c"/><stop offset="0.55" stop-color="#111318"/><stop offset="1" stop-color="#0c0e12"/>
+    </linearGradient>
+    <radialGradient id="sglow" cx="0.78" cy="0.2" r="0.6">
+      <stop offset="0" stop-color="#4edea3" stop-opacity="0.34"/><stop offset="1" stop-color="#4edea3" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .ttl { font-family:'Inter','Segoe UI',sans-serif; font-weight:700; fill:#e2e2e8; }
+      .sub { font-family:'Inter','Segoe UI',sans-serif; fill:#c7c4d7; }
+      .mono{ font-family:'JetBrains Mono','Consolas',monospace; fill:#7bd0ff; }
+      .mono2{ font-family:'JetBrains Mono','Consolas',monospace; fill:#4edea3; }
+      .card{ fill:rgba(26,28,32,0.9); stroke:rgba(255,255,255,0.10); }
+      .step{ fill:#16211d; stroke:rgba(78,222,163,0.36); }
+    </style>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#sbg)"/>
+  <rect width="1200" height="675" fill="url(#sglow)"/>
+  <rect x="0" y="0" width="1200" height="6" fill="#4edea3"/>
+
+  <g transform="translate(64,54)">
+    <rect x="0" y="0" width="30" height="30" rx="8" fill="#1e2024" stroke="rgba(255,255,255,0.12)"/>
+    <path d="M6 21 Q15 4 24 21" stroke="#4edea3" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <line x1="15" y1="8" x2="15" y2="22" stroke="#c0c1ff" stroke-width="2" stroke-linecap="round"/>
+    <text class="mono2" x="44" y="20" font-size="14" letter-spacing="1.4">SŪTRA ATELIER</text>
+  </g>
+
+  <text class="ttl" x="64" y="205" font-size="52">Editorial storefront,</text>
+  <text class="ttl" x="64" y="266" font-size="52">enterprise commerce.</text>
+
+  <text class="sub" x="64" y="318" font-size="19">Order creation is one database transaction: lock the variant,</text>
+  <text class="sub" x="64" y="346" font-size="19">recompute the total, deduct stock, write the order.</text>
+
+  <g transform="translate(64,392)">
+    <rect class="card" x="0" y="0" width="176" height="46" rx="10"/>
+    <text class="mono" x="16" y="29" font-size="13">NEXT.JS 15</text>
+    <rect class="card" x="188" y="0" width="164" height="46" rx="10"/>
+    <text class="mono" x="204" y="29" font-size="13">SUPABASE</text>
+    <rect class="card" x="364" y="0" width="188" height="46" rx="10"/>
+    <text class="mono2" x="380" y="29" font-size="13">RLS POLICIES</text>
+    <rect class="card" x="564" y="0" width="212" height="46" rx="10"/>
+    <text class="mono2" x="580" y="29" font-size="13">RAZORPAY HMAC</text>
+  </g>
+
+  <g transform="translate(672,150)">
+    <text class="mono" x="0" y="0" font-size="12">CREATE_ORDER  ·  ONE TRANSACTION</text>
+
+    <rect class="step" x="0" y="22" width="466" height="46" rx="10"/>
+    <text class="sub" x="18" y="50" font-size="13">1 · Validate the customer profile</text>
+    <rect class="step" x="0" y="78" width="466" height="46" rx="10"/>
+    <text class="sub" x="18" y="106" font-size="13">2 · SELECT ... FOR UPDATE on product_variants</text>
+    <rect class="step" x="0" y="134" width="466" height="46" rx="10"/>
+    <text class="sub" x="18" y="162" font-size="13">3 · Recompute subtotal from database prices</text>
+    <rect class="step" x="0" y="190" width="466" height="46" rx="10"/>
+    <text class="sub" x="18" y="218" font-size="13">4 · Deduct stock, then insert the order</text>
+    <rect class="step" x="0" y="246" width="466" height="46" rx="10"/>
+    <text class="sub" x="18" y="274" font-size="13">5 · Bulk insert order_items + status history</text>
+
+    <rect x="0" y="314" width="466" height="70" rx="10" fill="#13161c" stroke="rgba(123,208,255,0.30)"/>
+    <text class="mono" x="18" y="342" font-size="12">VERIFY: HMAC SHA-256 SIGNATURE</text>
+    <text class="sub" x="18" y="366" font-size="13">Webhook handles payment.captured / payment.failed</text>
+  </g>
+
+  <text class="mono" x="64" y="632" font-size="12">NEXT.JS 15 · REACT 19 · TYPESCRIPT · TAILWIND 4 · SUPABASE AUTH + STORAGE · RAZORPAY · VERCEL</text>
+</svg>

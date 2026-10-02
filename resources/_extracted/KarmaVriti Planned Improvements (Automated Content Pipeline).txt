@@ -1,0 +1,85 @@
+﻿KarmaVriti: Planned Improvements (Automated Content Pipeline)
+Oct 2, 2026 · @Apurv Raj
+Goal
+The plan turns KarmaVriti's manual job posting into a queue-driven pipeline: ingest a notice, structure it with AI, keep a human review gate, then publish to the website and social channels.
+Today an admin uploads a PDF, the AI parses it into job JSON, and the admin reviews and publishes it. The planned work adds more input types, an automatic scraper, background processing, media generation and distribution. The stages below follow the planning diagram you shared.
+Current state vs planned
+About half of the diagram already exists in the repo (checked at commit fdd7182); the queue, scraper, media generation and distribution are new.
+Stage in the diagram
+Planned
+Today in the repo
+Admin input
+PDF, URL or text
+PDF through the parse-pdf route, plus bulk JSON upload. No URL or free-text input
+Automated scraper
+Pulls notices from official sites
+Not built
+Processing queue
+S3 storage plus RabbitMQ / Kafka
+Not built. Parsing runs inside one request (60 s limit on Vercel)
+Raw text extraction
+PDF text and OCR
+Built: unpdf, with Tesseract OCR (English + Hindi) as fallback
+Data cleaning
+Separate step
+Not separate. Text is only truncated before the LLM call
+AI structuring engine
+Notice text to structured fields
+Built: OpenAI or Gemini in production, Ollama in development
+Validation layer
+Rules plus an AI check
+Partial: only title and organization are required
+Structured job JSON
+Standard output format
+Built
+Job draft and edit panel
+Draft the admin can edit
+Built: jobs save as preview, with admin edit pages and auto-created draft resources
+Human review
+Approval before publishing
+Built: the approve route records who approved and when
+Thumbnail and short video
+Canva and Runway
+Not built
+Cloud storage / CDN and social posting
+Telegram, Instagram, YouTube
+Not built. Only a Notification table exists, though the README mentions Telegram
+Website and SEO pages
+Published job pages
+Built: server-rendered pages, sitemap, structured data
+Prompt and UX improvements
+Feedback loop
+Not built. Admin edits are not recorded
+The planned pipeline, stage by stage
+The pipeline has nine stages, and nothing reaches the public site without passing the human review gate.
+Ingestion. Admins submit a PDF, a URL or pasted text. An automated scraper adds notices from official sources into the same queue.
+Processing queue. Original files go to object storage (S3) and every notice becomes a queued job. The diagram's two-way arrow suggests failed or corrected jobs can be sent back for reprocessing.
+AI processing. Four steps in order: raw text extraction (PDF text, OCR for scans), data cleaning, an AI structuring engine, and a validation layer that combines rules with an AI check. The output is structured job JSON.
+Job draft creation. The JSON becomes a draft job that an admin can fix in an edit panel.
+Human review. A person checks the draft before anything is published. This is the safeguard for dates, vacancy counts and eligibility.
+Media generation. Canva produces a thumbnail and Runway produces a short video for each job.
+Distribution. Media and links are stored in cloud storage behind a CDN and posted to Telegram, Instagram and YouTube.
+Website and SEO pages. The approved job is published as a search-optimised page on the site.
+Prompt and UX improvements. What reviewers change and how users respond feeds back into better prompts and a better interface.
+Suggested build order
+This order is my suggestion, not part of your diagram: build the reliable core first and add automation only when the core works.
+Queue and inputs. Add URL and text input, store original files, and move parsing into a background job with retries and a visible status in the admin panel.
+Cleaning and validation. Add a cleaning step, check required fields and date sanity, compare extracted values with the source text, and flag low-confidence fields in the edit panel. Start recording admin edits.
+Scraper. Begin with a few official sites. Remove duplicates by URL or content hash, and let every scraped notice land as a preview draft.
+Media and distribution. Start with thumbnail templates, then short video. Post to Telegram first, since it is the simplest, then Instagram and YouTube.
+Feedback loop. Use the recorded admin edits to find where the AI gets fields wrong, and refine the prompts against that list.
+Risks and open decisions
+The biggest risk is publishing a wrong date or vacancy count, so human review should stay mandatory.
+Queue choice. The diagram shows both RabbitMQ and Kafka. At this scale one queue is enough; the open question is a managed service or self-hosting.
+Serverless limits. The parse-pdf route is capped at 60 seconds and 1 GB on Vercel. Long OCR jobs and scrapers will need a worker outside the request cycle.
+Scraping. Check each site's terms and robots rules, expect layout changes to break scrapers, and always link back to the official source.
+Third-party APIs. Instagram, YouTube, Canva and Runway each have their own approval steps, quotas and pricing. I have not verified these, so check them before committing.
+Cost per notice. OCR, LLM calls and video generation add up. Set a budget per notice and measure it.
+Open question. Should trusted official sources ever skip manual review, or should every notice always pass it?
+Notes on the source diagram
+A few labels in the diagram are unclear, so I made these assumptions:
+The text "ARAB" appears twice (beside Canva and in the first queue box). It looks like an image-generation artifact, so I ignored it.
+The Processing Queue box appears twice. I treated it as one queue that sits between ingestion and AI processing.
+The two-way arrow between the queue and the structured job JSON is read as retry or reprocess.
+Cloud Storage / CDN is assumed to hold the generated thumbnails and videos.
+

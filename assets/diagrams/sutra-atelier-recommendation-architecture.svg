@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 860" width="1600" height="860" role="img" aria-label="Proposed product recommendation architecture for Sutra Atelier">
+  <defs>
+    <linearGradient id="sbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111318"/><stop offset="1" stop-color="#0c0e12"/>
+    </linearGradient>
+    <marker id="sar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4edea3"/>
+    </marker>
+    <marker id="sar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7bd0ff"/>
+    </marker>
+    <style>
+      .t  { font-family:'Inter','Segoe UI',sans-serif; fill:#e2e2e8; }
+      .m  { font-family:'JetBrains Mono','Consolas',monospace; fill:#908fa0; }
+      .n  { font-family:'Inter','Segoe UI',sans-serif; font-weight:600; fill:#e2e2e8; font-size:19px; }
+      .d  { font-family:'Inter','Segoe UI',sans-serif; fill:#c7c4d7; font-size:14px; }
+      .plan{ fill:#151b22; stroke:rgba(123,208,255,0.30); stroke-dasharray:7 5; }
+      .exist{ fill:#16211d; stroke:rgba(78,222,163,0.35); }
+      .tagp{ font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.06em; fill:#7bd0ff; }
+      .tagg{ font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.06em; fill:#4edea3; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="860" fill="url(#sbg)"/>
+  <rect x="0" y="0" width="1600" height="5" fill="#4edea3"/>
+
+  <text class="t" x="60" y="62" font-size="34" font-weight="700">S&#363;tra Atelier — Proposed Recommendation Architecture</text>
+  <text class="m" x="60" y="94" font-size="15">Planned layer beside the existing storefront. Nothing here is implemented; it adds one events table and one vector index, and no new servers.</text>
+
+  <rect class="exist" x="60" y="122" width="230" height="30" rx="15"/>
+  <text class="tagg" x="80" y="142">EXISTS TODAY (SUPABASE)</text>
+  <rect class="plan" x="306" y="122" width="200" height="30" rx="15"/>
+  <text class="tagp" x="326" y="142">PLANNED NEW WORK</text>
+
+  <rect class="exist" x="60" y="200" width="330" height="118" rx="14"/>
+  <rect x="60" y="200" width="5" height="118" rx="2" fill="#4edea3"/>
+  <text class="n" x="84" y="236">Source systems (exist)</text>
+  <text class="d" x="84" y="262">Products &amp; variants, categories,</text>
+  <text class="d" x="84" y="284">orders &amp; order_items, returns, wishlist,</text>
+  <text class="d" x="84" y="306">bag and profiles — all in Supabase.</text>
+
+  <rect class="plan" x="430" y="200" width="330" height="118" rx="14"/>
+  <text class="n" x="454" y="236">01 · Behaviour collection</text>
+  <text class="d" x="454" y="262">Client tracker posts views, clicks,</text>
+  <text class="d" x="454" y="284">wishlist and bag adds, purchases and</text>
+  <text class="d" x="454" y="306">impressions. Guests carry an anon ID.</text>
+
+  <rect class="plan" x="800" y="200" width="330" height="118" rx="14"/>
+  <text class="n" x="824" y="236">02 · Events storage</text>
+  <text class="d" x="824" y="262">A new events table inside the same</text>
+  <text class="d" x="824" y="284">Supabase Postgres. The anonymous ID is</text>
+  <text class="d" x="824" y="306">stitched to user_id at login.</text>
+
+  <rect class="plan" x="1170" y="200" width="370" height="118" rx="14"/>
+  <text class="n" x="1194" y="236">03 · Feature preparation</text>
+  <text class="d" x="1194" y="262">Scheduled SQL normalises events into</text>
+  <text class="d" x="1194" y="284">interaction scores, and product attributes</text>
+  <text class="d" x="1194" y="306">are cleaned up (fabric, weave, colour).</text>
+
+  <line x1="390" y1="259" x2="424" y2="259" stroke="#4edea3" stroke-width="2" marker-end="url(#sar)"/>
+  <line x1="760" y1="259" x2="794" y2="259" stroke="#4edea3" stroke-width="2" marker-end="url(#sar)"/>
+  <line x1="1130" y1="259" x2="1164" y2="259" stroke="#4edea3" stroke-width="2" marker-end="url(#sar)"/>
+
+  <rect class="plan" x="60" y="380" width="330" height="118" rx="14"/>
+  <text class="n" x="84" y="416">04 · Similarity index</text>
+  <text class="d" x="84" y="442">Enable the pgvector extension and store</text>
+  <text class="d" x="84" y="464">a product embedding per item, so</text>
+  <text class="d" x="84" y="486">similar pieces need no external service.</text>
+
+  <rect class="plan" x="430" y="380" width="330" height="118" rx="14"/>
+  <text class="n" x="454" y="416">05 · Candidate generation</text>
+  <text class="d" x="454" y="442">Similar pieces (embedding plus</text>
+  <text class="d" x="454" y="464">attributes), curated pairings, and new or</text>
+  <text class="d" x="454" y="486">popular items cover the cold start.</text>
+
+  <rect class="plan" x="800" y="380" width="330" height="118" rx="14"/>
+  <text class="n" x="824" y="416">06 · Ranking &amp; hard rules</text>
+  <text class="d" x="824" y="442">Weighted SQL score: similarity,</text>
+  <text class="d" x="824" y="464">popularity, recency, return rate. Remove</text>
+  <text class="d" x="824" y="486">sold-out, owned and inactive items.</text>
+
+  <rect class="plan" x="1170" y="380" width="370" height="118" rx="14"/>
+  <text class="n" x="1194" y="416">07 · Serving route</text>
+  <text class="d" x="1194" y="442">One read-only, cached API route returns a</text>
+  <text class="d" x="1194" y="464">diversified list of four to eight pieces.</text>
+  <text class="d" x="1194" y="486">On error or timeout it fails soft.</text>
+
+  <line x1="390" y1="439" x2="424" y2="439" stroke="#4edea3" stroke-width="2" marker-end="url(#sar)"/>
+  <line x1="760" y1="439" x2="794" y2="439" stroke="#4edea3" stroke-width="2" marker-end="url(#sar)"/>
+  <line x1="1130" y1="439" x2="1164" y2="439" stroke="#4edea3" stroke-width="2" marker-end="url(#sar)"/>
+
+  <path d="M1355 318 L1355 352 L225 352 L225 380" fill="none" stroke="#7bd0ff" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#sar2)"/>
+  <text class="m" x="640" y="346" font-size="13">Product embeddings generated from catalog + descriptions</text>
+
+  <path d="M225 498 L225 552 L1355 552 L1355 498" fill="none" stroke="#7bd0ff" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#sar2)"/>
+  <text class="m" x="600" y="544" font-size="13">Impressions, clicks and purchases flow back into collection (feedback loop)</text>
+
+  <rect class="exist" x="60" y="600" width="740" height="118" rx="14"/>
+  <rect x="60" y="600" width="5" height="118" rx="2" fill="#4edea3"/>
+  <text class="n" x="84" y="636">08 · Fallback (already patterned)</text>
+  <text class="d" x="84" y="662">The storefront already ships a curated embedded collection when the</text>
+  <text class="d" x="84" y="684">database is unavailable. The same pattern serves a curated recommendation</text>
+  <text class="d" x="84" y="706">list when the route fails or times out.</text>
+
+  <rect class="plan" x="820" y="600" width="720" height="118" rx="14"/>
+  <text class="n" x="844" y="636">09 · Measurement &amp; guardrails</text>
+  <text class="d" x="844" y="662">Track impressions, clicks and add-to-bag rate against a small holdout group</text>
+  <text class="d" x="844" y="684">that sees no recommendations. Guardrails that must not regress: return rate,</text>
+  <text class="d" x="844" y="706">page load time and bounce rate.</text>
+
+  <text class="m" x="60" y="766" font-size="13">Legend</text>
+  <rect class="plan" x="122" y="754" width="14" height="14" rx="3"/>
+  <text class="m" x="144" y="766" font-size="13">dashed = planned, not built</text>
+  <rect class="exist" x="366" y="754" width="14" height="14" rx="3"/>
+  <text class="m" x="388" y="766" font-size="13">green = already implemented</text>
+  <text class="m" x="60" y="808" font-size="13">Source: Sutra Atelier System Design Specification v2.0.0 and the Planned Improvements (Product Recommendation System) and Product Recommendation AI Build Guide documents.</text>
+  <text class="m" x="60" y="832" font-size="13">Privacy: behaviour events stay pseudonymous and never include addresses, phone numbers or payment details.</text>
+</svg>

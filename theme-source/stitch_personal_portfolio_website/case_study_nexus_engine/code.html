@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-secondary": "#003824", "on-tertiary-container": "#002d40", "primary-container": "#8083ff", "primary-fixed-dim": "#c0c1ff", "surface-container-high": "#282a2e", "on-background": "#e2e2e8", "surface-bright": "#37393e", "tertiary": "#7bd0ff", "primary": "#c0c1ff", "on-secondary-fixed-variant": "#005236", "inverse-primary": "#494bd6", "surface-container-low": "#1a1c20", "surface-variant": "#333539", "on-surface-variant": "#c7c4d7", "on-primary-container": "#0d0096", "on-secondary-container": "#00311f", "surface-container": "#1e2024", "on-primary-fixed": "#07006c", "on-tertiary-fixed-variant": "#004c69", "background": "#111318", "on-tertiary-fixed": "#001e2c", "tertiary-container": "#009bd1", "error": "#ffb4ab", "primary-fixed": "#e1e0ff", "surface-dim": "#111318", "inverse-on-surface": "#2f3035", "on-surface": "#e2e2e8", "on-primary-fixed-variant": "#2f2ebe", "surface-tint": "#c0c1ff", "outline-variant": "#464554", "inverse-surface": "#e2e2e8", "surface-container-lowest": "#0c0e12", "surface-container-highest": "#333539", "secondary-fixed-dim": "#4edea3", "surface": "#111318", "on-error-container": "#ffdad6", "secondary-container": "#00a572", "secondary": "#4edea3", "outline": "#908fa0", "tertiary-fixed": "#c4e7ff", "error-container": "#93000a", "tertiary-fixed-dim": "#7bd0ff", "on-error": "#690005", "on-tertiary": "#00354a", "on-primary": "#1000a9", "on-secondary-fixed": "#002113", "secondary-fixed": "#6ffbbe" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-md": "1rem", "gutter": "1.5rem", "space-lg": "1.5rem", "gutter-mobile": "1rem", "space-xs": "0.25rem", "margin": "2rem", "margin-mobile": "1.25rem", "space-sm": "0.5rem", "space-xl": "2.5rem" }, fontFamily: { "label-micro": ["JetBrains Mono"], "label-tag": ["JetBrains Mono"], "display-hero-mobile": ["Inter"], "display-hero": ["Inter"], "label-metric": ["JetBrains Mono"], "headline-lg": ["Inter"], "code-inline": ["JetBrains Mono"], "headline-md": ["Inter"], "headline-sm": ["Inter"], "code-block": ["JetBrains Mono"], "body-sm": ["Inter"], "body-lg": ["Inter"], "headline-lg-mobile": ["Inter"], "body-md": ["Inter"] }, fontSize: { "label-micro": ["10px", { "lineHeight": "12px", "letterSpacing": "0.06em", "fontWeight": "600" }], "label-tag": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "500" }], "display-hero-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "display-hero": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.03em", "fontWeight": "700" }], "label-metric": ["24px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "code-inline": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "headline-md": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-sm": ["18px", { "lineHeight": "26px", "fontWeight": "600" }], "code-block": ["13px", { "lineHeight": "20px", "fontWeight": "400" }], "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }] } } } };</script></head><body class="bg-background font-body-md text-on-surface antialiased flex flex-col min-h-screen selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.3)]"><div class="h-16 px-gutter-mobile flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-xs min-w-0 flex-1"><button aria-label="Go back" class="min-w-[44px] min-h-[44px] flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors" onclick="history.back()"><span class="material-symbols-outlined text-[20px]">arrow_back</span></button><img alt="Dev Terminal Logo" class="h-7 w-auto object-contain flex-shrink-0 hidden xs:block" src="https://lh3.googleusercontent.com/aida/AEtjO1XwcSDErwag-n5yLToIHVz7UM5M_v3ABMyGhBWH4wq-cuSVTpxL9Lzsp-d_z7DpgXsVVQCZQkgS9U9vfK_hNVDb4tEHq-h-KCW2G8PYox3CvZDhYlIZUWk9AHw6cbDEUoYBh3KLJAG-AJBs46lWLYXYe_vMKL3cuU613V2ph9eum_vDNWBE2ZCSnyZXLAC3VFDz0WXWKFw2Qg8tw0JlYhBQwIW4YwH0zeX1oZoqHuOuoz-3y36oz0osDkzb"/><h1 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">Project Case Study</h1></div><div class="flex items-center gap-space-xs flex-shrink-0"><div class="w-11 h-11 flex items-center justify-center"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-outline/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxxQinA6ML_bt2XHuVEJ0qccuS6DJj4MTrdosaY9HAOrNb0GNgqniLDJ9xSGU5wxBDqvt2cGJEc0Cj0qolrac-UZhhrKd59ZOnCsq1jqwZRK3txitNYnSlJ761IsgUwACBmFXRYpr5c0-NSEt6M8s_TuToH90B40NMLm_0EaEcKtAQLgj-5nRW9lvtndzvXC5fwuFRiBdtPVFZFkbmHSgUHufxa89rov07jZihHc4nOBfMkxNdRT_ymQ"/></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 bg-background min-h-screen"><div class="flex flex-col w-full pb-safe">
+<!-- Interactive Notification Toast -->
+<div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-space-md py-space-xs rounded-full bg-secondary text-on-secondary shadow-xl transition-all duration-300 opacity-0 pointer-events-none translate-y-3 flex items-center gap-space-xs" id="copyToast">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="font-label-tag text-label-tag">COPIED TO CLIPBOARD</span>
+</div>
+<div class="px-gutter-mobile flex flex-col gap-space-lg pt-space-md">
+<!-- Project Hero Header Card -->
+<section class="bg-surface-container-low rounded-xl p-space-md shadow-md flex flex-col gap-space-md relative overflow-hidden">
+<!-- Glow ambient backdrop -->
+<div class="absolute -top-16 -right-16 w-44 h-44 rounded-full bg-primary-container/10 blur-3xl pointer-events-none"></div>
+<div class="absolute -bottom-16 -left-16 w-44 h-44 rounded-full bg-secondary-container/10 blur-3xl pointer-events-none"></div>
+<!-- Header Pills -->
+<div class="flex items-center justify-between gap-space-xs flex-wrap">
+<div class="flex items-center gap-space-xs">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/20 text-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-micro text-label-micro tracking-wider uppercase">PRODUCTION READY</span>
+</div>
+<span class="font-label-micro text-label-micro px-2 py-1 rounded bg-surface-container text-on-surface-variant font-code-inline">v2.4.0</span>
+</div>
+<div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container text-tertiary">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-tag text-label-tag font-semibold">1.4k</span>
+</div>
+</div>
+<!-- Title & Elevator Pitch -->
+<div class="flex items-start gap-space-sm">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0 text-primary shadow-sm">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 24 24">
+<polyline points="16 18 22 12 16 6" stroke="currentColor"></polyline>
+<polyline points="8 6 2 12 8 18" stroke="#4edea3"></polyline>
+<line stroke="#7bd0ff" x1="14" x2="10" y1="4" y2="20"></line>
+</svg>
+</div>
+<div class="min-w-0 flex-1">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface font-bold">Nexus Engine</h2>
+<p class="font-label-tag text-label-tag text-on-surface-variant mt-0.5">DISTRIBUTED REAL-TIME STATE FABRIC</p>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+        High-throughput event coordination platform enabling conflict-free CRDT sync with local zero-latency optimistic reconcilers across volatile edge networks.
+      </p>
+<!-- Technology Chips -->
+<div class="flex flex-wrap gap-1.5">
+<span class="font-label-micro text-label-micro px-2 py-1 rounded bg-surface-container-high text-primary">RUST CORE</span>
+<span class="font-label-micro text-label-micro px-2 py-1 rounded bg-surface-container-high text-tertiary">WEBSOCKET</span>
+<span class="font-label-micro text-label-micro px-2 py-1 rounded bg-surface-container-high text-secondary">CRDT (YATA)</span>
+<span class="font-label-micro text-label-micro px-2 py-1 rounded bg-surface-container-high text-on-surface-variant">REDIS RAFT</span>
+<span class="font-label-micro text-label-micro px-2 py-1 rounded bg-surface-container-high text-on-surface-variant">WASM</span>
+</div>
+<!-- Action Buttons -->
+<div class="grid grid-cols-2 gap-space-xs pt-space-xs">
+<a class="inline-flex items-center justify-center gap-1.5 bg-primary text-on-primary font-body-md text-body-md font-semibold py-2.5 px-3 rounded-lg shadow hover:opacity-90 transition-opacity" href="#playground">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+<span>Playground</span>
+</a>
+<a class="inline-flex items-center justify-center gap-1.5 bg-surface-container text-on-surface font-body-md text-body-md font-semibold py-2.5 px-3 rounded-lg shadow hover:bg-surface-container-high transition-colors" href="https://github.com" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[18px]">code</span>
+<span>GitHub</span>
+</a>
+</div>
+</section>
+<!-- Problem Context Section -->
+<section class="bg-surface-container-low rounded-xl p-space-md shadow-md flex flex-col gap-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-error text-[20px]">warning</span>
+<span class="font-label-tag text-label-tag text-error tracking-wider uppercase font-semibold">The Architectural Bottleneck</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">The Mobile Concurrency Dilemma</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+        Collaborative document editors and spatial canvases collapse when degraded mobile bandwidth drops socket handshakes. Traditional lock-based synchronization or naive server-authoritative reconciliation caused ghost cursor jumps, dropped edits, and severe memory bloat (&gt;180MB/instance).
+      </p>
+<!-- Key Friction Points -->
+<div class="grid grid-cols-1 gap-2 pt-1">
+<div class="flex items-center gap-space-sm bg-surface-container p-space-sm rounded-lg">
+<div class="w-8 h-8 rounded-full bg-error-container/30 text-error flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">signal_cellular_connected_no_internet_4_bar</span>
+</div>
+<div class="min-w-0">
+<h4 class="font-body-sm text-body-sm text-on-surface font-semibold">Network Jitter &amp; Cell Handoffs</h4>
+<p class="font-label-micro text-label-micro text-on-surface-variant">TCP reset packet bursts during 5G/LTE band switches</p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm bg-surface-container p-space-sm rounded-lg">
+<div class="w-8 h-8 rounded-full bg-error-container/30 text-error flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">difference</span>
+</div>
+<div class="min-w-0">
+<h4 class="font-body-sm text-body-sm text-on-surface font-semibold">CRDT State Compaction</h4>
+<p class="font-label-micro text-label-micro text-on-surface-variant">Unbounded tombstone growth during offline edits</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Architecture Visual Blueprint -->
+<section class="bg-surface-container-low rounded-xl p-space-md shadow-md flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">hub</span>
+<span class="font-label-tag text-label-tag text-secondary tracking-wider uppercase font-semibold">System Topology</span>
+</div>
+<span class="font-label-micro text-label-micro text-on-surface-variant uppercase">Bi-Directional CRDT Bus</span>
+</div>
+<!-- Diagram Container -->
+<div class="bg-surface-container-lowest rounded-lg p-space-md flex flex-col gap-space-sm relative overflow-hidden">
+<!-- Node 1: Mobile Client Tier -->
+<div class="bg-surface-container-high rounded-lg p-space-sm flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">devices</span>
+<div class="min-w-0">
+<span class="font-label-tag text-label-tag text-on-surface block font-semibold">Mobile Client (WASM)</span>
+<span class="font-label-micro text-label-micro text-on-surface-variant">Local IndexedDB + YATA Log</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded bg-secondary/10 text-secondary font-label-micro text-label-micro">0ms Local Sync</span>
+</div>
+<!-- Flow Line Indicator -->
+<div class="flex justify-center items-center py-0.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] animate-bounce">arrow_downward</span>
+<span class="font-label-micro text-label-micro ml-1 text-tertiary">Encrypted Bin-Diffs via TLS</span>
+</div>
+<!-- Node 2: Global Edge Proxies -->
+<div class="bg-surface-container-high rounded-lg p-space-sm flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-tertiary text-[18px]">dns</span>
+<div class="min-w-0">
+<span class="font-label-tag text-label-tag text-on-surface block font-semibold">Cloudflare Workers Edge</span>
+<span class="font-label-micro text-label-micro text-on-surface-variant">WSS Termination + Auth Validation</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded bg-tertiary/10 text-tertiary font-label-micro text-label-micro">&lt;14ms PoP</span>
+</div>
+<!-- Flow Line Indicator -->
+<div class="flex justify-center items-center py-0.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">swap_vert</span>
+<span class="font-label-micro text-label-micro ml-1">Atomic Pipeline</span>
+</div>
+<!-- Node 3: Core Broker & Storage Cluster -->
+<div class="grid grid-cols-2 gap-space-xs">
+<div class="bg-surface-container-high rounded-lg p-space-sm shadow-sm flex flex-col justify-between">
+<span class="font-label-tag text-label-tag text-primary font-semibold">Rust Broker</span>
+<p class="font-label-micro text-label-micro text-on-surface-variant mt-1">Tokio async workers fanout</p>
+</div>
+<div class="bg-surface-container-high rounded-lg p-space-sm shadow-sm flex flex-col justify-between">
+<span class="font-label-tag text-label-tag text-secondary font-semibold">Redis Cluster</span>
+<p class="font-label-micro text-label-micro text-on-surface-variant mt-1">Pub/Sub state delta snapshots</p>
+</div>
+</div>
+</div>
+<!-- Live Health Metric Bar -->
+<div class="grid grid-cols-3 gap-2 bg-surface-container p-space-xs rounded-lg text-center">
+<div class="flex flex-col">
+<span class="font-label-metric text-label-metric text-secondary font-bold">142k</span>
+<span class="font-label-micro text-label-micro text-on-surface-variant uppercase">Msg / Sec</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-metric text-label-metric text-primary font-bold">18ms</span>
+<span class="font-label-micro text-label-micro text-on-surface-variant uppercase">P99 Convergence</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-metric text-label-metric text-tertiary font-bold">0.00%</span>
+<span class="font-label-micro text-label-micro text-on-surface-variant uppercase">Data Loss</span>
+</div>
+</div>
+</section>
+<!-- Technical Deep-Dive Accordions -->
+<section class="flex flex-col gap-space-sm">
+<div class="flex items-center gap-2 px-1">
+<span class="material-symbols-outlined text-primary text-[20px]">terminal</span>
+<span class="font-label-tag text-label-tag text-primary tracking-wider uppercase font-semibold">Deep Dives &amp; Implementations</span>
+</div>
+<!-- Accordion Item 1 -->
+<div class="bg-surface-container-low rounded-xl shadow-md overflow-hidden">
+<button class="w-full text-left p-space-md flex items-center justify-between bg-surface-container-low hover:bg-surface-container transition-colors" onclick="toggleAccordion('acc1')">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-primary font-code-inline text-[12px] flex-shrink-0">
+              01
+            </div>
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Deterministic Conflict Merging</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant transition-transform duration-200" id="acc1-icon">expand_more</span>
+</button>
+<div class="px-space-md pb-space-md flex flex-col gap-space-sm" id="acc1-body">
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Nexus swaps typical vector-clock comparisons for an optimized Lamport logical timestamp combined with client hash salting to achieve linear <code>O(1)</code> insertion lookups without traversal locks.
+          </p>
+<!-- Code Block -->
+<div class="rounded-lg bg-surface-container-lowest p-space-sm relative">
+<div class="flex items-center justify-between pb-2 text-on-surface-variant font-label-micro text-label-micro">
+<span>engine/crdt_resolver.rs</span>
+<button class="flex items-center gap-1 hover:text-on-surface" onclick="copySnippet('code1')">
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+<span>Copy</span>
+</button>
+</div>
+<pre class="font-code-block text-code-block text-tertiary overflow-x-auto selection:bg-primary"><code id="code1">pub fn resolve_insert(&amp;mut self, op: &amp;OpNode) -&gt; Result&lt;UpdateLog&gt; {
+    let mut cursor = self.origin_index.get_mut(&amp;op.origin)?;
+    while let Some(next) = cursor.next() {
+        if next.lamport &gt; op.lamport || 
+          (next.lamport == op.lamport &amp;&amp; next.client &gt; op.client) {
+            break;
+        }
+        cursor.advance();
+    }
+    cursor.splice(op.clone())
+}</code></pre>
+</div>
+</div>
+</div>
+<!-- Accordion Item 2 -->
+<div class="bg-surface-container-low rounded-xl shadow-md overflow-hidden">
+<button class="w-full text-left p-space-md flex items-center justify-between bg-surface-container-low hover:bg-surface-container transition-colors" onclick="toggleAccordion('acc2')">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-secondary font-code-inline text-[12px] flex-shrink-0">
+              02
+            </div>
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Adaptive Bit-Packing Delta Protocol</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant transition-transform duration-200" id="acc2-icon">expand_more</span>
+</button>
+<div class="px-space-md pb-space-md flex flex-col gap-space-sm hidden" id="acc2-body">
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            By shifting from JSON payload envelopes to custom variable-length zigzag LEB128 bit-packing, Nexus pruned outbound transport payloads by 65%, eliminating framing garbage collector churn.
+          </p>
+<div class="rounded-lg bg-surface-container-lowest p-space-sm relative">
+<div class="flex items-center justify-between pb-2 text-on-surface-variant font-label-micro text-label-micro">
+<span>transport/delta_frame.rs</span>
+<button class="flex items-center gap-1 hover:text-on-surface" onclick="copySnippet('code2')">
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+<span>Copy</span>
+</button>
+</div>
+<pre class="font-code-block text-code-block text-secondary overflow-x-auto"><code id="code2">#[inline(always)]
+pub fn encode_varint(mut val: u64, buf: &amp;mut Vec&lt;u8&gt;) {
+    while val &gt;= 0x80 {
+        buf.push((val as u8) | 0x80);
+        val &gt;&gt;= 7;
+    }
+    buf.push(val as u8);
+}</code></pre>
+</div>
+</div>
+</div>
+<!-- Accordion Item 3 -->
+<div class="bg-surface-container-low rounded-xl shadow-md overflow-hidden">
+<button class="w-full text-left p-space-md flex items-center justify-between bg-surface-container-low hover:bg-surface-container transition-colors" onclick="toggleAccordion('acc3')">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-tertiary font-code-inline text-[12px] flex-shrink-0">
+              03
+            </div>
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Optimistic WASM UI Reconciler</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant transition-transform duration-200" id="acc3-icon">expand_more</span>
+</button>
+<div class="px-space-md pb-space-md flex flex-col gap-space-sm hidden" id="acc3-body">
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            User mutations apply locally within 1 millisecond into a speculative tree buffer, allowing fluid gesture inputs even during simulated 3000ms offline bursts.
+          </p>
+<div class="rounded-lg bg-surface-container-lowest p-space-sm">
+<div class="flex items-center justify-between text-on-surface-variant font-label-micro text-label-micro">
+<span>reconciliation/optimistic_state.ts</span>
+</div>
+<pre class="font-code-block text-code-block text-primary mt-1 overflow-x-auto"><code>const tx = optimisticEngine.stageMutation(op);
+uiRenderer.applyFrameInstant(tx.preview);
+broker.sendWithRetry(tx.rawBytes).catch(() =&gt; tx.markPending());</code></pre>
+</div>
+</div>
+</div>
+</section>
+<!-- Benchmarks & Performance Section -->
+<section class="bg-surface-container-low rounded-xl p-space-md shadow-md flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">speed</span>
+<span class="font-label-tag text-label-tag text-secondary tracking-wider uppercase font-semibold">Empirical Benchmarks</span>
+</div>
+<span class="font-label-micro text-label-micro text-on-surface-variant">100k Simultaneous Clients</span>
+</div>
+<!-- Latency & Payload Cards -->
+<div class="grid grid-cols-2 gap-space-xs">
+<div class="bg-surface-container p-space-sm rounded-lg flex flex-col">
+<span class="font-label-micro text-label-micro text-on-surface-variant uppercase">Payload Compression</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-secondary font-bold mt-1">-65%</span>
+<span class="font-label-micro text-label-micro text-on-surface-variant">92 bytes / mutation</span>
+</div>
+<div class="bg-surface-container p-space-sm rounded-lg flex flex-col">
+<span class="font-label-micro text-label-micro text-on-surface-variant uppercase">Sync Reliability</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-primary font-bold mt-1">99.98%</span>
+<span class="font-label-micro text-label-micro text-on-surface-variant">Zero dropped writes</span>
+</div>
+</div>
+<!-- Latency Distribution SVG Chart -->
+<div class="bg-surface-container-lowest p-space-sm rounded-lg flex flex-col gap-space-xs">
+<div class="flex items-center justify-between text-on-surface-variant font-label-micro text-label-micro">
+<span>LATENCY OVER PACKET LOSS (0% → 40%)</span>
+<span class="text-secondary font-semibold">NEXUS vs LEGACY OT</span>
+</div>
+<div class="w-full h-32 relative flex items-end pt-4 pb-1">
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 300 100">
+<!-- Grid Lines -->
+<line class="text-surface-variant" stroke="currentColor" stroke-dasharray="3,3" stroke-width="0.5" x1="0" x2="300" y1="25" y2="25"></line>
+<line class="text-surface-variant" stroke="currentColor" stroke-dasharray="3,3" stroke-width="0.5" x1="0" x2="300" y1="50" y2="50"></line>
+<line class="text-surface-variant" stroke="currentColor" stroke-dasharray="3,3" stroke-width="0.5" x1="0" x2="300" y1="75" y2="75"></line>
+<!-- Legacy OT curve (red/dim) -->
+<path d="M 0,85 C 60,82 120,70 180,48 C 240,25 280,8 300,4" fill="none" stroke="#ffb4ab" stroke-linecap="round" stroke-width="2"></path>
+<!-- Nexus CRDT Engine curve (emerald) -->
+<path d="M 0,92 C 60,90 120,88 180,84 C 240,78 280,72 300,68" fill="none" stroke="#4edea3" stroke-linecap="round" stroke-width="2.5"></path>
+<!-- Shaded Area Under Nexus Curve -->
+<path d="M 0,92 C 60,90 120,88 180,84 C 240,78 280,72 300,68 L 300,100 L 0,100 Z" fill="rgba(78, 222, 163, 0.08)"></path>
+</svg>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-micro text-label-micro pt-1">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-1 rounded-full bg-secondary"></span>
+<span>Nexus Engine (Stable ~32ms)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-1 rounded-full bg-error"></span>
+<span>OT Server Lock (~240ms)</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Simulator / Playground Hook -->
+<section class="bg-surface-container-low rounded-xl p-space-md shadow-md flex flex-col gap-space-sm mb-space-md" id="playground">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[20px]">tune</span>
+<span class="font-label-tag text-label-tag text-tertiary tracking-wider uppercase font-semibold">Live Stress Simulator</span>
+</div>
+<span class="font-label-micro text-label-micro px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-code-inline">Interactive</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+        Inject simulated mobile jitter to observe real-time vector compaction without frame drops.
+      </p>
+<div class="bg-surface-container rounded-lg p-space-sm flex flex-col gap-space-sm">
+<div class="flex justify-between items-center">
+<label class="font-label-tag text-label-tag text-on-surface" for="packetLossRange">Simulated Packet Loss</label>
+<span class="font-code-inline text-code-inline text-secondary font-semibold" id="lossValue">12%</span>
+</div>
+<input class="w-full accent-secondary bg-surface-variant rounded h-1 cursor-pointer" id="packetLossRange" max="60" min="0" oninput="updateSim(this.value)" type="range" value="12"/>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-micro text-label-micro text-on-surface-variant">Active Consensus:</span>
+<span class="font-label-micro text-label-micro text-secondary font-semibold uppercase flex items-center gap-1" id="statusIndicator">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            OPTIMISTIC CONVERGED
+          </span>
+</div>
+</div>
+<div class="flex gap-space-xs pt-space-xs">
+<button class="flex-1 bg-surface-container hover:bg-surface-container-high text-on-surface font-body-sm text-body-sm font-semibold py-2 rounded-lg transition-colors flex items-center justify-center gap-1.5" onclick="dispatchBurst()">
+<span class="material-symbols-outlined text-[16px] text-tertiary">bolt</span>
+<span>Send 500 Ops</span>
+</button>
+<button class="px-3 bg-surface-container hover:bg-surface-container-high text-on-surface-variant rounded-lg transition-colors flex items-center justify-center" onclick="resetSim()">
+<span class="material-symbols-outlined text-[16px]">refresh</span>
+</button>
+</div>
+</section>
+<!-- Footer Meta Attribution -->
+<div class="text-center py-space-sm text-on-surface-variant font-label-micro text-label-micro">
+      ENGINEERING CASE STUDY • NEXUS PROTOCOL LABS • 2024
+    </div>
+</div>
+</div>
+<script>
+  function toggleAccordion(id) {
+    const body = document.getElementById(id + '-body');
+    const icon = document.getElementById(id + '-icon');
+    if (!body || !icon) return;
+
+    const isHidden = body.classList.contains('hidden');
+    if (isHidden) {
+      body.classList.remove('hidden');
+      icon.style.transform = 'rotate(180deg)';
+    } else {
+      body.classList.add('hidden');
+      icon.style.transform = 'rotate(0deg)';
+    }
+  }
+
+  function copySnippet(elementId) {
+    const text = document.getElementById(elementId)?.innerText || '';
+    navigator.clipboard.writeText(text).then(() => {
+      const toast = document.getElementById('copyToast');
+      if (toast) {
+        toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-3');
+        toast.classList.add('opacity-100', 'translate-y-0');
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-3');
+          toast.classList.remove('opacity-100', 'translate-y-0');
+        }, 1800);
+      }
+    });
+  }
+
+  function updateSim(val) {
+    const label = document.getElementById('lossValue');
+    const status = document.getElementById('statusIndicator');
+    if (label) label.innerText = val + '%';
+    if (status) {
+      if (val > 45) {
+        status.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-error"></span> HIGH LATENCY REPLAY';
+        status.className = 'font-label-micro text-label-micro text-error font-semibold uppercase flex items-center gap-1';
+      } else {
+        status.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> OPTIMISTIC CONVERGED';
+        status.className = 'font-label-micro text-label-micro text-secondary font-semibold uppercase flex items-center gap-1';
+      }
+    }
+  }
+
+  function dispatchBurst() {
+    const status = document.getElementById('statusIndicator');
+    if (status) {
+      const original = status.innerHTML;
+      const originalClass = status.className;
+      status.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-ping"></span> SYNCING BUFFER (0.8ms)';
+      status.className = 'font-label-micro text-label-micro text-tertiary font-semibold uppercase flex items-center gap-1';
+      setTimeout(() => {
+        status.innerHTML = original;
+        status.className = originalClass;
+      }, 700);
+    }
+  }
+
+  function resetSim() {
+    const slider = document.getElementById('packetLossRange');
+    if (slider) {
+      slider.value = 12;
+      updateSim(12);
+    }
+  }
+</script></main></body></html>
