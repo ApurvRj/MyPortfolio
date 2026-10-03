@@ -188,7 +188,7 @@ img { max-width: 100%; }
 .menu-toggle { display: none; }
 
 /* ------------------------------------------------------------------ Hero -- */
-.hero { position: relative; padding: 76px 0 64px; overflow: hidden; }
+.hero { position: relative; padding: 48px 0 64px; overflow: hidden; }
 .hero-glow {
   position: absolute; pointer-events: none; border-radius: 50%;
   filter: blur(90px); opacity: 0.5; z-index: 0;
@@ -563,7 +563,7 @@ dialog#console::backdrop { background: rgba(6,8,12,.72); backdrop-filter: blur(3
 /* Tablet (768px – 1023px): 8-column behaviour, metrics collapse to 2x2. */
 @media (max-width: 1023px) {
   :root { --margin: 1.5rem; }
-  .hero { padding: 56px 0 48px; }
+  .hero { padding: 44px 0 48px; }
   .hero-inner { grid-template-columns: 1fr; gap: 40px; }
   .portrait-wrap { justify-self: start; width: min(100%, 340px); }
   .metric-strip { grid-template-columns: repeat(2, 1fr); }
