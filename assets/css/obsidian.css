@@ -143,11 +143,10 @@ img { max-width: 100%; }
 .brand-mark {
   width: 34px; height: 34px; flex: none;
   display: grid; place-items: center;
-  border-radius: var(--r); border: 1px solid var(--line-strong);
-  background: var(--surface-container-low);
-  color: var(--primary);
+  border-radius: var(--r);
 }
-.brand-mark svg { width: 17px; height: 17px; }
+/* Brand icon fills the tile and brings its own gradient + rounded corners. */
+.brand-mark svg { width: 100%; height: 100%; display: block; }
 .brand-name { font-size: 14px; font-weight: 600; line-height: 1.2; }
 .brand-meta { display: flex; align-items: center; gap: 6px; }
 
@@ -512,6 +511,7 @@ img { max-width: 100%; }
 .site-footer { padding: 22px 0; border-top: 1px solid var(--line); color: var(--outline); font: 400 11px/1.5 var(--font-mono); }
 .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 .footer-inner a:hover { color: var(--primary); }
+.footer-logo { display: block; height: 32px; width: auto; }
 
 /* -------------------------------------------------------------- Console -- */
 .command-launcher {

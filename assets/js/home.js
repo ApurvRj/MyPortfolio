@@ -22,7 +22,6 @@
   if (metaDesc) metaDesc.setAttribute('content', P.name + ' — ' + P.title + '. ' + P.headline);
 
   /* ------------------------------------------------------------- header -- */
-  set('brand-mark', ico('terminal', 17));
   text('brand-name', P.name);
   set('brand-meta', '<span class="micro-label">' + esc(P.title) + '</span>');
   set('primary-nav', UI.navLinks(false));
@@ -135,7 +134,7 @@
     '</div>');
 
   /* ------------------------------------------------------------- footer -- */
-  set('footer', '<span>' + esc(P.name.toUpperCase()) + ' / ' + esc(P.title.toUpperCase()) + '</span>' +
+  set('footer', '<img class="footer-logo" src="assets/images/brand/logo.svg" width="176" height="32" alt="' + esc(P.name) + '" />' +
     '<span>' + esc(P.footerNote) + '</span>');
   set('console-options',
     '<button class="console-option" data-route="#work">01 / cd projects</button>' +

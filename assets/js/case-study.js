@@ -413,7 +413,7 @@
   }
   var footer = document.getElementById('footer');
   if (footer) {
-    footer.innerHTML = '<span>' + esc(P.name.toUpperCase()) + ' / ' + esc(P.title.toUpperCase()) + '</span>' +
+    footer.innerHTML = '<img class="footer-logo" src="assets/images/brand/logo.svg" width="176" height="32" alt="' + esc(P.name) + '" />' +
       '<span><a href="index.html#work">All projects</a> · ' + esc(P.footerNote) + '</span>';
   }
 
