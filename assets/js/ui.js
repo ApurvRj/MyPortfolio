@@ -92,13 +92,26 @@
     var items = (project.future && project.future.roadmap) || [];
     if (!b || (!items.length && !(b.diagram && b.diagram.src))) return '';
 
+    var completedCount = items.filter(function (it) { return it.completed; }).length;
+    var countLabel = completedCount === items.length && items.length > 0
+      ? '<span class="bucket-count" style="color:var(--secondary)">' + items.length + '/' + items.length + ' completed</span>'
+      : (completedCount > 0
+        ? '<span class="bucket-count">' + completedCount + '/' + items.length + ' completed</span>'
+        : (items.length ? '<span class="bucket-count">' + items.length + ' planned</span>' : ''));
+
     var body = '<div class="bucket-body">';
     if (b.intro) body += '<p class="bucket-intro">' + esc(b.intro) + '</p>';
     if (items.length) {
       body += '<ul class="bucket-items">' + items.map(function (it) {
-        return '<li>' +
-          '<span class="bucket-phase">' + esc(it.phase) + '</span>' +
-          '<strong>' + esc(it.title) + '</strong>' +
+        var isDone = !!it.completed;
+        var checkIco = isDone ? '<span class="bucket-check-icon">' + ico('check-square', 15) + '</span>' : '';
+        var badge = isDone ? '<span class="bucket-status-badge">' + ico('check', 11) + '<span>Completed</span></span>' : '';
+        return '<li class="' + (isDone ? 'is-completed' : '') + '">' +
+          '<div class="bucket-item-head">' +
+            '<span class="bucket-phase">' + esc(it.phase) + '</span>' +
+            badge +
+          '</div>' +
+          '<strong>' + checkIco + '<span>' + esc(it.title) + '</span></strong>' +
           '<span class="bucket-detail">' + esc(it.detail) + '</span></li>';
       }).join('') + '</ul>';
     }
@@ -115,9 +128,9 @@
     body += '</div>';
 
     return '<details class="bucket-list">' +
-      '<summary>' + ico('sparkles', 15) +
+      '<summary>' + ico(completedCount === items.length && items.length > 0 ? 'check-circle' : 'sparkles', 15) +
         '<span class="bucket-title">Bucket list</span>' +
-        (items.length ? '<span class="bucket-count">' + items.length + ' planned</span>' : '') +
+        countLabel +
         '<span class="bucket-chevron">' + ico('chevron-down', 16) + '</span>' +
       '</summary>' + body + '</details>';
   }

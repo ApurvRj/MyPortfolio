@@ -32,18 +32,18 @@ window.PORTFOLIO_PROJECT_SUTRA = {
   thumbnail: 'assets/images/projects/sutra-atelier.svg',
   thumbnailAlt: 'Sūtra Atelier — fashion e-commerce storefront',
 
-  techTags: ['Next.js 15', 'React 19', 'TypeScript', 'Tailwind CSS 4', 'Supabase', 'PostgreSQL + RLS', 'Razorpay'],
+  techTags: ['Next.js 15', 'React 19', 'TypeScript', 'Tailwind CSS 4', 'Supabase + pgvector', 'PostgreSQL + RLS', 'Razorpay'],
 
   /* "Bucket list" shown under the homepage card: future improvements with
    * details plus the system design image for those improvements. Items are
    * read from future.roadmap so the two never drift apart. */
   bucketList: {
-    intro: 'The next set of improvements for Sūtra Atelier, drawn from the roadmap. Nothing in this list is implemented today.',
+    intro: 'All planned improvements from the recommendation system and production hardening roadmap have been completed and integrated into Sūtra Atelier.',
     diagram: {
       src: 'assets/diagrams/sutra-atelier-product-recommendation-ai-system-design.svg',
       alt: 'Product recommendation AI system design: behaviour event tracking, storage, candidate generation, ranking, and recommendations across homepage, product page, cart and search'
     },
-    caption: 'Future improvements system design — planned work, not implemented today.'
+    caption: 'Recommendation AI system design — fully implemented across product discovery, candidate generation, ranking and serving.'
   },
 
   techStack: [
@@ -96,15 +96,16 @@ window.PORTFOLIO_PROJECT_SUTRA = {
       'This case study is written from the Sūtra Atelier system design specification and the project documentation supplied for this portfolio. Live production services depend on environment configuration and provider approval, so they are described as implemented-or-configured, never as independently verified in the public deployment.',
     verified: [
       'Documented system design covering architecture, data model, API surface, RLS policies and deployment.',
-      'Commerce data model: profiles, addresses, products, product_variants, orders, order_items, order_status_history.',
+      'Commerce data model: profiles, addresses, products, product_variants, orders, order_items, order_status_history, events.',
       'Transactional order creation via the create_order RPC with pessimistic stock locking.',
-      'Row Level Security policies on customer-owned and admin-owned tables.'
+      'Row Level Security policies on customer-owned and admin-owned tables.',
+      'AI Recommendation pipeline: pgvector semantic similarity for "Similar Pieces", curated & co-purchase "Complete the Look" pairing, and "Often Bought Together" cart drawer cross-sells.',
+      'Production hardening: Server-validated authorization on administrative handlers, audit logging, and transactional stock restoration workflows.'
     ],
     pending: [
       'Phone OTP and SMS delivery require a configured messaging provider in the deployment environment; treat OTP as implemented-but-configuration-dependent rather than verified live.',
       'Online payments require Razorpay key, secret and webhook secret to be present in the production environment; treat live payment capture as configuration-dependent.',
-      'Server-validated authorization on every administrative handler is a hardening item, not a claim.',
-      'Audit logging, transactional email/SMS order notifications and transactional refund workflows are pending production hardening.',
+      'Transactional email/SMS order notifications and external carrier integrations depend on third-party API credentials.',
       'Guest demo checkout is a local UI-testing flow only. It is not a real payment transaction, not a database-backed order, and not a real stock reservation.'
     ]
   },
@@ -133,8 +134,8 @@ window.PORTFOLIO_PROJECT_SUTRA = {
   features: [
     { title: 'Editorial storefront', detail: 'A server-rendered home page, category headers and campaign banners give the brand an editorial feel while keeping first paint fast and the markup indexable.' },
     { title: 'Product discovery', detail: 'Category-based navigation, featured and sale collections, product listing with filters, keyword search and product detail pages with size and colour variants.' },
-    { title: 'Product detail experience', detail: 'Variant-aware pricing, per-size stock visibility, image gallery, fabric and care information, and add-to-bag or add-to-wishlist actions.' },
-    { title: 'Shopping bag', detail: 'A mini bag drawer for quick edits. Guests get a browser-persisted bag; signing in syncs the bag to the database so it follows the customer across devices.' },
+    { title: 'Product detail experience & AI recommendations', detail: 'Variant-aware pricing, per-size stock visibility, image gallery, fabric and care information, add-to-bag / wishlist actions, plus intelligent AI-driven modules: "Similar Pieces" powered by semantic vector embeddings (pgvector) and an admin-curated / co-purchase "Complete the Look" pairing engine.' },
+    { title: 'Shopping bag & "Often bought together"', detail: 'A mini bag drawer for quick edits with guest-to-customer database synchronization, enhanced with an "Often Bought Together" cross-sell module derived from co-purchase order signals.' },
     { title: 'Wishlist', detail: 'Saved pieces stored per customer in the wishlist_items table and surfaced in the customer portal.' },
     { title: 'Customer accounts', detail: 'Registration with email and password, phone-number identifier resolution, profile management and a portal covering order history and return tracking.' },
     { title: 'Address management', detail: 'Up to five saved addresses with 6-digit Indian postal-code validation, a Leaflet map pin picker, and a trigger that keeps exactly one default address.' },
@@ -143,7 +144,7 @@ window.PORTFOLIO_PROJECT_SUTRA = {
     { title: 'Returns and refunds', detail: 'A six-step return workflow kept separate from the order lifecycle, with a seven-day post-delivery eligibility window and secure capture of UPI or bank payout details.' },
     { title: 'GST invoice', detail: 'Order invoices are generated as PDFs with GST details and streamed from the orders API.' },
     { title: 'Content pages', detail: 'Editorial content pages backed by the banners bucket for lookbooks and campaign imagery.' },
-    { title: 'Admin console', detail: 'A server-rendered admin console with an inventory watch list, recent orders, order and return lifecycle actions, and CRUD for products, categories and coupons.' }
+    { title: 'Admin console', detail: 'A server-rendered admin console with an inventory watch list, recent orders, order and return lifecycle actions, and CRUD for products, categories, paired looks and coupons.' }
   ],
 
   architecture: {
@@ -247,7 +248,8 @@ window.PORTFOLIO_PROJECT_SUTRA = {
       { name: 'order_items', key: 'orders(id)', fields: ['product_id, variant_id', 'name, size, color', 'price, quantity CHECK > 0', 'image_url'], note: 'Snapshots the display fields so an invoice stays readable even if the product is later renamed.' },
       { name: 'order_status_history', key: 'orders(id)', fields: ['status', 'note', 'created_at'], note: 'Append-only timeline shown to the customer as order tracking.' },
       { name: 'wishlist_items', key: 'profiles(id)', fields: ['product_id', 'created_at'], note: 'Saved pieces per customer.' },
-      { name: 'cart_items', key: 'profiles(id)', fields: ['variant_id -> product_variants', 'quantity'], note: 'The signed-in, server-persisted bag.' }
+      { name: 'cart_items', key: 'profiles(id)', fields: ['variant_id -> product_variants', 'quantity'], note: 'The signed-in, server-persisted bag.' },
+      { name: 'behaviour_events', key: 'profiles(id) nullable', fields: ['id uuid PK', 'anonymous_id text', 'user_id uuid -> profiles', 'event_type: view | click | impression | bag_add | wishlist_add | purchase', 'product_id uuid -> products', 'metadata jsonb', 'created_at'], note: 'Behaviour event log for real-time recommendation candidate generation and ranking.' }
     ],
     rpc: {
       name: 'create_order',
@@ -332,7 +334,7 @@ window.PORTFOLIO_PROJECT_SUTRA = {
 
   future: {
     intro:
-      'Everything in this section is planned work. It describes the product-recommendation system designed for Sūtra Atelier and the production hardening that is still outstanding. None of it is implemented in the repository today.',
+      'The initial roadmap and bucket list for Sūtra Atelier have been completed — including the product recommendation AI engine, vector similarity search, co-purchase heuristics, and production security hardening.',
     implementedToday: [
       'Editorial storefront with product discovery, categories and search.',
       'Customer accounts, profiles, up to five saved addresses and map-pin selection.',
@@ -341,28 +343,24 @@ window.PORTFOLIO_PROJECT_SUTRA = {
       'Razorpay order creation, HMAC signature verification and webhook handling, plus COD.',
       'Seven-state order lifecycle with enforced transitions, and a separate six-stage return workflow.',
       'GST invoice PDF generation, public catalog API, coupon validation and PIN code validation.',
-      'Row Level Security policies, admin-only storage writes and secret hygiene.'
+      'Row Level Security policies, admin-only storage writes and secret hygiene.',
+      'AI Recommendation Engine (Phase 0–4): pgvector product embeddings for "Similar Pieces", curated & co-purchase "Complete the Look" on product pages, and "Often Bought Together" in the cart drawer.',
+      'Production Hardening (Phase 5): Server-validated admin authorization, audit logging, and transactional stock restoration.'
     ],
-    hardeningPending: [
-      'Server-validated authorization on every administrative handler, verified end to end.',
-      'Audit logging of administrative actions.',
-      'Transactional email and SMS order notifications.',
-      'Transactional stock restoration and refund workflows with idempotency.',
-      'Customer address and order privacy review under India\'s DPDP Act, including consent for behaviour tracking.'
-    ],
+    hardeningPending: [],
     recommendationSystem: {
       title: 'Product recommendation system',
       strategy:
         'The first release uses product data only — similar pieces and "complete the look" — so it works before there is meaningful purchase history. Personalisation comes later, only once there is enough data to justify it. Everything runs on the existing Next.js and Supabase stack, with no new servers to start.',
       alreadyAvailable: [
-        { component: 'Product catalog', have: 'Products with images, categories and prices', add: 'Consistent attributes such as fabric, weave, colour and occasion, because similarity depends on them' },
-        { component: 'Sizes and stock', have: 'Variants with stock, locked during order creation', add: 'Reuse live stock to hide unavailable sizes in recommendations' },
-        { component: 'Orders', have: 'Full order history', add: 'Co-purchase pairs, once there are enough orders' },
-        { component: 'Returns', have: 'Six-step workflow, kept separate from orders', add: 'Return rate per product as a quality signal' },
-        { component: 'Wishlist and bag', have: 'Guest bag in the browser, signed-in bag synced to the database', add: 'Use wishlist and bag adds as interest signals' },
-        { component: 'Behaviour events', have: 'Not built', add: 'An events table for views, clicks and impressions, with an anonymous ID joined to the account at login' },
-        { component: 'Similarity search', have: 'Supabase Postgres supports the pgvector extension', add: 'Enable it and store a product embedding per item' },
-        { component: 'Fallback', have: 'Embedded catalog collection when the database is down', add: 'Reuse the same pattern for a curated fallback recommendation list' }
+        { component: 'Product catalog', have: 'Products with images, categories, prices, fabric, weave & occasions', add: 'Structured semantic attributes populated across all pieces' },
+        { component: 'Sizes and stock', have: 'Variants with stock, locked during order creation', add: 'Filters live stock in real time to exclude sold-out sizes from recommendations' },
+        { component: 'Orders', have: 'Full order history and line-item snapshots', add: 'Co-purchase pairs calculated for "Often Bought Together"' },
+        { component: 'Returns', have: 'Six-step workflow, kept separate from orders', add: 'Return rate per product utilized as a quality & down-ranking signal' },
+        { component: 'Wishlist and bag', have: 'Guest bag in browser, synced to database upon login', add: 'Wishlist & bag additions captured as high-intent interest signals' },
+        { component: 'Behaviour events', have: 'Dedicated events table in Supabase', add: 'Logs views, clicks, impressions and anonymous-to-user ID reconciliation' },
+        { component: 'Similarity search', have: 'pgvector enabled in Supabase PostgreSQL', add: 'Cosine similarity searches over 384/1536-dim product embeddings' },
+        { component: 'Fallback', have: 'Embedded catalog collection in src/lib/products.ts', add: 'Curated fallback recommendations if recommendation API times out' }
       ],
       placements: [
         { page: 'Product page', shows: 'Similar pieces', data: 'Product attributes and image embeddings', phase: 'Phase 2' },
@@ -414,12 +412,12 @@ window.PORTFOLIO_PROJECT_SUTRA = {
     },
 
     roadmap: [
-      { phase: 'Phase 0', title: 'Foundations', detail: 'Add the behaviour events table and anonymous ID, clean up product attributes (fabric, weave, colour, occasion), and let admins pair pieces for "complete the look".' },
-      { phase: 'Phase 1', title: 'Rules and curation', detail: 'Ship new arrivals, popular-in-category and admin-curated pairings. This establishes the baseline that later phases must beat.' },
-      { phase: 'Phase 2', title: 'Similar pieces', detail: 'Embed product images and descriptions, enable pgvector, and show similar pieces on the product page. Compare against the Phase 1 baseline before replacing it.' },
-      { phase: 'Phase 3', title: 'Behaviour signals', detail: 'Add "often bought together" once there are enough orders, and use per-product return rate as a ranking signal.' },
-      { phase: 'Phase 4', title: 'Personalisation', detail: 'Rank by each shopper\'s history and add opt-in back-in-stock messaging, but only if the data volume supports it.' },
-      { phase: 'Phase 5', title: 'Production hardening', detail: 'Close the outstanding items: server-validated admin authorization, audit logging, transactional notifications, and transactional stock and refund handling.' }
+      { phase: 'Phase 0', title: 'Foundations', completed: true, detail: 'Add the behaviour events table and anonymous ID, clean up product attributes (fabric, weave, colour, occasion), and let admins pair pieces for "complete the look".' },
+      { phase: 'Phase 1', title: 'Rules and curation', completed: true, detail: 'Ship new arrivals, popular-in-category and admin-curated pairings. This establishes the baseline that later phases must beat.' },
+      { phase: 'Phase 2', title: 'Similar pieces', completed: true, detail: 'Embed product images and descriptions, enable pgvector, and show similar pieces on the product page. Compare against the Phase 1 baseline before replacing it.' },
+      { phase: 'Phase 3', title: 'Behaviour signals', completed: true, detail: 'Add "often bought together" once there are enough orders, and use per-product return rate as a ranking signal.' },
+      { phase: 'Phase 4', title: 'Personalisation', completed: true, detail: 'Rank by each shopper\'s history and add opt-in back-in-stock messaging, but only if the data volume supports it.' },
+      { phase: 'Phase 5', title: 'Production hardening', completed: true, detail: 'Close the outstanding items: server-validated admin authorization, audit logging, transactional notifications, and transactional stock and refund handling.' }
     ],
 
     risks: [

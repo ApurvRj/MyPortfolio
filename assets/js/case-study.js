@@ -236,20 +236,28 @@
   function renderFuture(entry) {
     var f = project.future || {};
     entry.heading = entry.heading || 'Future scope';
-    entry.badge = '<span class="status-pill is-planned"><span class="dot"></span>Planned &mdash; not implemented</span>';
-    var body = '<div class="callout" style="margin-bottom:18px"><strong>Read this first</strong>' +
+    var allRoadmapDone = f.roadmap && f.roadmap.length && f.roadmap.every(function (r) { return r.completed; });
+    entry.badge = allRoadmapDone
+      ? '<span class="status-pill"><span class="dot"></span>Roadmap Completed</span>'
+      : '<span class="status-pill is-planned"><span class="dot"></span>Planned &mdash; not implemented</span>';
+    var body = '<div class="callout ' + (allRoadmapDone ? 'is-good' : '') + '" style="margin-bottom:18px">' +
+      '<strong>' + (allRoadmapDone ? 'Status update' : 'Read this first') + '</strong>' +
       '<p>' + esc(f.intro) + '</p></div>';
 
-    body += '<div class="grid two">' +
+    var plannedList = (f.notImplemented || []).map(function (n) { return n.stage + ': ' + n.planned; })
+      .concat(f.hardeningPending || []);
+    if (!allRoadmapDone && f.recommendationSystem) {
+      plannedList.push('Recommendation system: product-based first, then behaviour-based, then personalisation');
+    }
+
+    body += '<div class="grid ' + (plannedList.length ? 'two' : 'one') + '">' +
       '<div class="sub-card"><span class="node-tag">Working today</span><h3>Implemented</h3>' +
         UI.bulletList(f.implementedToday, 'is-plain') + '</div>' +
-      '<div class="sub-card"><span class="node-tag">Not implemented</span><h3>Planned work</h3>' +
-        UI.bulletList(
-          (f.notImplemented || []).map(function (n) { return n.stage + ': ' + n.planned; })
-            .concat(f.hardeningPending || [])
-            .concat(f.recommendationSystem ? ['Recommendation system: product-based first, then behaviour-based, then personalisation'] : []),
-          'is-warn'
-        ) + '</div></div>';
+      (plannedList.length
+        ? '<div class="sub-card"><span class="node-tag">Not implemented</span><h3>Planned work</h3>' +
+            UI.bulletList(plannedList, 'is-warn') + '</div>'
+        : '') +
+      '</div>';
 
     if (f.notImplemented && f.notImplemented.length) {
       body += '<div style="margin-top:20px"><p class="micro-label" style="margin-bottom:12px">' +
@@ -324,8 +332,11 @@
     entry.heading = entry.heading || 'Roadmap';
     var body = '<p style="margin-bottom:16px">A suggested build order: prove the reliable core first, then add automation only once the core works.</p>' +
       '<div class="roadmap">' + plan.map(function (r) {
-        return '<div class="roadmap-item"><b>' + esc(r.phase) + '</b>' +
-          '<div><strong>' + esc(r.title) + '</strong><p>' + esc(r.detail) + '</p></div></div>';
+        var isDone = !!r.completed;
+        var checkIco = isDone ? '<span class="roadmap-check-icon">' + ico('check-square', 15) + '</span>' : '';
+        var badge = isDone ? '<span class="status-badge">' + ico('check', 11) + '<span>Completed</span></span>' : '';
+        return '<div class="roadmap-item' + (isDone ? ' is-completed' : '') + '"><b>' + esc(r.phase) + '</b>' +
+          '<div><strong><span class="roadmap-title-text">' + checkIco + '<span>' + esc(r.title) + '</span></span>' + badge + '</strong><p>' + esc(r.detail) + '</p></div></div>';
       }).join('') + '</div>';
     return section(entry, body, true);
   }
