@@ -153,9 +153,9 @@
         '<div class="tags">' + tagList(project.techTags, project.accent === 'secondary' ? 'green' : 'accent') + '</div>' +
         '<div class="project-actions">' +
           action(project.live, 'Live site', 'rocket', 'button-primary') +
-          action(project.github, 'GitHub', 'github', 'button-secondary') +
-          '<a class="button button-secondary" href="project.html?slug=' + encodeURIComponent(project.slug) + '">' +
-            ico('file-text', 16) + '<span>Case study</span></a>' +
+          (project.github ? action(project.github, 'GitHub', 'github', 'button-secondary') : '') +
+          (!project.hideCaseStudy ? '<a class="button button-secondary" href="project.html?slug=' + encodeURIComponent(project.slug) + '">' +
+            ico('file-text', 16) + '<span>' + esc(project.caseStudyLabel || 'Case study') + '</span></a>' : '') +
         '</div>' +
         bucketList(project) +
       '</div></article>';

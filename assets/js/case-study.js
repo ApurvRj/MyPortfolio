@@ -78,7 +78,8 @@
   function renderFeatures(entry) {
     var features = project.features || [];
     if (!features.length) return '';
-    var body = '<p style="margin-bottom:16px">Expand an item to read the technical capabilities and system flows.</p>';
+    var intro = entry.intro || 'Key capabilities of the platform and how the AI assistant helps candidates navigate recruitment notices.';
+    var body = '<p style="margin-bottom:16px">' + esc(intro) + '</p>';
     body += '<div class="grid two feature-grid">' + features.map(function (f, i) {
       return '<div class="feature-col">' +
         '<details class="feature-card"' + (i === 0 ? ' open' : '') + '>' +
@@ -88,10 +89,12 @@
         UI.codeBlock(f.codeLabel, f.code, 'is-primary') + '</div></details>' +
       '</div>';
     }).join('') + '</div>';
-    body += '<div class="callout" style="margin-top:16px"><strong>On screenshots</strong>' +
-      '<p>UI screenshots for this deployment have not been captured for the portfolio yet, so the ' +
-      'documentation focuses on the system features, workflows, and architecture models listed above. ' +
-      'No placeholder or stock imagery is used to imply otherwise.</p></div>';
+    if (project.showScreenshotNote) {
+      body += '<div class="callout" style="margin-top:16px"><strong>On screenshots</strong>' +
+        '<p>UI screenshots for this deployment have not been captured for the portfolio yet, so the ' +
+        'documentation focuses on the system features, workflows, and architecture models listed above. ' +
+        'No placeholder or stock imagery is used to imply otherwise.</p></div>';
+    }
     return section(entry, body);
   }
 

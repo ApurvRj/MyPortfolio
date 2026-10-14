@@ -16,6 +16,7 @@ window.PORTFOLIO_PROJECT_SUTRA = {
   statusLabel: 'Live website',
   statusTone: 'live',
   accent: 'secondary',
+  showScreenshotNote: true,
 
   tagline:
     'A modern fashion e-commerce platform built with Next.js, Supabase and Razorpay.',
