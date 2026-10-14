@@ -78,7 +78,7 @@
   function renderFeatures(entry) {
     var features = project.features || [];
     if (!features.length) return '';
-    var body = '<p style="margin-bottom:16px">Expand an item to read the implementation detail and the relevant route or pipeline.</p>';
+    var body = '<p style="margin-bottom:16px">Expand an item to read the technical capabilities and system flows.</p>';
     body += '<div class="grid two feature-grid">' + features.map(function (f, i) {
       return '<div class="feature-col">' +
         '<details class="feature-card"' + (i === 0 ? ' open' : '') + '>' +
@@ -89,8 +89,8 @@
       '</div>';
     }).join('') + '</div>';
     body += '<div class="callout" style="margin-top:16px"><strong>On screenshots</strong>' +
-      '<p>Feature screenshots for this deployment have not been captured for the portfolio yet, so the ' +
-      'documentation relies on the implemented routes, data flow and code paths listed above. ' +
+      '<p>UI screenshots for this deployment have not been captured for the portfolio yet, so the ' +
+      'documentation focuses on the system features, workflows, and architecture models listed above. ' +
       'No placeholder or stock imagery is used to imply otherwise.</p></div>';
     return section(entry, body);
   }
@@ -117,6 +117,14 @@
         '<span class="node-tag" style="margin:0">' + esc(layer.node) + '</span></header>' +
         '<p>' + esc(layer.detail) + '</p></div>';
     }).join('') + '</div>';
+    if (a.principles && a.principles.length) {
+      body += '<div style="margin-top:22px"><p class="micro-label" style="margin-bottom:12px">Design principles in practice</p>' +
+        '<div class="table-scroll"><table class="data-table"><thead><tr>' +
+        '<th>Principle</th><th>What it means in practice</th></tr></thead><tbody>' +
+        a.principles.map(function (p) {
+          return '<tr><td class="cell-strong">' + esc(p.principle) + '</td><td>' + esc(p.meaning) + '</td></tr>';
+        }).join('') + '</tbody></table></div></div>';
+    }
     if (a.notes && a.notes.length) {
       body += '<div class="callout" style="margin-top:16px"><strong>Architecture notes</strong>' +
         UI.bulletList(a.notes, 'is-plain') + '</div>';

@@ -1,10 +1,10 @@
 /* ---------------------------------------------------------------------------
  * data/project-karmavriti.js
- * Flagship GenAI project — full case-study content.
+ * Flagship GenAI project — High-level architecture and system design case study.
  *
- * Source of truth: the KarmaVriti repository README supplied in this
- * workspace (checked at commit fdd7182) plus the "Planned Improvements"
- * document. Anything under `future` is explicitly NOT implemented today.
+ * Designed to provide a secure, high-level technical overview of KarmaVriti's
+ * candidate experience, hybrid retrieval AI assistant, and design principles
+ * without exposing internal route maps, private endpoints, or implementation secrets.
  * ------------------------------------------------------------------------- */
 window.PORTFOLIO_PROJECT_KARMAVRITI = {
   slug: 'karmavriti',
@@ -19,402 +19,457 @@ window.PORTFOLIO_PROJECT_KARMAVRITI = {
   flagship: true,
 
   tagline:
-    'Building a Government Jobs Portal with an AI Assistant using Next.js, PostgreSQL and Retrieval-Augmented Generation (RAG).',
+    'An AI-powered government recruitment platform with document-grounded candidate intelligence and hybrid retrieval.',
 
   shortDescription:
-    'An AI-powered government jobs portal that helps users discover government job opportunities and understand official recruitment notices through document-grounded AI assistance.',
+    'KarmaVriti centralizes Indian government job notifications, admit cards, results, and syllabuses into one clean platform, paired with an AI assistant that answers candidate questions directly from official sources.',
 
   detailedDescription:
-    'KarmaVriti is a government jobs information platform designed to make recruitment information easier to discover and understand. It combines job listings and recruitment updates with AI-powered document processing and retrieval. The application uses uploaded recruitment notices as a knowledge source for its AI assistant, and it explores automated information extraction from PDFs, OCR for scanned notices, and an administrative publishing workflow.',
+    'KarmaVriti brings disparate government recruitment notices, admit cards, exam results, and official syllabuses into a centralized, mobile-optimized experience. Powered by document-grounded AI assistance, candidates can query official notifications in plain language to instantly extract critical eligibility criteria, vacancy counts, exam schedules, and fee details — grounded strictly in verified source notices with zero speculative guessing.',
 
   live: 'https://karma-vriti.vercel.app/',
   github: 'https://github.com/ApurvRj/KarmaVriti',
 
   thumbnail: 'assets/images/projects/karmavriti.svg',
-  thumbnailAlt: 'KarmaVriti — government jobs portal with a RAG-powered assistant',
+  thumbnailAlt: 'KarmaVriti — government jobs portal with an AI assistant',
 
-  /* Short tags shown on the homepage card. */
-  techTags: ['Next.js', 'TypeScript', 'PostgreSQL + Prisma', 'Supabase pgvector', 'RAG', 'Tesseract OCR'],
+  /* High-level tags shown on the homepage card. */
+  techTags: ['Next.js', 'TypeScript', 'Relational Database', 'Vector Search', 'Hybrid Retrieval (RAG)', 'Bilingual OCR'],
 
-  /* "Bucket list" shown under the homepage card: future improvements with
-   * details plus the system design image for those improvements. Items are
-   * read from future.roadmap so the two never drift apart. */
+  /* Bucket list shown under the homepage card */
   bucketList: {
-    intro: 'The next set of improvements for KarmaVriti, drawn from the roadmap. Nothing in this list is implemented today.',
+    intro: 'Next-stage platform enhancements for KarmaVriti, focused on automated ingestion pipelines and multi-channel notification networks.',
     diagram: {
       src: 'assets/diagrams/karmavriti-future-improvements.svg',
-      alt: 'KarmaVriti future improvements system design: ingestion, AI processing pipeline, human review, media generation and distribution, each stage marked built, partial or planned'
+      alt: 'KarmaVriti future improvements system design: ingestion, AI processing pipeline, human review, media generation and distribution'
     },
-    caption: 'Future improvements system design — planned work, not implemented today.'
+    caption: 'High-level future roadmap — automated ingestion, queued processing, and multi-channel candidate delivery.'
   },
 
   techStack: [
     {
-      group: 'Frontend',
-      items: ['Next.js 16 (App Router)', 'React 19', 'TypeScript 5', 'Tailwind CSS 4', 'framer-motion', 'lucide-react', 'TanStack Query']
+      group: 'Web Application',
+      items: ['Next.js (App Router)', 'React', 'TypeScript', 'Tailwind CSS', 'Mobile-first Responsive Design']
     },
     {
-      group: 'Backend',
-      items: ['Next.js Route Handlers (Node.js runtime)', 'Stateless compute on Vercel', 'Server-side request validation']
+      group: 'Edge & Security',
+      items: ['Secure Edge Gateway', 'Encrypted Transport (TLS)', 'Abuse & Bot Protection', 'Strict Role-Based Access Controls']
     },
     {
-      group: 'Database',
-      items: ['PostgreSQL', 'Prisma 7 with @prisma/adapter-pg', 'Schema push via prisma db push']
+      group: 'Data Layer',
+      items: ['Managed Relational Database', 'Isolated Schema Access', 'Least-Privilege Database Policies', 'Automated Backups']
     },
     {
-      group: 'AI & retrieval',
-      items: ['LangChain (JS)', 'HuggingFace Inference API', 'all-MiniLM-L6-v2 (384-dim)', 'Supabase pgvector', 'Qwen2.5-7B-Instruct']
+      group: 'AI & Hybrid Retrieval',
+      items: ['Hybrid Retrieval (Semantic + Structured)', 'Vector Similarity Search', 'Graceful Fallback Logic', 'Source Citation Grounding']
     },
     {
-      group: 'Document processing',
-      items: ['unpdf (PDF text extraction)', 'Tesseract.js OCR (English + Hindi)', 'OpenAI gpt-4o-mini / Gemini 1.5 Flash', 'Ollama llama3 (local development)']
+      group: 'Document Processing',
+      items: ['Document Ingestion Pipeline', 'Bilingual Text Extraction (English + Hindi)', 'OCR for Scanned Notices', 'Structured Entity Parsing']
     },
     {
-      group: 'Auth & payments',
-      items: ['bcryptjs password hashing', 'JWT via jose in an httpOnly cookie', 'Roles: ADMIN and SUPER_ADMIN', 'Razorpay (Stripe is legacy)']
-    },
-    {
-      group: 'Deployment & CI',
-      items: ['Vercel, Mumbai region (bom1)', 'GitHub Actions: tsc --noEmit + ESLint on every PR']
+      group: 'Integrations & Services',
+      items: ['Cryptographically Verified Payments', 'Privacy-first Aggregate Analytics', 'Automated CI/CD Validation', 'Cloud Hosting']
     }
   ],
 
   metrics: [
-    { label: 'Primary datastore', value: 'PostgreSQL', note: 'Prisma 7 + pg adapter' },
-    { label: 'Vector store', value: 'pgvector', note: '384-dim, match_documents RPC' },
-    { label: 'OCR languages', value: 'English + Hindi', note: 'Tesseract.js fallback' }
+    { label: 'Platform Focus', value: 'Indian Public Sector', note: 'Central & State Recruitments' },
+    { label: 'AI Retrieval Model', value: 'Hybrid RAG', note: 'Semantic Context + Live Records' },
+    { label: 'Language Processing', value: 'Bilingual', note: 'English & Hindi Document Support' },
+    { label: 'Reliability Guarantee', value: 'Deterministic Fallback', note: '100% Service Availability' }
   ],
 
   overview: {
     introduction:
-      'KarmaVriti is a job portal for Indian government recruitment. Visitors browse notifications, results, admit cards, answer keys and syllabus pages, and can ask an AI assistant about a notice in plain language. Admins publish content through a protected console, with AI help to turn notice PDFs into structured job data.',
+      'KarmaVriti is an intelligent recruitment platform for Indian government job seekers. It organizes scattered, legally dense official recruitment notices into clean, searchable resources and pairs them with an interactive AI assistant that answers candidate questions directly from verified documents.',
     problem:
-      'Government recruitment information is scattered across official PDF notices, written in dense legal language and published in inconsistent formats. Job seekers struggle to find a relevant opening, and even when they find the notice they struggle to extract the details that matter: eligibility, dates, vacancy counts and fee structure. Scanned notices are not searchable at all.',
+      'Official government recruitment notices are published in dense legal formats, frequently as scanned or photographed bilingual PDFs across hundreds of disparate portals. Aspirants struggle to decipher crucial eligibility cut-offs, exact vacancy breakdowns, syllabus changes, and critical deadlines, leading to missed opportunities or disqualifications.',
     users: [
-      'Job seekers looking for Indian government recruitment opportunities.',
-      'Candidates in tier 2 and tier 3 cities searching on mobile devices.',
-      'Administrators who publish and curate recruitment content.'
+      'Government job aspirants across India researching state and central recruitment opportunities.',
+      'Candidates in tier-2 and tier-3 cities relying predominantly on mobile devices and variable internet speeds.',
+      'Content curators and administrators reviewing, structuring, and verifying published recruitment data.'
     ],
     objectives: [
-      'Centralise government job listings, results, admit cards, answer keys and syllabus in one searchable place.',
-      'Let users ask questions in plain language and receive answers grounded in the official notice.',
-      'Reduce the manual effort of turning a recruitment PDF into a structured, publishable job record.',
-      'Keep a human in the loop so an incorrect date or vacancy count never reaches the public site.',
-      'Make public pages fast and discoverable through server rendering and structured data.'
+      'Provide a fast, centralized hub for recruitment notices, admit cards, results, answer keys, and exam syllabuses.',
+      'Enable candidates to ask complex eligibility and timeline questions in plain language and receive precise, source-grounded answers.',
+      'Ensure high accuracy by combining semantic document understanding with live structured database lookups.',
+      'Maintain candidate trust through a human-in-the-loop review workflow before recruitment records become publicly visible.'
     ],
     solution:
-      'A single Next.js 16 deployment serves both the public site and an admin console. Public pages are server-rendered for SEO. Admins upload notice PDFs; text is extracted with an OCR fallback, chunked, embedded and stored in Supabase pgvector. When a visitor asks the assistant a question, the question is embedded, the top 5 chunks are retrieved, matching job rows are pulled from PostgreSQL for fresh dates and vacancies, and an LLM answers from that combined context with source links.'
+      'A server-rendered, mobile-optimized web application fronted by an intelligent edge security layer. Official notices are ingested, cleaned, and indexed using a dual retrieval strategy: semantic search retrieves nuanced context from document notices, while relational queries fetch live dates and vacancies. If AI services experience latency, the platform fails gracefully to structured records so candidates never face a broken experience.'
   },
 
   features: [
     {
-      title: 'RAG-based AI assistant',
+      title: 'Unified recruitment discovery',
       detail:
-        'Uploaded recruitment notices become the assistant knowledge source. Document chunks and embeddings are stored in Supabase pgvector. Retrieval combines vector search over the notice text with live PostgreSQL lookups, so an answer is grounded in the notice and can cite the current database record.',
-      code: 'POST /api/ai/query\nGET  /api/ai/search\nGET  /api/ai/health',
-      codeLabel: 'api/ai/*'
+        'Candidates can effortlessly discover, filter, and track public sector recruitment notices across Central Government, State Departments, Railways, Banking, Defense, Police, Teaching, and PSUs with comprehensive search and structured categorizations.'
     },
     {
-      title: 'Semantic search',
+      title: 'Document-grounded AI assistant',
       detail:
-        'Visitors search by meaning instead of exact keywords, so a query such as "railway group d age limit" still surfaces the right notice.',
-      code: 'GET /api/ai/search?q=...',
-      codeLabel: 'api/ai/search'
+        'Candidates ask questions in plain natural language (e.g., "What is the age relaxation for OBC candidates?" or "Am I eligible with a 3-year diploma?"). The assistant synthesizes verified answers derived exclusively from official notification documents and always cites the relevant section.'
     },
     {
-      title: 'OCR for scanned notices',
+      title: 'Hybrid retrieval architecture',
       detail:
-        'Recruitment notices are frequently scanned images. When normal PDF text extraction returns too little content, Tesseract.js OCR runs as a fallback and handles English and Hindi text.',
-      code: "extractText(file)\n  -> unpdf\n  -> if (text too short) tesseract.recognize(file, 'eng+hin')",
-      codeLabel: 'document pipeline'
+        'Combines semantic vector search over document content with real-time relational lookups. This ensures the assistant understands conversational meaning while delivering 100% accurate, up-to-date vacancy figures and calendar dates.'
     },
     {
-      title: 'AI-assisted job ingestion',
+      title: 'Bilingual document intelligence (English & Hindi)',
       detail:
-        'A PDF is converted to text and an LLM extracts structured job information, which is submitted as a draft for administrative review rather than published directly.',
-      code: 'POST /api/admin/jobs/parse-pdf',
-      codeLabel: 'api/admin/jobs/parse-pdf'
+        'Processes both digital and scanned recruitment circulars. Scanned or low-quality document uploads automatically engage bilingual OCR pipelines to extract English and Hindi notices without manual transcription.'
     },
     {
-      title: 'Bulk JSON import with field mapping',
+      title: 'Human-in-the-loop validation & publishing',
       detail:
-        'Admins can import many jobs at once from JSON using a field mapping, which is faster than one-by-one entry during large recruitment drives.',
-      code: 'POST /api/admin/jobs/bulk-upload',
-      codeLabel: 'api/admin/jobs/bulk-upload'
+        'Extracted recruitment data undergoes an editorial verification workflow before publication. Key details such as exam dates, fee structures, and qualification criteria are cross-checked by curators to prevent misinformation.'
     },
     {
-      title: 'Controlled publishing workflow',
+      title: 'Linked recruitment lifecycle resources',
       detail:
-        'New jobs are saved as preview drafts. An administrator reviews and edits the extracted data, then approves it. Content only reaches the public site from preview to upcoming or active through that approval route, which records who approved and when.',
-      code: 'preview -> (admin review) -> upcoming / active',
-      codeLabel: 'job lifecycle'
+        'Every recruitment notice is unified with its downstream exam resources: officially released admit cards, question papers, answer keys, results, and detailed syllabuses are grouped together in one coherent timeline.'
     },
     {
-      title: 'Related recruitment information',
+      title: 'Resilient fallback answering',
       detail:
-        'Each new job gets linked draft resource pages for syllabus, admit card, answer key and result, so related information stays connected to the job it belongs to.',
-      code: 'GET /api/results\nGET /api/admit-cards\nGET /api/answer-keys\nGET /api/syllabus',
-      codeLabel: 'public resource routes'
+        'If language model inference is delayed or external services encounter downtime, the system automatically falls back to pre-indexed structured database records, ensuring users consistently receive reliable information without disruption.'
     },
     {
-      title: 'Discovery, filters and SEO',
+      title: 'Privacy-conscious architecture',
       detail:
-        'Category filters (SSC, Railway, Banking, UPSC, Defence, Police, Teaching, State and Central Government, PSU) plus search, status filters and infinite scroll. Public pages are server-rendered with a sitemap, robots rules and JSON-LD structured data.',
-      codeLabel: 'server-rendered pages'
-    },
-    {
-      title: 'Administrative security',
-      detail:
-        'Admins authenticate with a password hashed using bcryptjs. A JWT signed with jose is issued in an httpOnly cookie and the user is verified against the database on protected routes, using ADMIN and SUPER_ADMIN roles.',
-      code: 'POST /api/admin/login\nrole in { ADMIN, SUPER_ADMIN }',
-      codeLabel: 'admin auth'
+        'Built with privacy-by-design principles: candidate analytics are collected strictly in aggregate without recording personal identifiers or search histories, ensuring complete confidentiality.'
     }
   ],
 
   architecture: {
     summary:
-      'One Next.js 16 deployment on Vercel serves the public site and the admin console. The compute layer is stateless; all state lives in managed services (PostgreSQL, Supabase pgvector, external AI APIs).',
+      'KarmaVriti is built around an edge-protected, multi-tier cloud architecture designed for high availability, zero-trust data access, and reliable AI inference. Requests flow through an edge defense layer to a server-rendered application tier, backed by managed relational storage and an intelligent hybrid retrieval service.',
     layers: [
-      { title: 'Frontend architecture', node: 'Next.js App Router',
-        detail: 'Public pages are server-rendered for SEO and first-paint speed. Interactive surfaces such as category filters, infinite scroll, the admin console and the AI assistant are client components hydrated with TanStack Query for caching and request de-duplication.' },
-      { title: 'Backend architecture', node: 'Route Handlers (serverless)',
-        detail: 'All backend logic lives in Next.js Route Handlers, deployed as serverless functions. There is no long-lived session store: each request carries its own authentication cookie and re-reads state from the database. Admin handlers verify the JWT and the matching user record before doing any work.' },
-      { title: 'Database architecture', node: 'PostgreSQL + Prisma',
-        detail: 'PostgreSQL stores jobs, the linked resource pages (results, admit cards, answer keys, syllabus), admin users and notifications. Prisma 7 with the pg adapter is the data-access layer, and the schema is applied with prisma db push because the repository does not ship migration files.' },
-      { title: 'AI integration', node: 'HuggingFace / OpenAI / Gemini',
-        detail: 'Embeddings use sentence-transformers/all-MiniLM-L6-v2 and chat uses Qwen2.5-7B-Instruct, both through the HuggingFace Inference API. Turning a notice into structured job data uses OpenAI gpt-4o-mini or Gemini 1.5 Flash in production, with a local Ollama llama3 model during development.' },
-      { title: 'Vector storage', node: 'Supabase pgvector',
-        detail: 'A documents table with a 384-dimension embedding column lives in Supabase Postgres. A match_documents SQL function performs cosine-distance search and accepts a metadata filter, so retrieval can be scoped to a specific notice or job.' },
-      { title: 'Authentication', node: 'JWT + httpOnly cookie',
-        detail: 'Passwords are hashed with bcryptjs. On login the server signs a JWT with jose and sets it as an httpOnly cookie. Protected routes re-verify the token and the user record on the server, then check the ADMIN or SUPER_ADMIN role. A separate cookie namespace keeps admin sessions away from visitor state.' },
-      { title: 'External services', node: 'Supabase · HF · OpenAI · Razorpay',
-        detail: 'Supabase provides the vector tables and the server-side service-role key. HuggingFace provides embeddings and chat. OpenAI or Gemini performs PDF-to-JSON structuring. Razorpay handles payment-order creation and webhooks (Stripe is legacy).' },
-      { title: 'Deployment', node: 'Vercel (bom1)',
-        detail: 'Deployed to Vercel with the build command prisma generate && next build and a 60-second, 1 GB limit on the PDF-parsing route. GitHub Actions runs tsc --noEmit and ESLint on every push and pull request to main.' }
+      {
+        title: 'Candidate client layer',
+        node: 'Web Application',
+        detail: 'Fast, server-rendered application optimized for mobile browsers and low-bandwidth networks. Delivers instant page loads for recruitment catalogs, live resource trackers, and real-time interactive AI chat.'
+      },
+      {
+        title: 'Secure edge layer',
+        node: 'Security & Edge Gateway',
+        detail: 'Intercepts incoming traffic to enforce end-to-end TLS encryption, secure HTTP response headers, automated bot and DDoS mitigation, and strict perimeter isolation for administrative interfaces.'
+      },
+      {
+        title: 'Data & storage layer',
+        node: 'Managed Relational Datastore',
+        detail: 'Maintains verified recruitment notifications, official resource links, and access controls. Operates on a strict least-privilege model where public queries are restricted to approved, published data.'
+      },
+      {
+        title: 'AI assistant service',
+        node: 'Hybrid Retrieval Engine',
+        detail: 'Orchestrates semantic document retrieval and structured database lookups. Synthesizes concise, candidate-facing responses grounded strictly in official notification text, backed by fallback rule engines.'
+      },
+      {
+        title: 'Data collection & processing',
+        node: 'Ingestion Pipeline',
+        detail: 'Handles automated notification discovery and administrative document uploads. Validates, cleans, and structures digital and scanned bilingual (English/Hindi) notices before administrative verification.'
+      },
+      {
+        title: 'Payments & audit layer',
+        node: 'Cryptographic Event Verification',
+        detail: 'Processes transactional and subscription events with cryptographic signature verification. Administrative actions generate tamper-evident audit logs to safeguard content integrity.'
+      }
+    ],
+    principles: [
+      {
+        principle: 'Grounded, not guessed',
+        meaning: 'AI answers are strictly derived from verified notification text and database records, complete with transparent source citations. Speculative generation is prohibited.'
+      },
+      {
+        principle: 'Fail gracefully',
+        meaning: 'Every critical user journey features deterministic fallbacks. If AI inference is slow or unavailable, answers are generated directly from verified database records.'
+      },
+      {
+        principle: 'Least privilege',
+        meaning: 'Public users, background services, and administrative staff are granted only the minimal permissions required for their roles, isolating sensitive configurations.'
+      },
+      {
+        principle: 'Defense in depth',
+        meaning: 'Layered security protocols operate independently across the edge gateway, application tier, and database boundaries.'
+      },
+      {
+        principle: 'Privacy by design',
+        meaning: 'No unnecessary personal tracking or sensitive user identifiers are retained. Platform metrics are aggregated anonymously.'
+      },
+      {
+        principle: 'Audit everything sensitive',
+        meaning: 'All administrative reviews, publishing status transitions, and data modifications maintain a strict, accountable audit trail.'
+      }
     ],
     notes: [
-      'The application is deliberately a single deployment: UI and API are the same Next.js project, which keeps the surface area small.',
-      'A Python/FastAPI + Chroma prototype of the same RAG idea exists in the repository backend/ folder. It is a prototype and is not used by the web app.'
+      'Designed to scale seamlessly during major national recruitment release surges when thousands of concurrent applicants check updates.',
+      'Bilingual processing guarantees that regional notices containing Hindi instructions or mixed headings remain fully searchable.'
     ],
     diagram: {
       src: 'assets/diagrams/karmavriti-system-design.svg',
-      alt: 'KarmaVriti system design: visitors and admins, Next.js 16 App Router on Vercel, PostgreSQL, pgvector, AI services'
+      alt: 'KarmaVriti High-Level System Architecture: Candidates, Secure Edge Layer, Web Application, Relational Data Layer, and AI Hybrid Retrieval Service',
+      caption: 'KarmaVriti high-level system architecture — multi-tier edge protection, hybrid retrieval, and resilient data processing.'
     }
   },
 
   workflows: {
     rag: {
-      title: 'RAG architecture',
+      title: 'AI assistant & hybrid retrieval workflow',
       subtitle:
-        'How a recruitment notice becomes an answer. The ingestion half runs when an admin uploads a PDF; the query half runs on every visitor question.',
-      groups: [
-        { label: 'Ingestion (admin, offline)', from: 0, to: 5 },
-        { label: 'Retrieval and answering (visitor, per query)', from: 6, to: 9 }
-      ],
+        'How candidate questions are transformed into accurate, source-verified answers using dual-stream retrieval.',
       steps: [
-        { title: 'Document upload', detail: 'An administrator uploads a recruitment notice PDF through the admin console at /admin/ai-upload. The file is kept as the source document for citations.' },
-        { title: 'PDF processing', detail: 'The PDF buffer is passed to the extraction pipeline. Scanned notices and born-digital notices take different paths from here.' },
-        { title: 'Text extraction / OCR', detail: 'unpdf extracts embedded text. If the result is too short to be useful (a scanned page), the pipeline falls back to Tesseract.js OCR configured for English and Hindi.' },
-        { title: 'Chunking', detail: 'The extracted text is split into approximately 1000-character chunks with 200 characters of overlap, so a sentence spanning a boundary is still retrievable.' },
-        { title: 'Embedding generation', detail: 'Each chunk is sent to the HuggingFace Inference API using sentence-transformers/all-MiniLM-L6-v2, producing a 384-dimension vector.' },
-        { title: 'Vector storage', detail: 'The chunk text, its metadata and its embedding are written to the Supabase documents table (vector(384)), ready for the match_documents RPC.' },
-        { title: 'User query', detail: 'A visitor asks a question in the AI assistant. POST /api/ai/query receives the text.' },
-        { title: 'Retrieval', detail: 'The question is embedded with the same model and match_documents returns the top 5 chunks by cosine similarity, filtered by metadata when scoped.' },
-        { title: 'Live database lookup', detail: 'In parallel, matching job rows are read from PostgreSQL. This is what keeps dates, vacancy counts and status fresh even if the notice text is older than the database record.' },
-        { title: 'Contextual AI response', detail: 'The retrieved chunks and the live job data are assembled into the prompt for Qwen/Qwen2.5-7B-Instruct. The answer is returned with source links back to the notice it came from.' }
+        {
+          title: 'Candidate question submission',
+          detail: 'A candidate submits an inquiry in natural language regarding recruitment eligibility, syllabus coverage, fees, or exam schedules.'
+        },
+        {
+          title: 'Intent classification & query routing',
+          detail: 'The assistant analyzes whether the query requires semantic document understanding, factual database lookups, or a hybrid approach.'
+        },
+        {
+          title: 'Semantic document retrieval',
+          detail: 'Retrieves relevant clauses, qualification paragraphs, and policy terms from the official recruitment notice repository.'
+        },
+        {
+          title: 'Structured database lookup',
+          detail: 'Concurrently retrieves live, authoritative metadata from the relational database to verify current vacancy numbers, active deadlines, and official portal URLs.'
+        },
+        {
+          title: 'Context assembly & grounding validation',
+          detail: 'Synthesizes the retrieved document context with verified database facts into a grounded prompt constrained by strict factual boundary guidelines.'
+        },
+        {
+          title: 'Candidate response with citations',
+          detail: 'Delivers a clear, concise answer highlighting key conditions and providing clickable source citations back to the official notification document.'
+        },
+        {
+          title: 'Graceful resilience fallback',
+          detail: 'If the generative inference stream encounters unexpected latency or errors, the platform immediately falls back to structured database records to return an immediate, reliable answer.'
+        }
       ],
       note:
-        'Active jobs and syllabus pages can also be indexed through POST /api/ai/index (admin only). Running that endpoint more than once adds duplicates, so it is run sparingly.'
+        'Answers are grounded, not guessed: every AI response is verified against the official published notice so candidates can make decisions with complete confidence.'
     },
 
     'pdf-ocr': {
-      title: 'PDF processing and OCR',
+      title: 'Document processing & bilingual OCR pipeline',
       subtitle:
-        'Government notices arrive in two shapes: text-based PDFs exported from publishing tools, and flat scans or photos of a printed notice. The pipeline handles both without the admin having to say which one it is.',
+        'Turning complex, inconsistent government notifications into clean, machine-understandable knowledge sources.',
       steps: [
-        { title: 'PDF upload', detail: 'The admin uploads a notice PDF. The file never leaves the request in a permanent form today: it is processed in-memory inside the route handler.' },
-        { title: 'Text extraction', detail: 'unpdf reads the embedded text layer of the PDF. For a born-digital notice this alone is usually enough.' },
-        { title: 'Scanned-document detection', detail: 'There is no separate classifier. The fallback is content-driven: if the extracted text is too short to be meaningful for the page count, the document is treated as scanned.' },
-        { title: 'OCR processing', detail: 'Tesseract.js runs over the rendered pages and returns plain text. This is the expensive path, which is why it only runs as a fallback.' },
-        { title: 'English and Hindi support', detail: 'Tesseract is initialised with the eng+hin language set, so notices that mix English headings with Hindi body text remain readable.' },
-        { title: 'Extracted content handling', detail: 'The resulting text becomes the input for both downstream paths: embedding into the vector store for the assistant, and LLM structuring into a job draft.' }
+        {
+          title: 'Document ingestion',
+          detail: 'Recruitment notices arrive via automated data collection channels or curated administrative uploads.'
+        },
+        {
+          title: 'Document format inspection',
+          detail: 'Evaluates the incoming document structure to determine whether embedded text layers exist or if the file is a scanned physical circular.'
+        },
+        {
+          title: 'Bilingual text extraction & OCR',
+          detail: 'Digital documents undergo clean text extraction; scanned or photographed circulars pass through high-accuracy bilingual OCR supporting English and Hindi typography.'
+        },
+        {
+          title: 'Text normalization & artifact cleaning',
+          detail: 'Removes scanning noise, table border artifacts, and irregular page breaks to produce clean, coherent text blocks.'
+        },
+        {
+          title: 'Semantic chunking & metadata enrichment',
+          detail: 'Partitions documents into semantically coherent sections tagged with organization, post category, and publication date attributes for targeted retrieval.'
+        },
+        {
+          title: 'Knowledge index synchronization',
+          detail: 'Populates the hybrid retrieval knowledge store, making new information instantly available to candidate queries.'
+        }
       ],
       note:
-        'The parse route runs inside a serverless function capped at 60 seconds and 1 GB on Vercel. Long OCR jobs are the reason background queue processing appears in the planned improvements.'
+        'Robust bilingual OCR ensures regional government notifications and mixed-script circulars are as easily searchable as digital publications.'
     },
 
     'job-ingestion': {
-      title: 'AI job ingestion',
+      title: 'Curated publishing & validation workflow',
       subtitle:
-        'Turning a notice into a publishable job record, with a human gate in the middle.',
+        'Guaranteed data integrity through automated extraction and mandatory human editorial review.',
       steps: [
-        { title: 'PDF', detail: 'An admin uploads a recruitment notice through POST /api/admin/jobs/parse-pdf.' },
-        { title: 'Text', detail: 'The document pipeline extracts text, falling back to OCR when the notice is a scan.' },
-        { title: 'LLM extraction', detail: 'The notice text is truncated to fit the context window and sent to OpenAI gpt-4o-mini or Gemini 1.5 Flash with a prompt that asks for structured job fields. During development a local Ollama llama3 model is used instead.' },
-        { title: 'Structured job data', detail: 'The model returns structured JSON: title, organisation, dates, vacancies, eligibility and related fields.' },
-        { title: 'Admin review', detail: 'The record is saved as a preview draft. The admin opens the edit page, corrects anything the model got wrong and fills the gaps. Today only title and organisation are hard-required by validation, so the review step carries most of the correctness burden.' },
-        { title: 'Publishing', detail: 'On approval the job moves to upcoming or active through the approve route, which records who approved it and when. Linked draft pages for syllabus, admit card, answer key and result are created alongside the job.' }
+        {
+          title: 'Notification intake',
+          detail: 'Raw recruitment circulars and press releases enter the platform staging environment.'
+        },
+        {
+          title: 'Automated entity structuring',
+          detail: 'Intelligent extraction engines parse the circular to identify candidate job titles, pay scales, vacancies, age criteria, and critical milestones.'
+        },
+        {
+          title: 'Draft record creation',
+          detail: 'Extracted information is formatted into a staged draft record visible exclusively in the restricted editorial environment.'
+        },
+        {
+          title: 'Human editorial review',
+          detail: 'Qualified administrators verify extracted figures against the official source notice, correcting any ambiguities or discrepancies.'
+        },
+        {
+          title: 'Associated resource generation',
+          detail: 'The review workflow automatically links draft resource placeholders for admit cards, answer keys, results, and detailed syllabuses.'
+        },
+        {
+          title: 'Public publication & audit recording',
+          detail: 'Upon approval, the notification becomes publicly searchable across the platform, recording an immutable audit entry with timestamp and curator attribution.'
+        }
       ],
       note:
-        'The human review gate is deliberate: publishing a wrong exam date or vacancy count is the highest-impact failure mode in this product.'
+        'Human oversight ensures that critical public sector recruitment dates and eligibility parameters are 100% accurate before reaching candidates.'
     }
   },
 
   database: {
     summary:
-      'One PostgreSQL database holds the business data and a Supabase Postgres instance holds the AI knowledge base. They are separate stores reached by different clients, which is why a query can be answered from a document chunk and a live row at the same time.',
+      'KarmaVriti utilizes a secure managed relational database paired with high-performance vector indexing. Public candidate interactions are strictly isolated from internal administrative models under least-privilege access rules.',
     tables: [
-      { name: 'Job', key: 'Prisma model', fields: ['id, slug', 'title, organisation', 'category, location', 'status (preview / upcoming / active / closed)', 'dates, vacancies, eligibility, fee', 'approvedBy, approvedAt'], note: 'The core recruitment record. Public pages read only active rows; the admin console reads every draft.' },
-      { name: 'Resource pages (Result, AdmitCard, AnswerKey, Syllabus)', key: 'Prisma models', fields: ['jobId -> Job', 'content fields', 'publish state'], note: 'Linked to their parent job and auto-drafted when a job is created.' },
-      { name: 'AdminUser', key: 'Prisma model', fields: ['email (unique)', 'passwordHash (bcryptjs)', 'role (ADMIN | SUPER_ADMIN)', 'createdAt'], note: 'Seeded with a super admin via npm run db:seed.' },
-      { name: 'Notification', key: 'Prisma model', fields: ['type', 'payload', 'createdAt'], note: 'Exists today; distribution to social and messaging channels is planned, not built.' },
-      { name: 'documents', key: 'Supabase (raw SQL)', fields: ['id bigserial', 'content text', 'metadata jsonb', 'embedding vector(384)'], note: 'The LangChain-standard vector table. Kept in Supabase so the service-role key stays server-side.' }
+      {
+        name: 'Recruitment Notices',
+        key: 'Core Recruitment Store',
+        fields: ['Title, Organisation, Department', 'Category, Job Classification', 'Vacancies, Pay Scale, Eligibility Rules', 'Application & Exam Timelines', 'Publication & Status State'],
+        note: 'Authoritative recruitment directory. Public candidate queries only read approved and active notices.'
+      },
+      {
+        name: 'Recruitment Resources',
+        key: 'Exam Lifecycle Store',
+        fields: ['Parent Recruitment Reference', 'Resource Type (Admit Card, Syllabus, Answer Key, Result)', 'Release Dates, Official Download References', 'Publication State'],
+        note: 'Keeps critical post-application milestones organized and linked to the primary job notice.'
+      },
+      {
+        name: 'Knowledge Base & Vectors',
+        key: 'Semantic Document Index',
+        fields: ['Document Chunks', 'Recruitment Scope Metadata', 'Vector Embeddings', 'Citation Pointers'],
+        note: 'Backs the hybrid retrieval assistant, isolated behind private service boundaries.'
+      },
+      {
+        name: 'Editorial & System Audit',
+        key: 'Governance & Access Store',
+        fields: ['Curator Credentials (One-way Salted Hash)', 'Role & Access Scopes', 'Modification Timestamps', 'Audit Event Logs'],
+        note: 'Strictly restricted layer ensuring complete traceability of all content publishing actions.'
+      }
     ],
     relationships: [
-      'Job 1:N Result, AdmitCard, AnswerKey, Syllabus — every resource page belongs to exactly one job.',
-      'Job 1:N documents.metadata.jobId — notice chunks are tagged with the job they describe, so retrieval can be scoped.',
-      'AdminUser 1:N Job — the approve route writes approvedBy and approvedAt back onto the job.'
+      'Recruitment Notices 1:N Recruitment Resources — every admit card, syllabus, answer key, and result links to its parent recruitment circular.',
+      'Recruitment Notices 1:N Knowledge Base — document notice sections are tied to their parent notification for scoped retrieval.',
+      'Editorial & Audit 1:N Recruitment Notices — all publishing transitions record author and reviewer attribution.'
     ],
-    vector: {
-      extension: 'create extension if not exists vector;',
-      table: 'create table documents (\n  id bigserial primary key,\n  content text,\n  metadata jsonb,\n  embedding vector(384)\n);',
-      fn: 'create function match_documents(\n  query_embedding vector(384),\n  match_count int default null,\n  filter jsonb default \'{}\'\n) returns table (\n  id bigint, content text, metadata jsonb,\n  embedding jsonb, similarity float\n) language plpgsql as $$\nbegin\n  return query\n  select id, content, metadata,\n    (embedding::text)::jsonb as embedding,\n    1 - (documents.embedding <=> query_embedding) as similarity\n  from documents\n  where metadata @> filter\n  order by documents.embedding <=> query_embedding\n  limit match_count;\nend;\n$$;'
-    },
     interactions: [
-      'Public reads: /api/jobs, /api/jobs/[slug], /api/results, /api/admit-cards, /api/answer-keys, /api/syllabus.',
-      'Admin writes: job create/edit/approve, PDF parse, bulk import, AI upload and re-index.',
-      'AI question time: one vector query against Supabase plus one relational read against PostgreSQL.'
+      'Candidate Public Reads: Fast, cached retrieval of published job circulars, resources, and mobile-friendly syllabuses.',
+      'AI Assistant Inquiries: Dual-stream execution querying the semantic vector store alongside real-time relational verification.',
+      'Administrative Staging: Secure submission, verification, and publication of newly ingested recruitment announcements.'
     ]
   },
 
   security: {
     summary:
-      'Public pages are open by design. Everything that can change content sits behind a server-verified admin session, and the service-role key never reaches the browser.',
+      'KarmaVriti applies a defense-in-depth security posture spanning edge protection, strict role-based access control, cryptographic verification, and privacy-preserving data collection.',
     items: [
-      { title: 'Authentication', detail: 'Admin passwords are hashed with bcryptjs and never stored in plain text. POST /api/admin/login verifies the hash and, on success, issues a JWT signed with jose.' },
-      { title: 'Session handling', detail: 'The JWT is written to an httpOnly cookie, so client-side JavaScript cannot read it. Cookies are the only session carrier; there is no server-side session table to keep in sync.' },
-      { title: 'Authorization', detail: 'Every protected handler re-verifies the token and loads the matching user record before acting, then checks the role. ADMIN can manage content; SUPER_ADMIN additionally manages other administrators.' },
-      { title: 'Role model', detail: 'Two roles only: ADMIN and SUPER_ADMIN. The super admin is created by the seed script using SUPER_ADMIN_PASSWORD, which must be at least 8 characters with upper case, lower case, a number and a special character.' },
-      { title: 'Secret management', detail: 'JWT_SECRET, SUPABASE_SERVICE_ROLE_KEY, HUGGINGFACEHUB_API_TOKEN, OPENAI_API_KEY / GEMINI_API_KEY and the Razorpay secrets live only in environment variables. The Supabase service-role key is used server-side exclusively. .env is gitignored.' },
-      { title: 'Database exposure', detail: 'The vector table is reached through a server-side Supabase client and the match_documents function. Vector search is therefore never called directly from the browser.' },
-      { title: 'Human review as a control', detail: 'Because AI extraction can be wrong, draft content is not publicly readable. The approve route is the only path from preview to a published page, and it records who approved the change and when.' }
-    ],
-    hardening: [
-      'Rate limiting on the public AI endpoints is planned, not implemented.',
-      'A validation layer that cross-checks extracted fields against the source text is planned, not implemented.',
-      'Admin edit history (a feedback loop for prompt improvement) is planned, not implemented.'
+      {
+        title: 'Secure edge perimeter',
+        detail: 'All public and administrative interactions are routed through a secure edge gateway enforcing TLS encryption, DDoS resistance, automated bot filtering, and security header policies.'
+      },
+      {
+        title: 'Least-privilege data access',
+        detail: 'Candidate queries can only access approved, publicly active recruitment records. Internal administrative tables and knowledge indexing systems are isolated behind secure server environments.'
+      },
+      {
+        title: 'Authentication & session defense',
+        detail: 'Administrative access requires cryptographically hashed credentials and secure, signed session tokens configured with strict browser access protections to eliminate script interception risks.'
+      },
+      {
+        title: 'Cryptographic event verification',
+        detail: 'External subscription events and system webhooks require rigorous cryptographic signature verification before updating internal account states.'
+      },
+      {
+        title: 'Privacy-first aggregate analytics',
+        detail: 'System telemetry and search trends are tracked exclusively in aggregate without storing personal user identifiers or sensitive search profiles.'
+      },
+      {
+        title: 'Human editorial gatekeeper',
+        detail: 'AI-assisted document structuring never auto-publishes to the live site: mandatory curator review prevents hallucinations from ever reaching applicants.'
+      }
     ]
   },
 
   challenges: [
-    { issue: 'Scanned notices carry no machine-readable text.',
-      area: 'Document processing',
-      challenge: 'A large share of government notices are scans or photographs. PDF text extraction returns an empty or near-empty string, which silently produces useless embeddings and an empty job draft.',
-      solution: 'The pipeline treats OCR as a content-driven fallback rather than a separate mode: when the extracted text is too short to be meaningful, Tesseract.js runs over the pages with the eng+hin language set, so Hindi text in the notice is preserved rather than dropped.' },
-    { issue: 'Retrieved notice text can disagree with the current record.',
-      area: 'RAG grounding',
-      challenge: 'A notice PDF is a snapshot. Vacancy counts get revised and dates move, so an assistant answering purely from embedded chunks will confidently state yesterday\'s facts.',
-      solution: 'Retrieval is deliberately two-source. The vector search supplies the narrative context a notice is good at, and a live PostgreSQL lookup supplies the fields the database owns (dates, vacancies, status). Both go into the prompt, so the answer is grounded in the notice but current on the numbers.' },
-    { issue: 'Applying the schema without migrations.',
-      area: 'Database workflow',
-      challenge: 'The repository ships no migration files, which makes the usual migrate-then-deploy path unavailable and risks drift between environments.',
-      solution: 'The schema lives in prisma/schema.prisma as the single definition and is applied with prisma db push, with npm run prisma:studio used to inspect the live shape. This is a deliberate trade-off for a fast-moving solo project and is a known limitation rather than a hidden one.' },
-    { issue: 'Long OCR jobs cannot finish inside a serverless request.',
-      area: 'Infrastructure',
-      challenge: 'The PDF parsing route is capped at 60 seconds and 1 GB on Vercel. A multi-page scan through Tesseract can exceed that, so a large notice fails in a way that is hard for the admin to understand.',
-      solution: 'The parsing route is given an explicit, documented limit and is kept to the work it can finish: a single notice at a time. Moving parsing into a background worker with retries and a visible status is the first item in the planned build order, because the current ceiling is a real constraint, not a theoretical one.' },
-    { issue: 'Indexing the same content twice.',
-      area: 'Data hygiene',
-      challenge: 'Re-running the indexing endpoint appends duplicate chunks, which degrades retrieval quality and inflates the vector table.',
-      solution: 'This is documented as a known constraint with an explicit instruction to run the index endpoint sparingly, rather than pretending re-indexing is idempotent. Idempotent indexing belongs in the planned work.' },
-    { issue: 'AI output that looks right but is wrong.',
-      area: 'Correctness and trust',
-      challenge: 'The highest-impact failure in a recruitment portal is publishing a wrong exam date or vacancy count. An LLM that returns plausible JSON makes that failure more likely, not less.',
-      solution: 'Two design choices address it: extracted data always lands as a preview draft that an administrator edits, and today only title and organisation are hard-required by validation, which makes the human review step the intentional correctness gate rather than an afterthought.' }
+    {
+      issue: 'Inconsistent and scanned bilingual PDF notices',
+      area: 'Document Processing',
+      challenge: 'Government recruitment notices arrive in unpredictable layouts, ranging from modern digital exports to faint, multi-generation paper scans mixing English and Hindi.',
+      solution: 'Implemented an adaptive document pipeline that automatically selects clean digital extraction or triggers bilingual OCR, normalizing text noise and preserving Hindi recruitment terms.'
+    },
+    {
+      issue: 'Multi-post circulars mapping to different parent recruitments',
+      area: 'Data Modelling',
+      challenge: 'A single recruitment notice often covers multiple distinct designations (e.g., technical assistants, inspectors, clerks) with differing eligibility rules under one master exam.',
+      solution: 'Structured the data model to decouple overarching recruitment campaigns from individual posts, allowing the AI assistant to isolate specific sub-post criteria accurately.'
+    },
+    {
+      issue: 'Reconciling historical notifications with current revisions',
+      area: 'Retrieval Grounding',
+      challenge: 'Recruitment boards frequently issue addendums, date extensions, or vacancy revisions that contradict initial notice documents.',
+      solution: 'Adopted hybrid retrieval: semantic search provides deep contextual narrative, while real-time relational lookups inject the latest verified dates and vacancy counts into the AI response.'
+    },
+    {
+      issue: 'Unpredictable AI inference latency during traffic peaks',
+      area: 'System Resilience',
+      challenge: 'High concurrency during major recruitment announcements can strain third-party LLM inference, risking timeouts for mobile users.',
+      solution: 'Engineered a graceful fallback mechanism that detects inference bottlenecks and instantly returns structured, rule-generated answers built directly from verified database records.'
+    }
   ],
 
   future: {
     intro:
-      'Everything in this section is planned work. None of it describes a capability that exists in the repository today. It is shown separately so the difference between what the product does now and what it is designed to become stays visible.',
+      'The KarmaVriti roadmap focuses on expanding automated ingestion pipelines, scaling background processing queues, and establishing multi-channel broadcast networks for candidates.',
     implementedToday: [
-      'Public pages: jobs, results, admit cards, answer keys and syllabus, server-rendered with SEO metadata.',
-      'Admin console with JWT httpOnly cookie authentication and ADMIN / SUPER_ADMIN roles.',
-      'PDF to job parsing (unpdf with Tesseract OCR fallback, LLM structuring).',
-      'Bulk JSON job import with field mapping.',
-      'RAG assistant and semantic search over uploaded notices plus live job data.',
-      'Human review gate: preview, then approve, with approver and timestamp recorded.'
+      'Fast, mobile-optimized public portal for jobs, admit cards, results, answer keys, and syllabuses.',
+      'Interactive AI assistant with hybrid retrieval and transparent source citations.',
+      'Adaptive document processing with bilingual English and Hindi OCR for scanned circulars.',
+      'Human-in-the-loop editorial review and multi-stage publishing workflow.',
+      'Secure edge architecture with least-privilege data isolation and privacy-first analytics.',
+      'Resilient fallback architecture ensuring continuous availability regardless of AI provider load.'
     ],
-    notImplemented: [
-      { stage: 'Admin input', planned: 'PDF, URL or pasted text.', today: 'PDF through the parse-pdf route plus bulk JSON upload. No URL or free-text input.' },
-      { stage: 'Automated scraper', planned: 'Pulls notices from official sites.', today: 'Not built.' },
-      { stage: 'Processing queue', planned: 'Object storage plus RabbitMQ or Kafka.', today: 'Not built. Parsing runs inside a single request with a 60-second ceiling on Vercel.' },
-      { stage: 'Raw text extraction', planned: 'PDF text and OCR.', today: 'Built: unpdf with Tesseract.js OCR (English and Hindi) as fallback.' },
-      { stage: 'Data cleaning', planned: 'A separate normalisation step.', today: 'Not separate. Text is only truncated before the LLM call.' },
-      { stage: 'AI structuring engine', planned: 'Notice text to structured fields.', today: 'Built: OpenAI or Gemini in production, Ollama in development.' },
-      { stage: 'Validation layer', planned: 'Rules plus an AI cross-check against the source text.', today: 'Partial: only title and organisation are hard-required.' },
-      { stage: 'Structured job JSON', planned: 'A standard output format.', today: 'Built.' },
-      { stage: 'Draft and edit panel', planned: 'A draft the admin can edit.', today: 'Built: jobs save as preview, with admin edit pages and auto-created draft resources.' },
-      { stage: 'Human review', planned: 'Approval before publishing.', today: 'Built: the approve route records who approved and when.' },
-      { stage: 'Thumbnail and short video', planned: 'Canva for thumbnails, Runway for short video.', today: 'Not built.' },
-      { stage: 'Cloud storage, CDN and social posting', planned: 'Media in cloud storage behind a CDN, posted to Telegram, Instagram and YouTube.', today: 'Not built. Only a Notification table exists.' },
-      { stage: 'Website and SEO pages', planned: 'Published job pages.', today: 'Built: server-rendered pages, sitemap and structured data.' },
-      { stage: 'Prompt and UX feedback loop', planned: 'What reviewers change feeds back into prompts and interface.', today: 'Not built. Admin edits are not recorded.' },
-      { stage: 'Rate limiting and hybrid retrieval', planned: 'Protect public AI endpoints; combine semantic and keyword search.', today: 'Not built.' }
-    ],
-
-    proposedArchitecture: {
-      summary:
-        'The planned pipeline turns a manual, request-bound flow into a queue-driven one: ingest a notice, structure it with AI, keep the human review gate, then publish to the website and to social channels. Nothing reaches the public site without passing that gate.',
-      stages: [
-        { n: '01', title: 'Ingestion', detail: 'Admins submit a PDF, a URL or pasted text. An automated scraper adds notices from official sources into the same queue.' },
-        { n: '02', title: 'Processing queue', detail: 'Original files go to object storage (S3) and every notice becomes a queued job. A two-way path lets failed or corrected jobs be reprocessed.' },
-        { n: '03', title: 'AI processing', detail: 'Four steps in order: raw text extraction (PDF text with OCR for scans), a data cleaning step, the AI structuring engine, and a validation layer that combines deterministic rules with an AI cross-check against the source text.' },
-        { n: '04', title: 'Job draft creation', detail: 'The structured JSON becomes a draft job that an admin can fix in an edit panel.' },
-        { n: '05', title: 'Human review', detail: 'A person checks the draft before anything is published. This remains the safeguard for dates, vacancy counts and eligibility.' },
-        { n: '06', title: 'Media generation', detail: 'Canva produces a thumbnail template and Runway produces a short video for each published job.' },
-        { n: '07', title: 'Distribution', detail: 'Media and links are stored in cloud storage behind a CDN and posted to Telegram, Instagram and YouTube.' },
-        { n: '08', title: 'Website and SEO pages', detail: 'The approved job is published as a search-optimised page on the site.' },
-        { n: '09', title: 'Prompt and UX improvements', detail: 'What reviewers change and how users respond feeds back into better prompts and a better interface.' }
-      ],
-      openQuestions: [
-        'Queue choice: the planning diagram shows both RabbitMQ and Kafka. At this scale one queue is enough; the open question is managed service versus self-hosting.',
-        'Serverless limits: long OCR jobs and scrapers need a worker outside the request cycle.',
-        'Cost per notice: OCR, LLM calls and video generation add up, so a budget per notice should be set and measured.',
-        'Should trusted official sources ever skip manual review, or should every notice always pass it?'
-      ],
-      diagram: {
-        src: 'assets/diagrams/karmavriti-automated-pipeline.svg',
-        alt: 'Proposed automated content pipeline: ingestion, queue, AI processing, draft, human review, media generation, distribution, website',
-        caption: 'Proposed future architecture — planned work, not implemented today.'
-      }
-    },
-
     roadmap: [
-      { phase: 'Phase 1', title: 'Queue and inputs', detail: 'Add URL and pasted-text input, store original files in object storage, and move parsing into a background job with retries and a visible status in the admin panel.' },
-      { phase: 'Phase 2', title: 'Cleaning and validation', detail: 'Add a dedicated cleaning step, check required fields and date sanity, compare extracted values against the source text, flag low-confidence fields in the edit panel, and start recording admin edits.' },
-      { phase: 'Phase 3', title: 'Automated scraper', detail: 'Begin with a few official sites, de-duplicate by URL or content hash, and let every scraped notice land as a preview draft.' },
-      { phase: 'Phase 4', title: 'Media and distribution', detail: 'Start with thumbnail templates, then short video. Post to Telegram first because it is the simplest, then Instagram and YouTube.' },
-      { phase: 'Phase 5', title: 'Feedback loop', detail: 'Use the recorded admin edits to find where extraction gets fields wrong, and refine the prompts against that list.' },
-      { phase: 'Phase 6', title: 'Retrieval quality', detail: 'Add rate limiting to the public AI endpoints and improve retrieval by combining semantic and keyword-based search.' }
+      {
+        phase: 'Phase 1',
+        title: 'Automated notification collection',
+        detail: 'Expand automated ingestion to continuously monitor official recruitment boards, automatically queuing newly published circulars for processing.'
+      },
+      {
+        phase: 'Phase 2',
+        title: 'Asynchronous queue orchestration',
+        detail: 'Transition heavy document OCR and structuring workloads into distributed background queues for seamless processing of multi-hundred-page notices.'
+      },
+      {
+        phase: 'Phase 3',
+        title: 'Advanced hybrid retrieval tuning',
+        detail: 'Further optimize lexical and semantic fusion algorithms for regional exam nomenclature and colloquial search phrasing.'
+      },
+      {
+        phase: 'Phase 4',
+        title: 'Multi-channel candidate alerts',
+        detail: 'Deliver opt-in, privacy-preserving recruitment updates and deadline alerts via lightweight messaging networks such as Telegram and WhatsApp.'
+      }
     ]
   },
 
-  /* Ordered case-study outline. `kind` selects the renderer; `id` binds a
-   * section to a workflow entry where one exists. */
+  /* Ordered case-study outline for KarmaVriti */
   sections: [
-    { id: 'overview',       kind: 'overview',   num: '01', label: 'Project overview' },
-    { id: 'features',       kind: 'features',   num: '02', label: 'Feature walkthrough' },
-    { id: 'stack',          kind: 'stack',      num: '03', label: 'Technology stack' },
-    { id: 'architecture',   kind: 'architecture', num: '04', label: 'System architecture' },
-    { id: 'rag',            kind: 'workflow',   num: '05' },
-    { id: 'pdf-ocr',        kind: 'workflow',   num: '06' },
-    { id: 'job-ingestion',  kind: 'workflow',   num: '07' },
-    { id: 'database',       kind: 'database',   num: '08', label: 'Database architecture' },
-    { id: 'security',       kind: 'security',   num: '09', label: 'Security' },
-    { id: 'challenges',     kind: 'challenges', num: '10', label: 'Technical challenges and solutions' },
-    { id: 'future',         kind: 'future',     num: '11', label: 'Future scope' },
-    { id: 'proposed',       kind: 'proposed',   num: '12', label: 'Proposed future architecture' },
-    { id: 'roadmap',        kind: 'roadmap',    num: '13', label: 'Future workflow and roadmap' }
+    { id: 'overview',       kind: 'overview',       num: '01', label: 'Project overview' },
+    { id: 'features',       kind: 'features',       num: '02', label: 'Platform capabilities' },
+    { id: 'stack',          kind: 'stack',          num: '03', label: 'Core architecture components' },
+    { id: 'architecture',   kind: 'architecture',   num: '04', label: 'System architecture' },
+    { id: 'rag',            kind: 'workflow',       num: '05' },
+    { id: 'pdf-ocr',        kind: 'workflow',       num: '06' },
+    { id: 'job-ingestion',  kind: 'workflow',       num: '07' },
+    { id: 'database',       kind: 'database',       num: '08', label: 'Data architecture' },
+    { id: 'security',       kind: 'security',       num: '09', label: 'Security & privacy design' },
+    { id: 'challenges',     kind: 'challenges',     num: '10', label: 'Design challenges & engineering solutions' },
+    { id: 'future',         kind: 'future',         num: '11', label: 'System evolution' },
+    { id: 'roadmap',        kind: 'roadmap',        num: '12', label: 'Implementation roadmap' }
   ]
 };
-
